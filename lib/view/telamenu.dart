@@ -11,7 +11,7 @@ class Menu extends StatelessWidget
           DrawerHeader(
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: AssetImage("imagens/paulo.jpg"),
+                  backgroundImage: AssetImage("imagens/img.png"),
                   radius: 30,
                 ),
                 title: Text("Paulo Ricardo"),
