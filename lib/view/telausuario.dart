@@ -39,24 +39,21 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     });
   }
 
-  _editarUsuario(int id, String cpf, String nome, String email) async{
+  _editarUsuario(int id, String cpf, String nome, String email) async {
     await bd.editarUsuario(Usuario(id: id, cpf: cpf, nome: nome, email: email));
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     _listarUsuarios();
 
     return Scaffold(
-      drawer: Menu(),
+      drawer: const Menu(),
       appBar: AppBar(
         title: const Text("Lista de usuários"),
       ),
@@ -65,36 +62,39 @@ class _TelaUsuarioState extends State<TelaUsuario> {
           Expanded(
             child: ListView.builder(
                 itemCount: usuarios!.length,
-                itemBuilder: (context, index){
-
-                  if(usuarios!.isNotEmpty == true) {
+                itemBuilder: (context, index) {
+                  if (usuarios!.isNotEmpty == true) {
                     return GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context){
-                              return TelaDetalhe(usuarios![index]);
-                            })
-                        );
+                            MaterialPageRoute(builder: (context) {
+                          return TelaDetalhe(usuarios![index]);
+                        }));
                       },
                       child: Card(
                         child: ListTile(
-                          leading: Icon(Icons.account_circle, color: Colors.blue,),
+                          leading: const Icon(
+                            Icons.account_circle,
+                            color: Colors.blue,
+                          ),
                           title: Text(usuarios![index].nome!),
                           subtitle: Text(usuarios![index].email!),
-                          trailing: Container(
+                          trailing: SizedBox(
                             width: 100,
                             child: Row(
                               children: [
                                 IconButton(
-                                  onPressed: (){
-
-                                    controllerEditarCpfUsuario.text = usuarios![index].cpf!;
-                                    controllerEditarNomeUsuario.text = usuarios![index].nome!;
-                                    controllerEditarEmailUsuario.text = usuarios![index].email!;
+                                  onPressed: () {
+                                    controllerEditarCpfUsuario.text =
+                                        usuarios![index].cpf!;
+                                    controllerEditarNomeUsuario.text =
+                                        usuarios![index].nome!;
+                                    controllerEditarEmailUsuario.text =
+                                        usuarios![index].email!;
 
                                     showDialog(
                                         context: context,
-                                        builder: (context){
+                                        builder: (context) {
                                           return AlertDialog(
                                             title: const Text("Editar Usuário"),
                                             content: SingleChildScrollView(
@@ -102,87 +102,99 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   TextField(
-                                                    keyboardType: TextInputType.number,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Cpf",
-                                                        hintText: "digite seu cpf"
-                                                    ),
-                                                    controller: controllerEditarCpfUsuario,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "Cpf",
+                                                            hintText:
+                                                                "digite seu cpf"),
+                                                    controller:
+                                                        controllerEditarCpfUsuario,
                                                   ),
                                                   TextField(
-                                                    keyboardType: TextInputType.text,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Nome",
-                                                        hintText: "digite seu nome"
-                                                    ),
-                                                    controller: controllerEditarNomeUsuario,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "Nome",
+                                                            hintText:
+                                                                "digite seu nome"),
+                                                    controller:
+                                                        controllerEditarNomeUsuario,
                                                   ),
                                                   TextField(
-                                                    keyboardType: TextInputType.emailAddress,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "E-mail",
-                                                        hintText: "digite seu e-mail"
-                                                    ),
-                                                    controller: controllerEditarEmailUsuario,
+                                                    keyboardType: TextInputType
+                                                        .emailAddress,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "E-mail",
+                                                            hintText:
+                                                                "digite seu e-mail"),
+                                                    controller:
+                                                        controllerEditarEmailUsuario,
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             actions: [
                                               ElevatedButton(
-                                                  onPressed: (){
+                                                  onPressed: () {
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text("Cancelar")
-                                              ),
+                                                  child:
+                                                      const Text("Cancelar")),
                                               ElevatedButton(
-                                                  onPressed: (){
+                                                  onPressed: () {
                                                     //editar usuario
                                                     _editarUsuario(
                                                         usuarios![index].id!,
-                                                        controllerEditarCpfUsuario.text,
-                                                        controllerEditarNomeUsuario.text,
-                                                        controllerEditarEmailUsuario.text
-                                                    );
+                                                        controllerEditarCpfUsuario
+                                                            .text,
+                                                        controllerEditarNomeUsuario
+                                                            .text,
+                                                        controllerEditarEmailUsuario
+                                                            .text);
 
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text("Salvar")
-                                              ),
+                                                  child: const Text("Salvar")),
                                             ],
                                           );
-                                        }
-                                    );
+                                        });
                                   },
-                                  icon: Icon(Icons.edit, color: Colors.blue,),
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.blue,
+                                  ),
                                 ),
                                 IconButton(
-                                  onPressed: (){
+                                  onPressed: () {
                                     showDialog(
                                         context: context,
-                                        builder: (context){
+                                        builder: (context) {
                                           return AlertDialog(
-                                            content: Text("Deseja excluir o usuário ${usuarios![index].nome!}?"),
+                                            content: Text(
+                                                "Deseja excluir o usuário ${usuarios![index].nome!}?"),
                                             actions: [
                                               TextButton(
-                                                  onPressed: (){
+                                                  onPressed: () {
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text("Não")
-                                              ),
+                                                  child: const Text("Não")),
                                               TextButton(
-                                                  onPressed: (){
-                                                    _deletarUsuario(usuarios![index].id!);
+                                                  onPressed: () {
+                                                    _deletarUsuario(
+                                                        usuarios![index].id!);
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text("Sim")
-                                              ),
+                                                  child: const Text("Sim")),
                                             ],
                                           );
-                                        }
-                                    );
+                                        });
                                   },
-                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.red),
                                 ),
                               ],
                             ),
@@ -190,19 +202,18 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                         ),
                       ),
                     );
-                  }else{
-                    return Text("nenhum usuário");
+                  } else {
+                    return const Text("nenhum usuário");
                   }
-                }
-            ),
+                }),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: () {
           showDialog(
               context: context,
-              builder: (context){
+              builder: (context) {
                 return AlertDialog(
                   title: const Text("Cadastrar Usuário"),
                   content: SingleChildScrollView(
@@ -212,25 +223,20 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                         TextField(
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
-                              labelText: "Cpf",
-                              hintText: "digite seu cpf"
-                          ),
+                              labelText: "Cpf", hintText: "digite seu cpf"),
                           controller: controllerCpfUsuario,
                         ),
                         TextField(
                           keyboardType: TextInputType.text,
                           decoration: const InputDecoration(
-                              labelText: "Nome",
-                              hintText: "digite seu nome"
-                          ),
+                              labelText: "Nome", hintText: "digite seu nome"),
                           controller: controllerNomeUsuario,
                         ),
                         TextField(
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                               labelText: "E-mail",
-                              hintText: "digite seu e-mail"
-                          ),
+                              hintText: "digite seu e-mail"),
                           controller: controllerEmailUsuario,
                         ),
                       ],
@@ -238,19 +244,17 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                   ),
                   actions: [
                     ElevatedButton(
-                        onPressed: (){
+                        onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text("Cancelar")
-                    ),
+                        child: const Text("Cancelar")),
                     ElevatedButton(
-                        onPressed: (){
+                        onPressed: () {
                           //salvar novo usuario
                           bd.inserirUsuario(Usuario(
                               cpf: controllerCpfUsuario.text,
                               nome: controllerNomeUsuario.text,
-                              email: controllerEmailUsuario.text
-                          ));
+                              email: controllerEmailUsuario.text));
                           controllerCpfUsuario.clear();
                           controllerNomeUsuario.clear();
                           controllerEmailUsuario.clear();
@@ -259,12 +263,10 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
                           Navigator.pop(context);
                         },
-                        child: Text("Salvar")
-                    ),
+                        child: const Text("Salvar")),
                   ],
                 );
-              }
-          );
+              });
         },
         child: const Icon(Icons.add),
       ),

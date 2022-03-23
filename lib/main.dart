@@ -7,8 +7,8 @@ void main() {
     debugShowCheckedModeBanner: false,
     initialRoute: "/",
     routes: {
-      "/": (context) => Inicio(),
-      "/telausuario" : (context) => TelaUsuario(),
+      "/": (context) => const Inicio(),
+      "/telausuario": (context) => const TelaUsuario(),
     },
   ));
 }
