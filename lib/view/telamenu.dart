@@ -14,8 +14,8 @@ class Menu extends StatelessWidget
                   backgroundImage: AssetImage("imagens/img.png"),
                   radius: 30,
                 ),
-                title: Text("Paulo Ricardo"),
-                subtitle: Text("prsilvapontes@gmail.com"),
+                title: Text("Admin"),
+                subtitle: Text("Admin@gmail.com"),
               )),
           ListTile(
             onTap: (){

@@ -1,5 +1,5 @@
 class Usuario{
-
+  // model usuário
   int? id;
   String? cpf;
   String? nome;

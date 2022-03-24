@@ -299,7 +299,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                           keyboardType: TextInputType.text,
                           decoration: const InputDecoration(
                               labelText: "Avatar",
-                              hintText: "digite url do avatar"
+                              hintText: "url do avatar"
                           ),
                           controller: controllerAddAvatarUsuario,
                         ),

@@ -9,8 +9,8 @@ void main() {
     initialRoute: "/telalogin",
     routes: {
       "/": (context) => Inicio(),
-      "/telalogin" : (context) => TelaLogin(),
-      "/telausuario" : (context) => TelaUsuario(),
+      "/telalogin" : (context) => TelaLogin(), // tela de login
+      "/telausuario" : (context) => TelaUsuario(), // tela de usuário
     },
   ));
 }

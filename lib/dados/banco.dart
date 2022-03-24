@@ -110,7 +110,6 @@ class Banco{
     List resultado = await db.query(
         tabela, where: "login = ? and senha = ?", whereArgs: [login, senha]);
 
-    print(resultado);
     if (resultado.isNotEmpty) {
       return true;
     } else {

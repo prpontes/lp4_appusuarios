@@ -1,6 +1,3 @@
-import 'package:bd_usuarios/dados/banco.dart';
-import 'package:bd_usuarios/model/usuario.dart';
-import 'package:bd_usuarios/view/detalhe.dart';
 import 'package:bd_usuarios/view/telamenu.dart';
 import 'package:flutter/material.dart';
 

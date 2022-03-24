@@ -33,7 +33,7 @@ class _TelaLoginState extends State<TelaLogin> {
                     onPressed: (){
                       Navigator.pop(context);
                     },
-                    child: Text("Ok"))
+                    child: Text("entrar"))
               ],
             );
           }
