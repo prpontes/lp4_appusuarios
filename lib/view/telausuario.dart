@@ -13,13 +13,19 @@ class TelaUsuario extends StatefulWidget {
 
 class _TelaUsuarioState extends State<TelaUsuario> {
   Banco bd = Banco();
-  TextEditingController controllerCpfUsuario = TextEditingController();
-  TextEditingController controllerNomeUsuario = TextEditingController();
-  TextEditingController controllerEmailUsuario = TextEditingController();
+  TextEditingController controllerAddCpfUsuario = TextEditingController();
+  TextEditingController controllerAddNomeUsuario = TextEditingController();
+  TextEditingController controllerAddEmailUsuario = TextEditingController();
+  TextEditingController controllerAddLoginUsuario = TextEditingController();
+  TextEditingController controllerAddSenhaUsuario = TextEditingController();
+  TextEditingController controllerAddAvatarUsuario = TextEditingController();
 
   TextEditingController controllerEditarCpfUsuario = TextEditingController();
   TextEditingController controllerEditarNomeUsuario = TextEditingController();
   TextEditingController controllerEditarEmailUsuario = TextEditingController();
+  TextEditingController controllerEditarLoginUsuario = TextEditingController();
+  TextEditingController controllerEditarSenhaUsuario = TextEditingController();
+  TextEditingController controllerEditarAvatarUsuario = TextEditingController();
 
   List<Usuario>? usuarios = [];
 
@@ -39,8 +45,18 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     });
   }
 
-  _editarUsuario(int id, String cpf, String nome, String email) async{
-    await bd.editarUsuario(Usuario(id: id, cpf: cpf, nome: nome, email: email));
+  _editarUsuario(int id, String cpf, String nome, String email, String login, String senha, String avatar) async{
+    await bd.editarUsuario(
+        Usuario(
+          id: id,
+          cpf: cpf,
+          nome: nome,
+          email: email,
+          login: login,
+          senha: senha,
+          avatar: avatar,
+        )
+    );
   }
 
   @override
@@ -78,7 +94,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                       },
                       child: Card(
                         child: ListTile(
-                          leading: Icon(Icons.account_circle, color: Colors.blue,),
+                          leading: usuarios![index].avatar == "" ? Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarios![index].avatar!),),
                           title: Text(usuarios![index].nome!),
                           subtitle: Text(usuarios![index].email!),
                           trailing: Container(
@@ -91,6 +107,9 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                     controllerEditarCpfUsuario.text = usuarios![index].cpf!;
                                     controllerEditarNomeUsuario.text = usuarios![index].nome!;
                                     controllerEditarEmailUsuario.text = usuarios![index].email!;
+                                    controllerEditarLoginUsuario.text = usuarios![index].login!;
+                                    controllerEditarSenhaUsuario.text = usuarios![index].senha!;
+                                    controllerEditarAvatarUsuario.text = usuarios![index].avatar!;
 
                                     showDialog(
                                         context: context,
@@ -125,6 +144,30 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                     ),
                                                     controller: controllerEditarEmailUsuario,
                                                   ),
+                                                  TextField(
+                                                    keyboardType: TextInputType.text,
+                                                    decoration: const InputDecoration(
+                                                        labelText: "Login",
+                                                        hintText: "digite seu login"
+                                                    ),
+                                                    controller: controllerEditarLoginUsuario,
+                                                  ),
+                                                  TextField(
+                                                    keyboardType: TextInputType.visiblePassword,
+                                                    decoration: const InputDecoration(
+                                                        labelText: "Senha",
+                                                        hintText: "digite sua senha"
+                                                    ),
+                                                    controller: controllerEditarSenhaUsuario,
+                                                  ),
+                                                  TextField(
+                                                    keyboardType: TextInputType.text,
+                                                    decoration: const InputDecoration(
+                                                        labelText: "Avatar",
+                                                        hintText: "digite url do avatar"
+                                                    ),
+                                                    controller: controllerEditarAvatarUsuario,
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -139,10 +182,13 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   onPressed: (){
                                                     //editar usuario
                                                     _editarUsuario(
-                                                        usuarios![index].id!,
-                                                        controllerEditarCpfUsuario.text,
-                                                        controllerEditarNomeUsuario.text,
-                                                        controllerEditarEmailUsuario.text
+                                                      usuarios![index].id!,
+                                                      controllerEditarCpfUsuario.text,
+                                                      controllerEditarNomeUsuario.text,
+                                                      controllerEditarEmailUsuario.text,
+                                                      controllerEditarLoginUsuario.text,
+                                                      controllerEditarSenhaUsuario.text,
+                                                      controllerEditarAvatarUsuario.text
                                                     );
 
                                                     Navigator.pop(context);
@@ -215,7 +261,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               labelText: "Cpf",
                               hintText: "digite seu cpf"
                           ),
-                          controller: controllerCpfUsuario,
+                          controller: controllerAddCpfUsuario,
                         ),
                         TextField(
                           keyboardType: TextInputType.text,
@@ -223,7 +269,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               labelText: "Nome",
                               hintText: "digite seu nome"
                           ),
-                          controller: controllerNomeUsuario,
+                          controller: controllerAddNomeUsuario,
                         ),
                         TextField(
                           keyboardType: TextInputType.emailAddress,
@@ -231,7 +277,31 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               labelText: "E-mail",
                               hintText: "digite seu e-mail"
                           ),
-                          controller: controllerEmailUsuario,
+                          controller: controllerAddEmailUsuario,
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                              labelText: "Login",
+                              hintText: "digite seu login"
+                          ),
+                          controller: controllerAddLoginUsuario,
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.visiblePassword,
+                          decoration: const InputDecoration(
+                              labelText: "Senha",
+                              hintText: "digite sua senha"
+                          ),
+                          controller: controllerAddSenhaUsuario,
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                              labelText: "Avatar",
+                              hintText: "digite url do avatar"
+                          ),
+                          controller: controllerAddAvatarUsuario,
                         ),
                       ],
                     ),
@@ -247,13 +317,19 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                         onPressed: (){
                           //salvar novo usuario
                           bd.inserirUsuario(Usuario(
-                              cpf: controllerCpfUsuario.text,
-                              nome: controllerNomeUsuario.text,
-                              email: controllerEmailUsuario.text
+                              cpf: controllerAddCpfUsuario.text,
+                              nome: controllerAddNomeUsuario.text,
+                              email: controllerAddEmailUsuario.text,
+                              login: controllerAddLoginUsuario.text,
+                              senha: controllerAddSenhaUsuario.text,
+                              avatar: controllerAddAvatarUsuario.text,
                           ));
-                          controllerCpfUsuario.clear();
-                          controllerNomeUsuario.clear();
-                          controllerEmailUsuario.clear();
+                          controllerAddCpfUsuario.clear();
+                          controllerAddNomeUsuario.clear();
+                          controllerAddEmailUsuario.clear();
+                          controllerAddLoginUsuario.clear();
+                          controllerAddSenhaUsuario.clear();
+                          controllerAddAvatarUsuario.clear();
 
                           _listarUsuarios();
 

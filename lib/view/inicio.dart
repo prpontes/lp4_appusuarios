@@ -27,8 +27,11 @@ class _InicioState extends State<Inicio> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(10)
+              ),
               padding: EdgeInsets.all(20),
-              color: Colors.red,
               width: 300,
               height: 100,
               child: Row(
@@ -44,8 +47,11 @@ class _InicioState extends State<Inicio> {
               ),
             ),
             Container(
+              decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(10)
+              ),
               padding: EdgeInsets.only(left: 50, top: 10),
-              color: Colors.green,
               width: 300,
               height: 100,
               child: Row(
@@ -61,8 +67,11 @@ class _InicioState extends State<Inicio> {
               ),
             ),
             Container(
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                  borderRadius: BorderRadius.circular(10),
+              ),
               padding: EdgeInsets.only(left: 40, top: 10),
-              color: Colors.lightBlue,
               width: 300,
               height: 100,
               child: Row(

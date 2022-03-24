@@ -21,7 +21,7 @@ class Banco{
   Future<Database> abrirBanco() async{
     String dir = await getDatabasesPath();
     var bd = await openDatabase(join(dir, "bduser.db"), onCreate: (db, versao){
-      return db.execute("CREATE TABLE $tabela(id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT)");
+      return db.execute("CREATE TABLE $tabela(id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)");
     },
       version: 1
     );
@@ -35,7 +35,10 @@ class Banco{
       {
         "cpf": user.cpf,
         "nome": user.nome,
-        "email": user.email
+        "email": user.email,
+        "login": user.login,
+        "senha": user.senha,
+        "avatar": user.avatar,
       }
     );
     print("$resultado inserido com sucesso!");
@@ -52,7 +55,10 @@ class Banco{
             id: lista[index]["id"],
             cpf: lista[index]["cpf"],
             nome: lista[index]["nome"],
-            email: lista[index]["email"]
+            email: lista[index]["email"],
+            login: lista[index]["login"],
+            senha: lista[index]["senha"],
+            avatar: lista[index]["avatar"],
         );
       }
     );
@@ -66,7 +72,10 @@ class Banco{
       {
         "cpf":user.cpf,
         "nome":user.nome,
-        "email":user.email
+        "email":user.email,
+        "login":user.login,
+        "senha":user.senha,
+        "avatar":user.avatar,
       },
       where: "id = ?",
       whereArgs: [user.id]
@@ -77,5 +86,35 @@ class Banco{
   {
     var db = await this.bd;
     db.delete(tabela, where: "id = ?", whereArgs: [id]);
+  }
+
+  criarUsuarioAdmin() async
+  {
+    var bd = await this.bd;
+    int resultado = await bd.insert(tabela,
+        {
+          "cpf": "12345678910",
+          "nome": "Admin",
+          "email": "admin@gmail.com",
+          "login": "admin",
+          "senha": "123456",
+          "avatar": "",
+        }
+    );
+  }
+
+  Future<bool> consultarUsuario(String login, String senha) async
+  {
+    var db = await this.bd;
+
+    List resultado = await db.query(
+        tabela, where: "login = ? and senha = ?", whereArgs: [login, senha]);
+
+    print(resultado);
+    if (resultado.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
