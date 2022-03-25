@@ -17,27 +17,46 @@ class _TelaLoginState extends State<TelaLogin> {
 
   _autenticacao() async
   {
-    var resultado = await banco.consultarUsuario(controllerUsuario.text, controllerSenha.text);
-    print(resultado);
-    if(resultado == true)
+    if(controllerUsuario.text == "" || controllerSenha.text == "")
     {
-      return Navigator.pushNamed(context, "/", );
-    }else{
       return showDialog(
           context: context,
-          builder: (context){
+          builder: (context) {
             return AlertDialog(
-              content: Text("Usuário ou senha incorreta!"),
+              content: Text("Login e senha obrigatórios!"),
               actions: [
                 TextButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("entrar"))
+                    child: Text("Ok"))
               ],
             );
           }
       );
+    }else {
+      var resultado = await banco.consultarUsuario(
+          controllerUsuario.text, controllerSenha.text);
+
+      if (resultado == true) {
+        return Navigator.pushNamed(context, "/",);
+      } else {
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text("Usuário ou senha incorreta!"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("Ok"))
+                ],
+              );
+            }
+        );
+      }
     }
   }
 
@@ -52,39 +71,54 @@ class _TelaLoginState extends State<TelaLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(50),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: controllerUsuario,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                labelText: "Usuário"
+          padding: EdgeInsets.all(50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: controllerUsuario,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.person, color: Colors.blue,),
+                  hintText: "Login",
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            TextField(
-              controller: controllerSenha,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                  labelText: "Senha"
+              SizedBox(
+                height: 10,
               ),
-            ),
-            ElevatedButton(
+              TextField(
+                controller: controllerSenha,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.password_outlined, color: Colors.blue,),
+                    hintText: "Senha",
+                    border: OutlineInputBorder()
+                ),
+                obscureText: true,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
                 onPressed: (){
                   _autenticacao();
                 },
                 child: Text(
-                    "Ok",
+                  "Ok",
                   style: TextStyle(
                     fontSize: 20,
-                      decoration: TextDecoration.none,
+                    decoration: TextDecoration.none,
                   ),
-                )
-            )
-          ],
-        ),
-      ),
+                ),
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(EdgeInsets.only(left: 100, top: 10, right: 100, bottom: 10))
+                ),
+
+              )
+            ],
+          ),
+      )
     );
   }
 }

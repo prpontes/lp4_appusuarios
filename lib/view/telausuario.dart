@@ -75,6 +75,12 @@ class _TelaUsuarioState extends State<TelaUsuario> {
       drawer: Menu(),
       appBar: AppBar(
         title: const Text("Lista de usuários"),
+        actions: [
+          IconButton(
+              onPressed: (){},
+              icon: Icon(Icons.search)
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -159,6 +165,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                         hintText: "digite sua senha"
                                                     ),
                                                     controller: controllerEditarSenhaUsuario,
+                                                    obscureText: true,
                                                   ),
                                                   TextField(
                                                     keyboardType: TextInputType.text,
@@ -294,6 +301,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               hintText: "digite sua senha"
                           ),
                           controller: controllerAddSenhaUsuario,
+                          obscureText: true,
                         ),
                         TextField(
                           keyboardType: TextInputType.text,

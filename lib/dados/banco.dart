@@ -90,17 +90,23 @@ class Banco{
 
   criarUsuarioAdmin() async
   {
-    var bd = await this.bd;
-    int resultado = await bd.insert(tabela,
-        {
-          "cpf": "12345678910",
-          "nome": "Admin",
-          "email": "admin@gmail.com",
-          "login": "admin",
-          "senha": "123456",
-          "avatar": "",
-        }
-    );
+    var db = await this.bd;
+
+    List resultado = await db.query(
+        tabela, where: "login = ?", whereArgs: ["admin"]);
+
+    if (resultado.isEmpty) {
+      int resultado = await db.insert(tabela,
+          {
+            "cpf": "12345678910",
+            "nome": "Admin",
+            "email": "admin@gmail.com",
+            "login": "admin",
+            "senha": "123456",
+            "avatar": "",
+          }
+      );
+    }
   }
 
   Future<bool> consultarUsuario(String login, String senha) async
