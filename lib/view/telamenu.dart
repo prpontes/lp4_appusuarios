@@ -8,14 +8,34 @@ class Menu extends StatelessWidget
     return Drawer(
       child: ListView(
         children: [
-          DrawerHeader(
+           DrawerHeader(
+             decoration: BoxDecoration(
+               color: Colors.white30,
+             ),
               child: ListTile(
-                leading: CircleAvatar(
+                leading: const CircleAvatar(
                   backgroundImage: AssetImage("imagens/img.png"),
                   radius: 30,
                 ),
-                title: Text("Admin"),
+                title: const Text("Admin",
+                  style: TextStyle(
+                    fontSize: 18
+                  ),
+                ),
                 subtitle: Text("Admin@gmail.com"),
+                trailing: Container(
+                  padding: EdgeInsets.only(left: 20),
+                  width: 40,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.blue,
+                    ),
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
+                  ),
+                )
               )),
           ListTile(
             onTap: (){
@@ -31,7 +51,6 @@ class Menu extends StatelessWidget
           ListTile(
             leading: Icon(Icons.apartment),
             title: Text("Clientes"),),
-
           ListTile(
               onTap: (){
                 Navigator.pushNamed(context, "/telausuario");
@@ -39,6 +58,7 @@ class Menu extends StatelessWidget
               leading: Icon(Icons.person),
               title: Text("Usuários"),
             ),
+          Divider(),
           ListTile(
             onTap: (){
               Navigator.pushNamed(context, "/telalogin");

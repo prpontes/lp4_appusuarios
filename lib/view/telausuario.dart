@@ -70,7 +70,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
       _listarUsuarios();
     }else {
       for (var e in usuarios) {
-        if (e.nome == busca) {
+        if (e.nome == busca || e.email == busca || e.cpf == busca || e.login == busca) {
           temp.add(
               Usuario(
                 id: e.id,
@@ -173,7 +173,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                       },
                       child: Card(
                         child: ListTile(
-                          leading: usuarios[index].avatar == "" ? Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarios[index].avatar!),),
+                          leading: usuarios[index].avatar == "" ? Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarios[index].avatar!)),
                           title: Text(usuarios[index].nome!),
                           subtitle: Text(usuarios[index].email!),
                           trailing: Container(
