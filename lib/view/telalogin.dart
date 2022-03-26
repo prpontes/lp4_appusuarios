@@ -35,7 +35,7 @@ class _TelaLoginState extends State<TelaLogin> {
           }
       );
     }else {
-      var resultado = await banco.consultarUsuario(
+      var resultado = await banco.consultarLoginUsuario(
           controllerUsuario.text, controllerSenha.text);
 
       if (resultado == true) {

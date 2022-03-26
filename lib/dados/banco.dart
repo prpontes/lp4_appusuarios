@@ -109,7 +109,7 @@ class Banco{
     }
   }
 
-  Future<bool> consultarUsuario(String login, String senha) async
+  Future<bool> consultarLoginUsuario(String login, String senha) async
   {
     var db = await this.bd;
 

@@ -27,7 +27,9 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   TextEditingController controllerEditarSenhaUsuario = TextEditingController();
   TextEditingController controllerEditarAvatarUsuario = TextEditingController();
 
-  List<Usuario>? usuarios = [];
+  TextEditingController controllerBuscaUsuario = TextEditingController();
+
+  List<Usuario> usuarios = [];
 
   Future<void> _listarUsuarios() async {
     usuarios = await bd.listarUsuarios();
@@ -40,9 +42,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   Future<void> _deletarUsuario(int i) async {
     await bd.deletarUsuario(i);
 
-    setState(() {
-      usuarios;
-    });
+    _listarUsuarios();
   }
 
   _editarUsuario(int id, String cpf, String nome, String email, String login, String senha, String avatar) async{
@@ -57,19 +57,90 @@ class _TelaUsuarioState extends State<TelaUsuario> {
           avatar: avatar,
         )
     );
+    await _listarUsuarios();
+  }
+
+  _buscarUsuario(String busca) async
+  {
+    await _listarUsuarios();
+    List<Usuario> temp = [];
+
+    if(busca == "")
+    {
+      _listarUsuarios();
+    }else {
+      for (var e in usuarios) {
+        if (e.nome == busca) {
+          temp.add(
+              Usuario(
+                id: e.id,
+                cpf: e.cpf,
+                nome: e.nome,
+                email: e.email,
+                login: e.login,
+                senha: e.senha,
+                avatar: e.avatar,
+              )
+          );
+        }
+      }
+
+      setState(() {
+        usuarios = temp;
+      });
+    }
+  }
+
+  _formularioBusca()
+  {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Buscar usuário"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: controllerBuscaUsuario,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                  //labelText: "Buscar",
+                  hintText: "digite o termo para buscar",
+                  border: OutlineInputBorder()
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Cancelar")
+          ),
+          ElevatedButton(
+              onPressed: () {
+                var str = controllerBuscaUsuario.text;
+                _buscarUsuario(str);
+                controllerBuscaUsuario.clear();
+                Navigator.pop(context);
+              },
+              child: Text("Buscar")
+          )
+        ],
+      )
+    );
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _listarUsuarios();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    _listarUsuarios();
 
     return Scaffold(
       drawer: Menu(),
@@ -77,7 +148,9 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         title: const Text("Lista de usuários"),
         actions: [
           IconButton(
-              onPressed: (){},
+              onPressed: (){
+                _formularioBusca();
+              },
               icon: Icon(Icons.search)
           )
         ],
@@ -86,23 +159,23 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         children: [
           Expanded(
             child: ListView.builder(
-                itemCount: usuarios!.length,
+                itemCount: usuarios.length,
                 itemBuilder: (context, index){
 
-                  if(usuarios!.isNotEmpty == true) {
+                  if(usuarios.isNotEmpty == true) {
                     return GestureDetector(
                       onTap: (){
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context){
-                              return TelaDetalhe(usuarios![index]);
+                              return TelaDetalhe(usuarios[index]);
                             })
                         );
                       },
                       child: Card(
                         child: ListTile(
-                          leading: usuarios![index].avatar == "" ? Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarios![index].avatar!),),
-                          title: Text(usuarios![index].nome!),
-                          subtitle: Text(usuarios![index].email!),
+                          leading: usuarios[index].avatar == "" ? Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarios[index].avatar!),),
+                          title: Text(usuarios[index].nome!),
+                          subtitle: Text(usuarios[index].email!),
                           trailing: Container(
                             width: 100,
                             child: Row(
@@ -110,12 +183,12 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                 IconButton(
                                   onPressed: (){
 
-                                    controllerEditarCpfUsuario.text = usuarios![index].cpf!;
-                                    controllerEditarNomeUsuario.text = usuarios![index].nome!;
-                                    controllerEditarEmailUsuario.text = usuarios![index].email!;
-                                    controllerEditarLoginUsuario.text = usuarios![index].login!;
-                                    controllerEditarSenhaUsuario.text = usuarios![index].senha!;
-                                    controllerEditarAvatarUsuario.text = usuarios![index].avatar!;
+                                    controllerEditarCpfUsuario.text = usuarios[index].cpf!;
+                                    controllerEditarNomeUsuario.text = usuarios[index].nome!;
+                                    controllerEditarEmailUsuario.text = usuarios[index].email!;
+                                    controllerEditarLoginUsuario.text = usuarios[index].login!;
+                                    controllerEditarSenhaUsuario.text = usuarios[index].senha!;
+                                    controllerEditarAvatarUsuario.text = usuarios[index].avatar!;
 
                                     showDialog(
                                         context: context,
@@ -189,7 +262,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   onPressed: (){
                                                     //editar usuario
                                                     _editarUsuario(
-                                                      usuarios![index].id!,
+                                                      usuarios[index].id!,
                                                       controllerEditarCpfUsuario.text,
                                                       controllerEditarNomeUsuario.text,
                                                       controllerEditarEmailUsuario.text,
@@ -215,7 +288,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                         context: context,
                                         builder: (context){
                                           return AlertDialog(
-                                            content: Text("Deseja excluir o usuário ${usuarios![index].nome!}?"),
+                                            content: Text("Deseja excluir o usuário ${usuarios[index].nome!}?"),
                                             actions: [
                                               TextButton(
                                                   onPressed: (){
@@ -225,7 +298,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                               ),
                                               TextButton(
                                                   onPressed: (){
-                                                    _deletarUsuario(usuarios![index].id!);
+                                                    _deletarUsuario(usuarios[index].id!);
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text("Sim")
