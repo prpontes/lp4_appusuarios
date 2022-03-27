@@ -26,7 +26,7 @@ class _InicioState extends State<Inicio> {
             Container(
               decoration: BoxDecoration(
                 color: Colors.red,
-                borderRadius: BorderRadius.circular(10)
+                borderRadius: BorderRadius.circular(10),
               ),
               padding: EdgeInsets.all(20),
               width: 300,

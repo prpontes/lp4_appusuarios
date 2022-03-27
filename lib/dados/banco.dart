@@ -21,7 +21,10 @@ class Banco{
   Future<Database> abrirBanco() async{
     String dir = await getDatabasesPath();
     var bd = await openDatabase(join(dir, "bduser.db"), onCreate: (db, versao){
-      return db.execute("CREATE TABLE $tabela(id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)");
+      return db.execute("CREATE TABLE $tabela(id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT);"
+          "CREATE TABLE modulo(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, ativo INTEGER);"
+          "CREATE TABLE $tabela-modulo(id INTEGER PRIMARY KEY AUTOINCREMENT, acessar INTEGER, editar INTEGER, excluir INTEGER, pesquisar INTEGER, idUsuarios INTEGER, idModulo INTEGER, FOREIGN KEY(idUsuarios) REFERENCES $tabela(id), FOREIGN KEY(idModulo) REFERENCES modulo(id);"
+          "INSERT INTO modulo(id, nome, ativo) VALUES(1, 'Usuários', 1)");
     },
       version: 1
     );
@@ -96,7 +99,7 @@ class Banco{
         tabela, where: "login = ?", whereArgs: ["admin"]);
 
     if (resultado.isEmpty) {
-      int resultado = await db.insert(tabela,
+      await db.insert(tabela,
           {
             "cpf": "12345678910",
             "nome": "Admin",
@@ -106,20 +109,42 @@ class Banco{
             "avatar": "",
           }
       );
+      await db.insert("$tabela-modulo",
+          {
+            "id": 1,
+            "acessar" : 1,
+            "editar": 1,
+            "excluir": 1,
+            "pesquisar": 1,
+            "idUsuarios": 1,
+            "idModulo" : 1,
+          }
+      );
     }
   }
 
-  Future<bool> consultarLoginUsuario(String login, String senha) async
+  Future<Usuario> consultarLoginUsuario(String login, String senha) async
   {
     var db = await this.bd;
 
     List resultado = await db.query(
         tabela, where: "login = ? and senha = ?", whereArgs: [login, senha]);
 
+    return Usuario(
+      id : resultado[0]["id"],
+      cpf: resultado[0]["cpf"],
+      nome: resultado[0]["nome"],
+      email: resultado[0]["email"],
+      login: resultado[0]["login"],
+      senha: resultado[0]["senha"],
+      avatar: resultado[0]["avatar"]
+    );
+    /*
     if (resultado.isNotEmpty) {
       return true;
     } else {
       return false;
     }
+     */
   }
 }

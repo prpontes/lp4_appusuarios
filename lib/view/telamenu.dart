@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../model/usuario.dart';
+import '../provider/providerUsuario.dart';
 
-class Menu extends StatelessWidget
+class Menu extends StatefulWidget
 {
   @override
+  State<Menu> createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
+
+  late Usuario usuarioAutenticado;
+
+  @override
   Widget build(BuildContext context) {
+
+    usuarioAutenticado = Provider.of<UsuarioModel>(context, listen: false).user;
+
     // TODO: implement build
     return Drawer(
       child: ListView(
@@ -13,16 +27,13 @@ class Menu extends StatelessWidget
                color: Colors.white30,
              ),
               child: ListTile(
-                leading: const CircleAvatar(
-                  backgroundImage: AssetImage("imagens/img.png"),
-                  radius: 30,
-                ),
-                title: const Text("Admin",
+                leading: usuarioAutenticado.avatar! == "" ? Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarioAutenticado.avatar!), radius: 30,),
+                title: Text(usuarioAutenticado.nome!,
                   style: TextStyle(
                     fontSize: 18
                   ),
                 ),
-                subtitle: Text("Admin@gmail.com"),
+                subtitle: Text(usuarioAutenticado.email!),
                 trailing: Container(
                   padding: EdgeInsets.only(left: 20),
                   width: 40,

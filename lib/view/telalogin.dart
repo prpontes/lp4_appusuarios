@@ -1,6 +1,9 @@
+import 'package:bd_usuarios/model/usuario.dart';
+import 'package:bd_usuarios/provider/providerUsuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bd_usuarios/dados/banco.dart';
+import 'package:provider/provider.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({Key? key}) : super(key: key);
@@ -14,6 +17,7 @@ class _TelaLoginState extends State<TelaLogin> {
   TextEditingController controllerUsuario = TextEditingController();
   TextEditingController controllerSenha = TextEditingController();
   var banco = Banco();
+  Usuario? usuarioAutenticado;
 
   _autenticacao() async
   {
@@ -38,7 +42,8 @@ class _TelaLoginState extends State<TelaLogin> {
       var resultado = await banco.consultarLoginUsuario(
           controllerUsuario.text, controllerSenha.text);
 
-      if (resultado == true) {
+      if (resultado != null) {
+        Provider.of<UsuarioModel>(context, listen: false).user = resultado;
         return Navigator.pushNamed(context, "/",);
       } else {
         return showDialog(

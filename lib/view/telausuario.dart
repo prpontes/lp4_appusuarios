@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:bd_usuarios/dados/banco.dart';
 import 'package:bd_usuarios/model/usuario.dart';
+import 'package:bd_usuarios/provider/providerUsuario.dart';
 import 'package:bd_usuarios/view/detalhe.dart';
 import 'package:bd_usuarios/view/telamenu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TelaUsuario extends StatefulWidget {
   const TelaUsuario({Key? key}) : super(key: key);
@@ -31,6 +35,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
   List<Usuario> usuarios = [];
 
+  Usuario? usuarioAutenticado;
+
   Future<void> _listarUsuarios() async {
     usuarios = await bd.listarUsuarios();
 
@@ -46,17 +52,23 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   }
 
   _editarUsuario(int id, String cpf, String nome, String email, String login, String senha, String avatar) async{
-    await bd.editarUsuario(
-        Usuario(
-          id: id,
-          cpf: cpf,
-          nome: nome,
-          email: email,
-          login: login,
-          senha: senha,
-          avatar: avatar,
-        )
+
+    var editUsuario = Usuario(
+      id: id,
+      cpf: cpf,
+      nome: nome,
+      email: email,
+      login: login,
+      senha: senha,
+      avatar: avatar,
     );
+
+    if(usuarioAutenticado!.id! == id)
+    {
+      Provider.of<UsuarioModel>(context, listen: false).user = editUsuario;
+    }
+
+    await bd.editarUsuario(editUsuario);
     await _listarUsuarios();
   }
 
@@ -141,6 +153,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
   @override
   Widget build(BuildContext context) {
+
+    usuarioAutenticado = Provider.of<UsuarioModel>(context, listen: false).user;
 
     return Scaffold(
       drawer: Menu(),

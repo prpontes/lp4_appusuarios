@@ -13,61 +13,73 @@ class TelaDetalhe extends StatefulWidget {
 class _TelaDetalheState extends State<TelaDetalhe> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Detalhe usuário"),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Card(
-              color: Colors.white60,
-              child: Row(
-                children: [
-                  const Text(
-                    "Nome: ",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  Text(
-                    widget.usuario.nome!,
-                    style: const TextStyle(fontSize: 22),
-                  )
-                ],
-              ),
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+              onPressed: (){
+                  Navigator.pop(context);
+              },
             ),
-            Card(
-              color: Colors.white24,
-              child: Row(
-                children: [
-                  const Text(
-                    "Cpf: ",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  Text(
-                    widget.usuario.cpf!,
-                    style: const TextStyle(fontSize: 22),
-                  )
-                ],
-              ),
+            bottom: TabBar(
+                tabs: [
+                  Tab(icon: Icon(Icons.list_outlined,)),
+                  Tab(icon: Icon(Icons.settings)),
+                ]
             ),
-            Card(
-              color: Colors.white60,
-              child: Row(
-                children: [
-                  const Text(
-                    "E-mail: ",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  Text(
-                    widget.usuario.email!,
-                    style: const TextStyle(fontSize: 22),
-                  )
-                ],
-              ),
-            ),
-          ],
+            title: const Text("Detalhe usuário"),
+          ),
+          body: TabBarView(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    widget.usuario.avatar == "" ? Icon(Icons.account_circle, color: Colors.blue, size: 150,) : CircleAvatar(backgroundImage: NetworkImage(widget.usuario.avatar!)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Nome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(widget.usuario.nome!, style: TextStyle(fontSize: 20),)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Cpf: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(widget.usuario.cpf!, style: TextStyle(fontSize: 20),)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("E-mail: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(widget.usuario.email!, style: TextStyle(fontSize: 20),)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Login: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(widget.usuario.login!, style: TextStyle(fontSize: 20),)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Senha: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text("******", style: TextStyle(fontSize: 20),)
+                      ],
+                    ),
+                  ],
+                ),
+                Text("Tab 2"),
+            ]
+          ),
         ),
-      ),
+      )
     );
   }
 }

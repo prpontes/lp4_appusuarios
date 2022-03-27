@@ -1,4 +1,4 @@
-class Usuario{
+class Usuario {
   // model usuário
   int? id;
   String? cpf;
