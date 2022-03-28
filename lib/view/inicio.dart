@@ -17,6 +17,13 @@ class _InicioState extends State<Inicio> {
       drawer: Menu(),
       appBar: AppBar(
         title: const Text("Início"),
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.pushNamed(context, "/");
+              },
+              icon: Icon(Icons.logout))
+        ],
       ),
       body: Center(
         child: Column(

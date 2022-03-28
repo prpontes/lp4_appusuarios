@@ -16,7 +16,7 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
 
-    usuarioAutenticado = Provider.of<UsuarioModel>(context, listen: false).user;
+    usuarioAutenticado = Provider.of<UsuarioModel>(context, listen: true).user;
 
     // TODO: implement build
     return Drawer(
@@ -72,7 +72,7 @@ class _MenuState extends State<Menu> {
           Divider(),
           ListTile(
             onTap: (){
-              Navigator.pushNamed(context, "/telalogin");
+              Navigator.pushNamed(context, "/");
             },
             leading: Icon(Icons.logout),
             title: Text("Sair"),

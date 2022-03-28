@@ -44,7 +44,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
       if (resultado != null) {
         Provider.of<UsuarioModel>(context, listen: false).user = resultado;
-        return Navigator.pushNamed(context, "/",);
+        return Navigator.pushNamed(context, "/telainicio",);
       } else {
         return showDialog(
             context: context,
@@ -76,54 +76,54 @@ class _TelaLoginState extends State<TelaLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          padding: EdgeInsets.all(50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: controllerUsuario,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person, color: Colors.blue,),
-                  hintText: "Login",
-                  border: OutlineInputBorder(),
+        padding: EdgeInsets.all(50),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: controllerUsuario,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person, color: Colors.blue,),
+                hintText: "Login",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextField(
+              controller: controllerSenha,
+              keyboardType: TextInputType.visiblePassword,
+              decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.password_outlined, color: Colors.blue,),
+                  hintText: "Senha",
+                  border: OutlineInputBorder()
+              ),
+              obscureText: true,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: (){
+                _autenticacao();
+              },
+              child: Text(
+                "Ok",
+                style: TextStyle(
+                  fontSize: 20,
+                  decoration: TextDecoration.none,
                 ),
               ),
-              SizedBox(
-                height: 10,
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(EdgeInsets.only(left: 100, top: 10, right: 100, bottom: 10))
               ),
-              TextField(
-                controller: controllerSenha,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.password_outlined, color: Colors.blue,),
-                    hintText: "Senha",
-                    border: OutlineInputBorder()
-                ),
-                obscureText: true,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: (){
-                  _autenticacao();
-                },
-                child: Text(
-                  "Ok",
-                  style: TextStyle(
-                    fontSize: 20,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-                style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.only(left: 100, top: 10, right: 100, bottom: 10))
-                ),
 
-              )
-            ],
-          ),
-      )
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -154,10 +154,9 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   @override
   Widget build(BuildContext context) {
 
-    usuarioAutenticado = Provider.of<UsuarioModel>(context, listen: false).user;
+    usuarioAutenticado = Provider.of<UsuarioModel>(context, listen: true).user;
 
     return Scaffold(
-      drawer: Menu(),
       appBar: AppBar(
         title: const Text("Lista de usuários"),
         actions: [

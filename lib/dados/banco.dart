@@ -123,28 +123,25 @@ class Banco{
     }
   }
 
-  Future<Usuario> consultarLoginUsuario(String login, String senha) async
+  consultarLoginUsuario(String login, String senha) async
   {
     var db = await this.bd;
 
     List resultado = await db.query(
         tabela, where: "login = ? and senha = ?", whereArgs: [login, senha]);
 
-    return Usuario(
-      id : resultado[0]["id"],
-      cpf: resultado[0]["cpf"],
-      nome: resultado[0]["nome"],
-      email: resultado[0]["email"],
-      login: resultado[0]["login"],
-      senha: resultado[0]["senha"],
-      avatar: resultado[0]["avatar"]
-    );
-    /*
     if (resultado.isNotEmpty) {
-      return true;
+      return Usuario(
+          id : resultado[0]["id"],
+          cpf: resultado[0]["cpf"],
+          nome: resultado[0]["nome"],
+          email: resultado[0]["email"],
+          login: resultado[0]["login"],
+          senha: resultado[0]["senha"],
+          avatar: resultado[0]["avatar"]
+      );
     } else {
-      return false;
+      return null;
     }
-     */
   }
 }

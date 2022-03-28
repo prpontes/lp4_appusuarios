@@ -12,5 +12,4 @@ class UsuarioModel extends ChangeNotifier
     _user = u;
     notifyListeners();
   }
-
 }

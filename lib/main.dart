@@ -10,10 +10,10 @@ void main() {
     create: (context) => UsuarioModel(),
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/telalogin",
+      initialRoute: "/",
       routes: {
-        "/": (context) => Inicio(),
-        "/telalogin" : (context) => TelaLogin(), // tela de login
+        "/" : (context) => TelaLogin(), // tela de login
+        "/telainicio": (context) => Inicio(),
         "/telausuario" : (context) => TelaUsuario(), // tela de usuário
       },
     ),
