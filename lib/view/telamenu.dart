@@ -50,7 +50,7 @@ class _MenuState extends State<Menu> {
               )),
           ListTile(
             onTap: (){
-              Navigator.pushNamed(context, "/");
+              Navigator.pushNamed(context, "/telainicio");
             },
             leading: Icon(Icons.home),
             title: Text("Início"),
@@ -72,7 +72,7 @@ class _MenuState extends State<Menu> {
           Divider(),
           ListTile(
             onTap: (){
-              Navigator.pushNamed(context, "/");
+              Navigator.pushReplacementNamed(context, "/");
             },
             leading: Icon(Icons.logout),
             title: Text("Sair"),

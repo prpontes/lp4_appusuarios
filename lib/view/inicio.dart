@@ -20,7 +20,7 @@ class _InicioState extends State<Inicio> {
         actions: [
           IconButton(
               onPressed: (){
-                Navigator.pushNamed(context, "/");
+                Navigator.pushReplacementNamed(context, "/");
               },
               icon: Icon(Icons.logout))
         ],

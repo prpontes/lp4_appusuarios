@@ -44,7 +44,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
       if (resultado != null) {
         Provider.of<UsuarioModel>(context, listen: false).user = resultado;
-        return Navigator.pushNamed(context, "/telainicio",);
+        return Navigator.pushReplacementNamed(context, "/telainicio",);
       } else {
         return showDialog(
             context: context,
