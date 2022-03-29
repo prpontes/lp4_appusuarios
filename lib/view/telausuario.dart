@@ -180,7 +180,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
             child: ListView.builder(
                 itemCount: usuarios.length,
                 itemBuilder: (context, index){
-
                   if(usuarios.isNotEmpty == true) {
                     return GestureDetector(
                       onTap: (){
