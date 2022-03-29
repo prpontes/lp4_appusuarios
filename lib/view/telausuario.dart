@@ -213,60 +213,110 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                         builder: (context){
                                           return AlertDialog(
                                             title: const Text("Editar Usuário"),
-                                            content: SingleChildScrollView(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  TextField(
-                                                    keyboardType: TextInputType.number,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Cpf",
-                                                        hintText: "digite seu cpf"
+                                            content: Form(
+                                              key: _formKeyEditUsuario,
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    TextFormField(
+                                                      keyboardType: TextInputType.number,
+                                                      decoration: const InputDecoration(
+                                                          labelText: "Cpf",
+                                                          hintText: "digite um cpf"
+                                                      ),
+                                                      controller: controllerEditarCpfUsuario,
+                                                      validator: (campoCpf){
+                                                        if(campoCpf == null || campoCpf.isEmpty)
+                                                        {
+                                                          return "Digite um cpf!";
+                                                        }
+                                                        if(CPFValidator.isValid(campoCpf) == false)
+                                                        {
+                                                          return "Cpf digitado inválido!";
+                                                        }
+                                                        return null;
+                                                      },
                                                     ),
-                                                    controller: controllerEditarCpfUsuario,
-                                                  ),
-                                                  TextField(
-                                                    keyboardType: TextInputType.text,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Nome",
-                                                        hintText: "digite seu nome"
+                                                    TextFormField(
+                                                      keyboardType: TextInputType.text,
+                                                      decoration: const InputDecoration(
+                                                          labelText: "Nome",
+                                                          hintText: "digite um nome"
+                                                      ),
+                                                      controller: controllerEditarNomeUsuario,
+                                                      validator: (campoNome){
+                                                        if(campoNome == null || campoNome.isEmpty)
+                                                        {
+                                                          return "Digite um nome";
+                                                        }
+                                                        return null;
+                                                      },
                                                     ),
-                                                    controller: controllerEditarNomeUsuario,
-                                                  ),
-                                                  TextField(
-                                                    keyboardType: TextInputType.emailAddress,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "E-mail",
-                                                        hintText: "digite seu e-mail"
+                                                    TextFormField(
+                                                      keyboardType: TextInputType.emailAddress,
+                                                      decoration: const InputDecoration(
+                                                          labelText: "E-mail",
+                                                          hintText: "digite e-mail"
+                                                      ),
+                                                      controller: controllerEditarEmailUsuario,
+                                                      validator: (campoEmail){
+                                                        if(campoEmail == null || campoEmail.isEmpty)
+                                                        {
+                                                          return "Digite e-mail";
+                                                        }
+                                                        if(EmailValidator.validate(campoEmail) == false)
+                                                        {
+                                                          return "Digite um e-mail válido";
+                                                        }
+                                                        return null;
+                                                      },
                                                     ),
-                                                    controller: controllerEditarEmailUsuario,
-                                                  ),
-                                                  TextField(
-                                                    keyboardType: TextInputType.text,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Login",
-                                                        hintText: "digite seu login"
+                                                    TextFormField(
+                                                      keyboardType: TextInputType.text,
+                                                      decoration: const InputDecoration(
+                                                          labelText: "Login",
+                                                          hintText: "digite um login"
+                                                      ),
+                                                      controller: controllerEditarLoginUsuario,
+                                                      validator: (campoLogin){
+                                                        if(campoLogin == null || campoLogin.isEmpty) {
+                                                          return "Digite login";
+                                                        }
+                                                        if(campoLogin.length <= 3) {
+                                                          return "Digite login maior que 3 caracteres";
+                                                        }
+                                                        return null;
+                                                      },
                                                     ),
-                                                    controller: controllerEditarLoginUsuario,
-                                                  ),
-                                                  TextField(
-                                                    keyboardType: TextInputType.visiblePassword,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Senha",
-                                                        hintText: "digite sua senha"
+                                                    TextFormField(
+                                                      keyboardType: TextInputType.visiblePassword,
+                                                      decoration: const InputDecoration(
+                                                          labelText: "Senha",
+                                                          hintText: "digite uma senha"
+                                                      ),
+                                                      controller: controllerEditarSenhaUsuario,
+                                                      obscureText: true,
+                                                      validator: (campoSenha){
+                                                        if(campoSenha == null || campoSenha.isEmpty){
+                                                          return "Digite uma senha";
+                                                        }
+                                                        if(campoSenha.length <= 5){
+                                                          return "Digite senha maior que 5 caracteres";
+                                                        }
+                                                        return null;
+                                                      },
                                                     ),
-                                                    controller: controllerEditarSenhaUsuario,
-                                                    obscureText: true,
-                                                  ),
-                                                  TextField(
-                                                    keyboardType: TextInputType.text,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Avatar",
-                                                        hintText: "digite url do avatar"
+                                                    TextFormField(
+                                                      keyboardType: TextInputType.text,
+                                                      decoration: const InputDecoration(
+                                                          labelText: "Avatar",
+                                                          hintText: "digite url do avatar"
+                                                      ),
+                                                      controller: controllerEditarAvatarUsuario,
                                                     ),
-                                                    controller: controllerEditarAvatarUsuario,
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                             actions: [
@@ -278,18 +328,20 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                               ),
                                               ElevatedButton(
                                                   onPressed: (){
-                                                    //editar usuario
-                                                    _editarUsuario(
-                                                      usuarios[index].id!,
-                                                      controllerEditarCpfUsuario.text,
-                                                      controllerEditarNomeUsuario.text,
-                                                      controllerEditarEmailUsuario.text,
-                                                      controllerEditarLoginUsuario.text,
-                                                      controllerEditarSenhaUsuario.text,
-                                                      controllerEditarAvatarUsuario.text
-                                                    );
+                                                    if(_formKeyEditUsuario.currentState!.validate()){
+                                                      //editar usuario
+                                                      _editarUsuario(
+                                                        usuarios[index].id!,
+                                                        controllerEditarCpfUsuario.text,
+                                                        controllerEditarNomeUsuario.text,
+                                                        controllerEditarEmailUsuario.text,
+                                                        controllerEditarLoginUsuario.text,
+                                                        controllerEditarSenhaUsuario.text,
+                                                        controllerEditarAvatarUsuario.text
+                                                      );
 
-                                                    Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    }
                                                   },
                                                   child: Text("Salvar")
                                               ),
@@ -386,6 +438,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               {
                                 return "Digite um nome";
                               }
+                              return null;
                             },
                           ),
                           TextFormField(
@@ -404,13 +457,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               {
                                 return "Digite um e-mail válido";
                               }
+                              return null;
                             },
                           ),
                           TextFormField(
                             keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
                                 labelText: "Login",
-                                hintText: "digite seu login"
+                                hintText: "digite um login"
                             ),
                             controller: controllerAddLoginUsuario,
                             validator: (campoLogin){
@@ -420,6 +474,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               if(campoLogin.length <= 3) {
                                 return "Digite login maior que 3 caracteres";
                               }
+                              return null;
                             },
                           ),
                           TextFormField(
@@ -437,6 +492,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               if(campoSenha.length <= 5){
                                 return "Digite senha maior que 5 caracteres";
                               }
+                              return null;
                             },
                           ),
                           TextFormField(
