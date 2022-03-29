@@ -37,7 +37,9 @@ class _TelaDetalheState extends State<TelaDetalhe> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    widget.usuario.avatar == "" ? Icon(Icons.account_circle, color: Colors.blue, size: 150,) : CircleAvatar(backgroundImage: NetworkImage(widget.usuario.avatar!)),
+                    widget.usuario.avatar == "" ?
+                    Icon(Icons.account_circle, color: Colors.blue, size: 150,) :
+                    CircleAvatar(backgroundImage: NetworkImage(widget.usuario.avatar!)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

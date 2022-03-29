@@ -78,6 +78,7 @@ class _TelaLoginState extends State<TelaLogin> {
       body: Container(
         padding: EdgeInsets.all(50),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
@@ -103,23 +104,19 @@ class _TelaLoginState extends State<TelaLogin> {
               obscureText: true,
             ),
             SizedBox(
-              height: 20,
+              height: 10
             ),
             ElevatedButton(
               onPressed: (){
                 _autenticacao();
               },
               child: Text(
-                "Ok",
+                "ENTRAR",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 17,
                   decoration: TextDecoration.none,
                 ),
               ),
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.only(left: 100, top: 10, right: 100, bottom: 10))
-              ),
-
             )
           ],
         ),

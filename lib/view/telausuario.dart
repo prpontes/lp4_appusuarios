@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:bd_usuarios/dados/banco.dart';
 import 'package:bd_usuarios/model/usuario.dart';
 import 'package:bd_usuarios/provider/providerUsuario.dart';
 import 'package:bd_usuarios/view/detalhe.dart';
-import 'package:bd_usuarios/view/telamenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -82,7 +79,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
       _listarUsuarios();
     }else {
       for (var e in usuarios) {
-        if (e.nome == busca || e.email == busca || e.cpf == busca || e.login == busca) {
+        if (e.nome!.contains(busca) || e.email == busca || e.cpf == busca || e.login == busca) {
           temp.add(
               Usuario(
                 id: e.id,
@@ -94,13 +91,13 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                 avatar: e.avatar,
               )
           );
-        }
-      }
+        } // fim do if
+      } // fim do for
 
       setState(() {
         usuarios = temp;
       });
-    }
+    } // fim do else
   }
 
   _formularioBusca()
@@ -116,7 +113,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
               controller: controllerBuscaUsuario,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                  //labelText: "Buscar",
                   hintText: "digite o termo para buscar",
                   border: OutlineInputBorder()
               ),
@@ -160,6 +156,12 @@ class _TelaUsuarioState extends State<TelaUsuario> {
       appBar: AppBar(
         title: const Text("Lista de usuários"),
         actions: [
+          IconButton(
+              onPressed: (){
+                _listarUsuarios();
+              },
+              icon: Icon(Icons.list)
+          ),
           IconButton(
               onPressed: (){
                 _formularioBusca();
