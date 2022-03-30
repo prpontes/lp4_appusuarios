@@ -22,7 +22,7 @@ class _InicioState extends State<Inicio> {
               onPressed: (){
                 Navigator.pushReplacementNamed(context, "/");
               },
-              icon: Icon(Icons.logout))
+              icon: const Icon(Icons.logout))
         ],
       ),
       body: Center(
@@ -35,7 +35,7 @@ class _InicioState extends State<Inicio> {
                 color: Colors.red,
                 borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               width: 300,
               height: 100,
               child: Row(
@@ -55,7 +55,7 @@ class _InicioState extends State<Inicio> {
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(10)
               ),
-              padding: EdgeInsets.only(left: 50, top: 10),
+              padding: const EdgeInsets.only(left: 50, top: 10),
               width: 300,
               height: 100,
               child: Row(
@@ -75,7 +75,7 @@ class _InicioState extends State<Inicio> {
                   color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.only(left: 40, top: 10),
+              padding: const EdgeInsets.only(left: 40, top: 10),
               width: 300,
               height: 100,
               child: Row(

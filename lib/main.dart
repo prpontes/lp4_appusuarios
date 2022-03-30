@@ -7,16 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => UsuarioModel(),
-    child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: "/",
-      routes: {
-        "/" : (context) => TelaLogin(), // tela de login
-        "/telainicio": (context) => Inicio(),
-        "/telausuario" : (context) => TelaUsuario(), // tela de usuário
-      },
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UsuarioModel()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: "/",
+        routes: {
+          "/" : (context) => TelaLogin(), // tela de login
+          "/telainicio": (context) => Inicio(),
+          "/telausuario" : (context) => TelaUsuario(), // tela de usuário
+        },
+      ),
     ),
-  ));
+  );
 }

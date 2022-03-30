@@ -5,7 +5,7 @@ class UsuarioModel extends ChangeNotifier
 {
   Usuario? _user;
 
-  Usuario get user => this._user!;
+  Usuario get user => _user!;
 
   set user(Usuario u)
   {
