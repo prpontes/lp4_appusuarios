@@ -35,8 +35,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   List<Usuario> usuarios = [];
   Usuario? usuarioAutenticado;
 
-  GlobalKey<FormState> _formKeyAddUsuario = GlobalKey<FormState>();
-  GlobalKey<FormState> _formKeyEditUsuario = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyAddUsuario = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyEditUsuario = GlobalKey<FormState>();
 
   Future<void> _listarUsuarios() async {
     usuarios = await bd.listarUsuarios();
@@ -109,14 +109,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Buscar usuário"),
+        title: const Text("Buscar usuário"),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: controllerBuscaUsuario,
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   hintText: "digite o termo para buscar",
                   border: OutlineInputBorder()
               ),
@@ -128,7 +128,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Cancelar")
+              child: const Text("Cancelar")
           ),
           ElevatedButton(
               onPressed: () {
@@ -137,7 +137,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                 controllerBuscaUsuario.clear();
                 Navigator.pop(context);
               },
-              child: Text("Buscar")
+              child: const Text("Buscar")
           )
         ],
       )
@@ -164,13 +164,13 @@ class _TelaUsuarioState extends State<TelaUsuario> {
               onPressed: (){
                 _listarUsuarios();
               },
-              icon: Icon(Icons.list)
+              icon: const Icon(Icons.list)
           ),
           IconButton(
               onPressed: (){
                 _formularioBusca();
               },
-              icon: Icon(Icons.search)
+              icon: const Icon(Icons.search)
           )
         ],
       ),
@@ -191,7 +191,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                       },
                       child: Card(
                         child: ListTile(
-                          leading: usuarios[index].avatar == "" ? Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarios[index].avatar!)),
+                          leading: usuarios[index].avatar == "" ? const Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarios[index].avatar!)),
                           title: Text(usuarios[index].nome!),
                           subtitle: Text(usuarios[index].email!),
                           trailing: Container(
@@ -324,7 +324,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   onPressed: (){
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text("Cancelar")
+                                                  child: const Text("Cancelar")
                                               ),
                                               ElevatedButton(
                                                   onPressed: (){
@@ -343,14 +343,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                       Navigator.pop(context);
                                                     }
                                                   },
-                                                  child: Text("Salvar")
+                                                  child: const Text("Salvar")
                                               ),
                                             ],
                                           );
                                         }
                                     );
                                   },
-                                  icon: Icon(Icons.edit, color: Colors.blue,),
+                                  icon: const Icon(Icons.edit, color: Colors.blue,),
                                 ),
                                 IconButton(
                                   onPressed: (){
@@ -364,21 +364,21 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   onPressed: (){
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text("Não")
+                                                  child: const Text("Não")
                                               ),
                                               TextButton(
                                                   onPressed: (){
                                                     _deletarUsuario(usuarios[index].id!);
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text("Sim")
+                                                  child: const Text("Sim")
                                               ),
                                             ],
                                           );
                                         }
                                     );
                                   },
-                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  icon: const Icon(Icons.delete, color: Colors.red),
                                 ),
                               ],
                             ),
@@ -387,7 +387,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                       ),
                     );
                   }else{
-                    return Text("nenhum usuário");
+                    return const Text("nenhum usuário");
                   }
                 }
             ),
@@ -512,7 +512,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                         onPressed: (){
                           Navigator.pop(context);
                         },
-                        child: Text("Cancelar")
+                        child: const Text("Cancelar")
                     ),
                     ElevatedButton(
                         onPressed: (){
@@ -538,7 +538,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             Navigator.pop(context);
                           } // fim da validação do formAddUsuario
                         },
-                        child: Text("Salvar")
+                        child: const Text("Salvar")
                     ),
                   ],
                 );
