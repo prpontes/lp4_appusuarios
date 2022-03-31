@@ -11,6 +11,7 @@ class TelaDetalhe extends StatefulWidget {
 }
 
 class _TelaDetalheState extends State<TelaDetalhe> {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +25,7 @@ class _TelaDetalheState extends State<TelaDetalhe> {
                   Navigator.pop(context);
               },
             ),
-            bottom: TabBar(
+            bottom: const TabBar(
                 tabs: [
                   Tab(icon: Icon(Icons.list_outlined,)),
                   Tab(icon: Icon(Icons.settings)),
@@ -38,39 +39,39 @@ class _TelaDetalheState extends State<TelaDetalhe> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     widget.usuario.avatar == "" ?
-                    Icon(Icons.account_circle, color: Colors.blue, size: 150,) :
+                    const Icon(Icons.account_circle, color: Colors.blue, size: 150,) :
                     CircleAvatar(backgroundImage: NetworkImage(widget.usuario.avatar!)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Nome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        Text(widget.usuario.nome!, style: TextStyle(fontSize: 20),)
+                        const Text("Nome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(widget.usuario.nome!, style: const TextStyle(fontSize: 20),)
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Cpf: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        Text(widget.usuario.cpf!, style: TextStyle(fontSize: 20),)
+                        const Text("Cpf: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(widget.usuario.cpf!, style: const TextStyle(fontSize: 20),)
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("E-mail: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        Text(widget.usuario.email!, style: TextStyle(fontSize: 20),)
+                        const Text("E-mail: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(widget.usuario.email!, style: const TextStyle(fontSize: 20),)
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Login: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        Text(widget.usuario.login!, style: TextStyle(fontSize: 20),)
+                        const Text("Login: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(widget.usuario.login!, style: const TextStyle(fontSize: 20),)
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Text("Senha: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                         Text("******", style: TextStyle(fontSize: 20),)
                       ],
