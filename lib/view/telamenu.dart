@@ -55,7 +55,7 @@ class _MenuState extends State<Menu> {
                   ))),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "/telainicio");
+              Navigator.pushReplacementNamed(context, "/telainicio");
             },
             leading: const Icon(Icons.home),
             title: const Text("Início"),
@@ -72,7 +72,7 @@ class _MenuState extends State<Menu> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "/telausuario");
+              Navigator.pushReplacementNamed(context, "/telausuario");
             },
             leading: const Icon(Icons.person),
             title: const Text("Usuários"),
