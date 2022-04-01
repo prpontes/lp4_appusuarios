@@ -72,7 +72,7 @@ class _MenuState extends State<Menu> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/telausuario");
+              Navigator.pushNamed(context, "/telausuario");
             },
             leading: const Icon(Icons.person),
             title: const Text("Usuários"),

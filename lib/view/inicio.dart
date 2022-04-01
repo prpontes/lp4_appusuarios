@@ -75,28 +75,33 @@ class _InicioState extends State<Inicio> {
                     ],
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.only(left: 40, top: 10),
-                  width: 300,
-                  height: 100,
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.person,
-                        size: 50,
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        "Usuários",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/telausuario");
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.only(left: 40, top: 10),
+                    width: 300,
+                    height: 100,
+                    child: Row(
+                      children: const [
+                        Icon(
+                          Icons.person,
+                          size: 50,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "Usuários",
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ]),
