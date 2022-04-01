@@ -1,6 +1,6 @@
 import 'package:bd_usuarios/dados/banco.dart';
 import 'package:bd_usuarios/model/usuario.dart';
-import 'package:bd_usuarios/provider/providerUsuario.dart';
+import 'package:bd_usuarios/provider/provider_usuario.dart';
 import 'package:bd_usuarios/view/detalhe.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,8 +52,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     _listarUsuarios();
   }
 
-  _editarUsuario(int id, String cpf, String nome, String email, String login, String senha, String avatar) async{
-
+  _editarUsuario(int id, String cpf, String nome, String email, String login,
+      String senha, String avatar) async {
     var editUsuario = Usuario(
       id: id,
       cpf: cpf,
@@ -64,8 +64,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
       avatar: avatar,
     );
 
-    if(usuarioAutenticado!.id! == id)
-    {
+    if (usuarioAutenticado!.id! == id) {
       Provider.of<UsuarioModel>(context, listen: false).user = editUsuario;
     }
 
@@ -73,28 +72,27 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     await _listarUsuarios();
   }
 
-  _buscarUsuario(String busca) async
-  {
+  _buscarUsuario(String busca) async {
     await _listarUsuarios();
     List<Usuario> temp = [];
 
-    if(busca == "")
-    {
+    if (busca == "") {
       _listarUsuarios();
-    }else {
+    } else {
       for (var e in usuarios) {
-        if (e.nome!.contains(busca) || e.email == busca || e.cpf == busca || e.login == busca) {
-          temp.add(
-              Usuario(
-                id: e.id,
-                cpf: e.cpf,
-                nome: e.nome,
-                email: e.email,
-                login: e.login,
-                senha: e.senha,
-                avatar: e.avatar,
-              )
-          );
+        if (e.nome!.contains(busca) ||
+            e.email == busca ||
+            e.cpf == busca ||
+            e.login == busca) {
+          temp.add(Usuario(
+            id: e.id,
+            cpf: e.cpf,
+            nome: e.nome,
+            email: e.email,
+            login: e.login,
+            senha: e.senha,
+            avatar: e.avatar,
+          ));
         } // fim do if
       } // fim do for
 
@@ -104,44 +102,39 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     } // fim do else
   }
 
-  _formularioBusca()
-  {
+  _formularioBusca() {
     return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Buscar usuário"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: controllerBuscaUsuario,
-              keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
-                  hintText: "digite o termo para buscar",
-                  border: OutlineInputBorder()
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text("Buscar usuário"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: controllerBuscaUsuario,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                        hintText: "digite o termo para buscar",
+                        border: OutlineInputBorder()),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Cancelar")
-          ),
-          ElevatedButton(
-              onPressed: () {
-                var str = controllerBuscaUsuario.text;
-                _buscarUsuario(str);
-                controllerBuscaUsuario.clear();
-                Navigator.pop(context);
-              },
-              child: const Text("Buscar")
-          )
-        ],
-      )
-    );
+              actions: [
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Cancelar")),
+                ElevatedButton(
+                    onPressed: () {
+                      var str = controllerBuscaUsuario.text;
+                      _buscarUsuario(str);
+                      controllerBuscaUsuario.clear();
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Buscar"))
+              ],
+            ));
   }
 
   @override
@@ -152,7 +145,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
   @override
   Widget build(BuildContext context) {
-
     usuarioAutenticado = Provider.of<UsuarioModel>(context, listen: true).user;
 
     return Scaffold(
@@ -160,17 +152,15 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         title: const Text("Lista de usuários"),
         actions: [
           IconButton(
-              onPressed: (){
+              onPressed: () {
                 _listarUsuarios();
               },
-              icon: const Icon(Icons.list)
-          ),
+              icon: const Icon(Icons.list)),
           IconButton(
-              onPressed: (){
+              onPressed: () {
                 _formularioBusca();
               },
-              icon: const Icon(Icons.search)
-          )
+              icon: const Icon(Icons.search))
         ],
       ),
       body: Column(
@@ -178,39 +168,48 @@ class _TelaUsuarioState extends State<TelaUsuario> {
           Expanded(
             child: ListView.builder(
                 itemCount: usuarios.length,
-                itemBuilder: (context, index){
-                  if(usuarios.isNotEmpty == true) {
+                itemBuilder: (context, index) {
+                  if (usuarios.isNotEmpty == true) {
                     return Card(
                       child: ListTile(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(context,
-                            MaterialPageRoute(
-                              builder: (context){
-                                return TelaDetalhe(usuarios[index]);
-                              }
-                            )
-                          );
+                              MaterialPageRoute(builder: (context) {
+                            return TelaDetalhe(usuarios[index]);
+                          }));
                         },
-                        leading: usuarios[index].avatar == "" ? const Icon(Icons.account_circle, color: Colors.blue,) : CircleAvatar(backgroundImage: NetworkImage(usuarios[index].avatar!)),
+                        leading: usuarios[index].avatar == ""
+                            ? const Icon(
+                                Icons.account_circle,
+                                color: Colors.blue,
+                              )
+                            : CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(usuarios[index].avatar!)),
                         title: Text(usuarios[index].nome!),
                         subtitle: Text(usuarios[index].email!),
-                        trailing: Container(
+                        trailing: SizedBox(
                           width: 100,
                           child: Row(
                             children: [
                               IconButton(
-                                onPressed: (){
-
-                                  controllerEditarCpfUsuario.text = usuarios[index].cpf!;
-                                  controllerEditarNomeUsuario.text = usuarios[index].nome!;
-                                  controllerEditarEmailUsuario.text = usuarios[index].email!;
-                                  controllerEditarLoginUsuario.text = usuarios[index].login!;
-                                  controllerEditarSenhaUsuario.text = usuarios[index].senha!;
-                                  controllerEditarAvatarUsuario.text = usuarios[index].avatar!;
+                                onPressed: () {
+                                  controllerEditarCpfUsuario.text =
+                                      usuarios[index].cpf!;
+                                  controllerEditarNomeUsuario.text =
+                                      usuarios[index].nome!;
+                                  controllerEditarEmailUsuario.text =
+                                      usuarios[index].email!;
+                                  controllerEditarLoginUsuario.text =
+                                      usuarios[index].login!;
+                                  controllerEditarSenhaUsuario.text =
+                                      usuarios[index].senha!;
+                                  controllerEditarAvatarUsuario.text =
+                                      usuarios[index].avatar!;
 
                                   showDialog(
                                       context: context,
-                                      builder: (context){
+                                      builder: (context) {
                                         return AlertDialog(
                                           title: const Text("Editar Usuário"),
                                           content: Form(
@@ -220,100 +219,125 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   TextFormField(
-                                                    keyboardType: TextInputType.number,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Cpf",
-                                                        hintText: "digite um cpf"
-                                                    ),
-                                                    controller: controllerEditarCpfUsuario,
-                                                    validator: (campoCpf){
-                                                      if(campoCpf == null || campoCpf.isEmpty)
-                                                      {
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "Cpf",
+                                                            hintText:
+                                                                "digite um cpf"),
+                                                    controller:
+                                                        controllerEditarCpfUsuario,
+                                                    validator: (campoCpf) {
+                                                      if (campoCpf == null ||
+                                                          campoCpf.isEmpty) {
                                                         return "Digite um cpf!";
                                                       }
-                                                      if(CPFValidator.isValid(campoCpf) == false)
-                                                      {
+                                                      if (CPFValidator.isValid(
+                                                              campoCpf) ==
+                                                          false) {
                                                         return "Cpf digitado inválido!";
                                                       }
                                                       return null;
                                                     },
                                                   ),
                                                   TextFormField(
-                                                    keyboardType: TextInputType.text,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Nome",
-                                                        hintText: "digite um nome"
-                                                    ),
-                                                    controller: controllerEditarNomeUsuario,
-                                                    validator: (campoNome){
-                                                      if(campoNome == null || campoNome.isEmpty)
-                                                      {
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "Nome",
+                                                            hintText:
+                                                                "digite um nome"),
+                                                    controller:
+                                                        controllerEditarNomeUsuario,
+                                                    validator: (campoNome) {
+                                                      if (campoNome == null ||
+                                                          campoNome.isEmpty) {
                                                         return "Digite um nome";
                                                       }
                                                       return null;
                                                     },
                                                   ),
                                                   TextFormField(
-                                                    keyboardType: TextInputType.emailAddress,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "E-mail",
-                                                        hintText: "digite e-mail"
-                                                    ),
-                                                    controller: controllerEditarEmailUsuario,
-                                                    validator: (campoEmail){
-                                                      if(campoEmail == null || campoEmail.isEmpty)
-                                                      {
+                                                    keyboardType: TextInputType
+                                                        .emailAddress,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "E-mail",
+                                                            hintText:
+                                                                "digite e-mail"),
+                                                    controller:
+                                                        controllerEditarEmailUsuario,
+                                                    validator: (campoEmail) {
+                                                      if (campoEmail == null ||
+                                                          campoEmail.isEmpty) {
                                                         return "Digite e-mail";
                                                       }
-                                                      if(EmailValidator.validate(campoEmail) == false)
-                                                      {
+                                                      if (EmailValidator
+                                                              .validate(
+                                                                  campoEmail) ==
+                                                          false) {
                                                         return "Digite um e-mail válido";
                                                       }
                                                       return null;
                                                     },
                                                   ),
                                                   TextFormField(
-                                                    keyboardType: TextInputType.text,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Login",
-                                                        hintText: "digite um login"
-                                                    ),
-                                                    controller: controllerEditarLoginUsuario,
-                                                    validator: (campoLogin){
-                                                      if(campoLogin == null || campoLogin.isEmpty) {
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "Login",
+                                                            hintText:
+                                                                "digite um login"),
+                                                    controller:
+                                                        controllerEditarLoginUsuario,
+                                                    validator: (campoLogin) {
+                                                      if (campoLogin == null ||
+                                                          campoLogin.isEmpty) {
                                                         return "Digite login";
                                                       }
-                                                      if(campoLogin.length <= 3) {
+                                                      if (campoLogin.length <=
+                                                          3) {
                                                         return "Digite login maior que 3 caracteres";
                                                       }
                                                       return null;
                                                     },
                                                   ),
                                                   TextFormField(
-                                                    keyboardType: TextInputType.visiblePassword,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Senha",
-                                                        hintText: "digite uma senha"
-                                                    ),
-                                                    controller: controllerEditarSenhaUsuario,
+                                                    keyboardType: TextInputType
+                                                        .visiblePassword,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "Senha",
+                                                            hintText:
+                                                                "digite uma senha"),
+                                                    controller:
+                                                        controllerEditarSenhaUsuario,
                                                     obscureText: true,
-                                                    validator: (campoSenha){
-                                                      if(campoSenha == null || campoSenha.isEmpty){
+                                                    validator: (campoSenha) {
+                                                      if (campoSenha == null ||
+                                                          campoSenha.isEmpty) {
                                                         return "Digite uma senha";
                                                       }
-                                                      if(campoSenha.length <= 5){
+                                                      if (campoSenha.length <=
+                                                          5) {
                                                         return "Digite senha maior que 5 caracteres";
                                                       }
                                                       return null;
                                                     },
                                                   ),
                                                   TextFormField(
-                                                    keyboardType: TextInputType.text,
-                                                    decoration: const InputDecoration(
-                                                        labelText: "Avatar",
-                                                        hintText: "digite url do avatar"
-                                                    ),
-                                                    controller: controllerEditarAvatarUsuario,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText: "Avatar",
+                                                            hintText:
+                                                                "digite url do avatar"),
+                                                    controller:
+                                                        controllerEditarAvatarUsuario,
                                                   ),
                                                 ],
                                               ),
@@ -321,83 +345,89 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                           ),
                                           actions: [
                                             ElevatedButton(
-                                                onPressed: (){
+                                                onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text("Cancelar")
-                                            ),
+                                                child: const Text("Cancelar")),
                                             ElevatedButton(
-                                                onPressed: (){
-                                                  if(_formKeyEditUsuario.currentState!.validate()){
+                                                onPressed: () {
+                                                  if (_formKeyEditUsuario
+                                                      .currentState!
+                                                      .validate()) {
                                                     //editar usuario
                                                     _editarUsuario(
-                                                      usuarios[index].id!,
-                                                      controllerEditarCpfUsuario.text,
-                                                      controllerEditarNomeUsuario.text,
-                                                      controllerEditarEmailUsuario.text,
-                                                      controllerEditarLoginUsuario.text,
-                                                      controllerEditarSenhaUsuario.text,
-                                                      controllerEditarAvatarUsuario.text
-                                                    );
+                                                        usuarios[index].id!,
+                                                        controllerEditarCpfUsuario
+                                                            .text,
+                                                        controllerEditarNomeUsuario
+                                                            .text,
+                                                        controllerEditarEmailUsuario
+                                                            .text,
+                                                        controllerEditarLoginUsuario
+                                                            .text,
+                                                        controllerEditarSenhaUsuario
+                                                            .text,
+                                                        controllerEditarAvatarUsuario
+                                                            .text);
 
                                                     Navigator.pop(context);
                                                   }
                                                 },
-                                                child: const Text("Salvar")
-                                            ),
+                                                child: const Text("Salvar")),
                                           ],
                                         );
-                                      }
-                                  );
+                                      });
                                 },
-                                icon: const Icon(Icons.edit, color: Colors.blue,),
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.blue,
+                                ),
                               ),
                               IconButton(
-                                onPressed: (){
+                                onPressed: () {
                                   showDialog(
                                       context: context,
-                                      builder: (context){
+                                      builder: (context) {
                                         return AlertDialog(
-                                          content: Text("Deseja excluir o usuário ${usuarios[index].nome!}?"),
+                                          content: Text(
+                                              "Deseja excluir o usuário ${usuarios[index].nome!}?"),
                                           actions: [
                                             TextButton(
-                                                onPressed: (){
+                                                onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text("Não")
-                                            ),
+                                                child: const Text("Não")),
                                             TextButton(
-                                                onPressed: (){
-                                                  _deletarUsuario(usuarios[index].id!);
+                                                onPressed: () {
+                                                  _deletarUsuario(
+                                                      usuarios[index].id!);
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text("Sim")
-                                            ),
+                                                child: const Text("Sim")),
                                           ],
                                         );
-                                      }
-                                  );
+                                      });
                                 },
-                                icon: const Icon(Icons.delete, color: Colors.red),
+                                icon:
+                                    const Icon(Icons.delete, color: Colors.red),
                               ),
                             ],
                           ),
                         ),
                       ),
                     );
-                  }else{
+                  } else {
                     return const Text("nenhum usuário");
                   }
-                }
-            ),
+                }),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: () {
           showDialog(
               context: context,
-              builder: (context){
+              builder: (context) {
                 return AlertDialog(
                   title: const Text("Cadastrar Usuário"),
                   content: Form(
@@ -409,17 +439,13 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                           TextFormField(
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
-                                labelText: "Cpf",
-                                hintText: "digite cpf"
-                            ),
+                                labelText: "Cpf", hintText: "digite cpf"),
                             controller: controllerAddCpfUsuario,
-                            validator: (campoCpf){
-                              if(campoCpf == null || campoCpf.isEmpty)
-                              {
+                            validator: (campoCpf) {
+                              if (campoCpf == null || campoCpf.isEmpty) {
                                 return "Digite um cpf!";
                               }
-                              if(CPFValidator.isValid(campoCpf) == false)
-                              {
+                              if (CPFValidator.isValid(campoCpf) == false) {
                                 return "Cpf digitado inválido!";
                               }
                               return null;
@@ -428,13 +454,10 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                           TextFormField(
                             keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
-                                labelText: "Nome",
-                                hintText: "digite nome"
-                            ),
+                                labelText: "Nome", hintText: "digite nome"),
                             controller: controllerAddNomeUsuario,
-                            validator: (campoNome){
-                              if(campoNome == null || campoNome.isEmpty)
-                              {
+                            validator: (campoNome) {
+                              if (campoNome == null || campoNome.isEmpty) {
                                 return "Digite um nome";
                               }
                               return null;
@@ -444,16 +467,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
                                 labelText: "E-mail",
-                                hintText: "digite seu e-mail"
-                            ),
+                                hintText: "digite seu e-mail"),
                             controller: controllerAddEmailUsuario,
-                            validator: (campoEmail){
-                              if(campoEmail == null || campoEmail.isEmpty)
-                              {
+                            validator: (campoEmail) {
+                              if (campoEmail == null || campoEmail.isEmpty) {
                                 return "Digite e-mail";
                               }
-                              if(EmailValidator.validate(campoEmail) == false)
-                              {
+                              if (EmailValidator.validate(campoEmail) ==
+                                  false) {
                                 return "Digite um e-mail válido";
                               }
                               return null;
@@ -463,14 +484,13 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
                                 labelText: "Login",
-                                hintText: "digite um login"
-                            ),
+                                hintText: "digite um login"),
                             controller: controllerAddLoginUsuario,
-                            validator: (campoLogin){
-                              if(campoLogin == null || campoLogin.isEmpty) {
+                            validator: (campoLogin) {
+                              if (campoLogin == null || campoLogin.isEmpty) {
                                 return "Digite login";
                               }
-                              if(campoLogin.length <= 3) {
+                              if (campoLogin.length <= 3) {
                                 return "Digite login maior que 3 caracteres";
                               }
                               return null;
@@ -480,15 +500,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
                                 labelText: "Senha",
-                                hintText: "digite uma senha"
-                            ),
+                                hintText: "digite uma senha"),
                             controller: controllerAddSenhaUsuario,
                             obscureText: true,
-                            validator: (campoSenha){
-                              if(campoSenha == null || campoSenha.isEmpty){
+                            validator: (campoSenha) {
+                              if (campoSenha == null || campoSenha.isEmpty) {
                                 return "Digite uma senha";
                               }
-                              if(campoSenha.length <= 5){
+                              if (campoSenha.length <= 5) {
                                 return "Digite senha maior que 5 caracteres";
                               }
                               return null;
@@ -497,9 +516,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                           TextFormField(
                             keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
-                                labelText: "Avatar",
-                                hintText: "url do avatar"
-                            ),
+                                labelText: "Avatar", hintText: "url do avatar"),
                             controller: controllerAddAvatarUsuario,
                           ),
                         ],
@@ -508,15 +525,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                   ),
                   actions: [
                     ElevatedButton(
-                        onPressed: (){
+                        onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text("Cancelar")
-                    ),
+                        child: const Text("Cancelar")),
                     ElevatedButton(
-                        onPressed: (){
+                        onPressed: () {
                           //salvar novo usuario
-                          if(_formKeyAddUsuario.currentState!.validate()) {
+                          if (_formKeyAddUsuario.currentState!.validate()) {
                             bd.inserirUsuario(Usuario(
                               cpf: controllerAddCpfUsuario.text,
                               nome: controllerAddNomeUsuario.text,
@@ -537,12 +553,10 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             Navigator.pop(context);
                           } // fim da validação do formAddUsuario
                         },
-                        child: const Text("Salvar")
-                    ),
+                        child: const Text("Salvar")),
                   ],
                 );
-              }
-          );
+              });
         },
         child: const Icon(Icons.add),
       ),

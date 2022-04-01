@@ -1,6 +1,5 @@
 import 'package:bd_usuarios/model/usuario.dart';
-import 'package:bd_usuarios/provider/providerUsuario.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:bd_usuarios/provider/provider_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:bd_usuarios/dados/banco.dart';
 import 'package:provider/provider.dart';
@@ -13,16 +12,13 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-
   TextEditingController controllerUsuario = TextEditingController();
   TextEditingController controllerSenha = TextEditingController();
   var banco = Banco();
   Usuario? usuarioAutenticado;
 
-  _autenticacao() async
-  {
-    if(controllerUsuario.text == "" || controllerSenha.text == "")
-    {
+  _autenticacao() async {
+    if (controllerUsuario.text == "" || controllerSenha.text == "") {
       return showDialog(
           context: context,
           builder: (context) {
@@ -36,15 +32,17 @@ class _TelaLoginState extends State<TelaLogin> {
                     child: const Text("Ok"))
               ],
             );
-          }
-      );
-    }else {
+          });
+    } else {
       var resultado = await banco.consultarLoginUsuario(
           controllerUsuario.text, controllerSenha.text);
 
       if (resultado != null) {
         Provider.of<UsuarioModel>(context, listen: false).user = resultado;
-        return Navigator.pushReplacementNamed(context, "/telainicio",);
+        return Navigator.pushReplacementNamed(
+          context,
+          "/telainicio",
+        );
       } else {
         return showDialog(
             context: context,
@@ -59,8 +57,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       child: const Text("Ok"))
                 ],
               );
-            }
-        );
+            });
       }
     }
   }
@@ -84,7 +81,10 @@ class _TelaLoginState extends State<TelaLogin> {
               controller: controllerUsuario,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.person, color: Colors.blue,),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.blue,
+                ),
                 hintText: "Login",
                 border: OutlineInputBorder(),
               ),
@@ -96,17 +96,17 @@ class _TelaLoginState extends State<TelaLogin> {
               controller: controllerSenha,
               keyboardType: TextInputType.visiblePassword,
               decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.password_outlined, color: Colors.blue,),
+                  prefixIcon: Icon(
+                    Icons.password_outlined,
+                    color: Colors.blue,
+                  ),
                   hintText: "Senha",
-                  border: OutlineInputBorder()
-              ),
+                  border: OutlineInputBorder()),
               obscureText: true,
             ),
-            const SizedBox(
-              height: 10
-            ),
+            const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: (){
+              onPressed: () {
                 _autenticacao();
               },
               child: const Text(
