@@ -1,4 +1,3 @@
-// @dart=2.9
 import 'package:bd_usuarios/provider/provider_usuario.dart';
 import 'package:bd_usuarios/view/inicio.dart';
 import 'package:bd_usuarios/view/telalogin.dart';
