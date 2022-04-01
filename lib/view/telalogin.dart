@@ -27,13 +27,13 @@ class _TelaLoginState extends State<TelaLogin> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              content: Text("Login e senha obrigatórios!"),
+              content: const Text("Login e senha obrigatórios!"),
               actions: [
                 TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("Ok"))
+                    child: const Text("Ok"))
               ],
             );
           }
@@ -50,13 +50,13 @@ class _TelaLoginState extends State<TelaLogin> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: Text("Usuário ou senha incorreta!"),
+                content: const Text("Usuário ou senha incorreta!"),
                 actions: [
                   TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text("Ok"))
+                      child: const Text("Ok"))
                 ],
               );
             }
@@ -67,7 +67,6 @@ class _TelaLoginState extends State<TelaLogin> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     banco.criarUsuarioAdmin();
   }
@@ -76,7 +75,7 @@ class _TelaLoginState extends State<TelaLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(50),
+        padding: const EdgeInsets.all(50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -84,33 +83,33 @@ class _TelaLoginState extends State<TelaLogin> {
             TextField(
               controller: controllerUsuario,
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.person, color: Colors.blue,),
                 hintText: "Login",
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextField(
               controller: controllerSenha,
               keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.password_outlined, color: Colors.blue,),
                   hintText: "Senha",
                   border: OutlineInputBorder()
               ),
               obscureText: true,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10
             ),
             ElevatedButton(
               onPressed: (){
                 _autenticacao();
               },
-              child: Text(
+              child: const Text(
                 "ENTRAR",
                 style: TextStyle(
                   fontSize: 17,

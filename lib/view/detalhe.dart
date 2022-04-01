@@ -20,7 +20,7 @@ class _TelaDetalheState extends State<TelaDetalhe> {
         child: Scaffold(
           appBar: AppBar(
             leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
               onPressed: (){
                   Navigator.pop(context);
               },
@@ -78,7 +78,7 @@ class _TelaDetalheState extends State<TelaDetalhe> {
                     ),
                   ],
                 ),
-                Text("Tab 2"),
+                const Text("Tab 2"),
             ]
           ),
         ),

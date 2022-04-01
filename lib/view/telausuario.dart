@@ -146,7 +146,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _listarUsuarios();
   }

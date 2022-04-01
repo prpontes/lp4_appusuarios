@@ -15,9 +15,9 @@ void main() {
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
-          "/" : (context) => TelaLogin(), // tela de login
-          "/telainicio": (context) => Inicio(),
-          "/telausuario" : (context) => TelaUsuario(), // tela de usuário
+          "/" : (context) => const TelaLogin(), // tela de login
+          "/telainicio": (context) => const Inicio(),
+          "/telausuario" : (context) => const TelaUsuario(), // tela de usuário
         },
       ),
     ),
