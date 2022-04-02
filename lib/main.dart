@@ -1,3 +1,4 @@
+import 'package:bd_usuarios/api/api.dart';
 import 'package:bd_usuarios/provider/provider_usuario.dart';
 import 'package:bd_usuarios/view/inicio.dart';
 import 'package:bd_usuarios/view/telalogin.dart';
@@ -18,6 +19,7 @@ void main() {
           "/": (context) => const TelaLogin(), // tela de login
           "/telainicio": (context) => const Inicio(),
           "/telausuario": (context) => const TelaUsuario(), // tela de usuário
+          "/api":(context) => const Api(),
         },
       ),
     ),

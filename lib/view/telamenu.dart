@@ -77,6 +77,13 @@ class _MenuState extends State<Menu> {
             leading: const Icon(Icons.person),
             title: const Text("Usuários"),
           ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, "/api");
+            },
+            leading: const Icon(Icons.api),
+            title: const Text("Api"),
+          ),
           const Divider(),
           ListTile(
             onTap: () {

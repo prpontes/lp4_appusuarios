@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   sqflite:
   path:
+  http:
   provider: ^6.0.2
   cpf_cnpj_validator: 2.0.0
   email_validator: 2.0.1
