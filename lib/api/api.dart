@@ -30,28 +30,6 @@ class _ApiState extends State<Api> {
     );
   }
 
-  Future<Album> fetchAlbum() async {
-    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
-
-    print(response.body);
-    if(response.statusCode == 200){
-      return Album.fromJson(jsonDecode(response.body));
-    }else{
-      throw Exception('Failed to load album');
-    }
-  }
-
-  Future<http.Response> deleteAlbum(String id) async  {
-    http.Response response = await http.delete(
-        Uri.parse("https://jsonplaceholder.typicode.com/albums/$id"),
-        headers: <String, String>{
-          'Content-Type' : 'application/json; charset=UTF-8',
-        }
-    );
-
-    return response;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -73,7 +51,18 @@ class _ApiState extends State<Api> {
                 itemCount: snapshot.data!.length,
                   itemBuilder: (contex, index) => Card(
                     child: ListTile(
-                      leading: Icon(Icons.newspaper),
+                      onTap: (){
+                        Navigator.pushNamed(
+                            context,
+                            "/detalhealbum",
+                          arguments: Album(
+                            id: snapshot.data![index].id,
+                            userId: snapshot.data![index].userId,
+                            title: snapshot.data![index].title,
+                          )
+                        );
+                      },
+                      leading: Icon(Icons.newspaper, color: Colors.blue,),
                       title: Text(snapshot.data![index].title),
                       subtitle: Text(snapshot.data![index].id.toString()),
                     ),
