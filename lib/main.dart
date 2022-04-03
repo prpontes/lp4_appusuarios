@@ -20,7 +20,7 @@ void main() {
           "/": (context) => const TelaLogin(), // tela de login
           "/telainicio": (context) => const Inicio(),
           "/telausuario": (context) => const TelaUsuario(), // tela de usuário
-          "/api":(context) => const Api(),
+          "/telaapi":(context) => const Api(),
           "/detalhealbum" : (context) => const DetalheAlbum(),
         },
       ),
