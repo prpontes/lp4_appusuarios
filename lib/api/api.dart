@@ -49,7 +49,7 @@ class _ApiState extends State<Api> {
             if(snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
-                  itemBuilder: (contex, index) => Card(
+                  itemBuilder: (context, index) => Card(
                     child: ListTile(
                       onTap: (){
                         Navigator.pushNamed(
@@ -62,7 +62,7 @@ class _ApiState extends State<Api> {
                           )
                         );
                       },
-                      leading: Icon(Icons.newspaper, color: Colors.blue,),
+                      leading: const Icon(Icons.newspaper, color: Colors.blue,),
                       title: Text(snapshot.data![index].title),
                       subtitle: Text(snapshot.data![index].id.toString()),
                     ),
