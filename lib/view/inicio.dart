@@ -17,10 +17,15 @@ class _TelaInicioState extends State<TelaInicio> {
           title: const Text("Início"),
           actions: [
             IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.settings)
+            ),
+            IconButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, "/");
                 },
-                icon: const Icon(Icons.logout))
+                icon: const Icon(Icons.logout)
+            )
           ],
         ),
         body: Center(

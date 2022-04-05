@@ -62,6 +62,16 @@ class _MenuState extends State<Menu> {
           ),
           ListTile(
             onTap: () {},
+            leading: const Icon(Icons.shopping_cart),
+            title: const Text("Carrinho"),
+          ),
+          ListTile(
+            onTap: () {},
+            leading: const Icon(Icons.add),
+            title: const Text("Produtos"),
+          ),
+          ListTile(
+            onTap: () {},
             leading: const Icon(Icons.store),
             title: const Text("Fornecedores"),
           ),
@@ -83,6 +93,11 @@ class _MenuState extends State<Menu> {
             },
             leading: const Icon(Icons.api),
             title: const Text("Api"),
+          ),
+          ListTile(
+            onTap: () {},
+            leading: const Icon(Icons.settings),
+            title: const Text("Configurações"),
           ),
           const Divider(),
           ListTile(
