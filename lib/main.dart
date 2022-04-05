@@ -1,6 +1,7 @@
 import 'package:bd_usuarios/api/api.dart';
 import 'package:bd_usuarios/api/detalhe_album.dart';
 import 'package:bd_usuarios/provider/provider_usuario.dart';
+import 'package:bd_usuarios/view/detalhe.dart';
 import 'package:bd_usuarios/view/inicio.dart';
 import 'package:bd_usuarios/view/telalogin.dart';
 import 'package:bd_usuarios/view/telausuario.dart';
@@ -18,10 +19,11 @@ void main() {
         initialRoute: "/",
         routes: {
           "/": (context) => const TelaLogin(), // tela de login
-          "/telainicio": (context) => const Inicio(),
+          "/telainicio": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(), // tela de usuário
           "/telaapi":(context) => const Api(),
           "/detalhealbum" : (context) => const DetalheAlbum(),
+          "/detalheusuario" : (context) => const TelaDetalheUsuario(),
         },
       ),
     ),

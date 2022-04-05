@@ -42,7 +42,7 @@ class _MenuState extends State<Menu> {
                   subtitle: Text(usuarioAutenticado.email!),
                   trailing: Container(
                     padding: const EdgeInsets.only(left: 20),
-                    width: 40,
+                    width: 50,
                     child: IconButton(
                       icon: const Icon(
                         Icons.close,

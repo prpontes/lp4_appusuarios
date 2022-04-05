@@ -1,14 +1,14 @@
 import 'package:bd_usuarios/view/telamenu.dart';
 import 'package:flutter/material.dart';
 
-class Inicio extends StatefulWidget {
-  const Inicio({Key? key}) : super(key: key);
+class TelaInicio extends StatefulWidget {
+  const TelaInicio({Key? key}) : super(key: key);
 
   @override
-  State<Inicio> createState() => _InicioState();
+  State<TelaInicio> createState() => _TelaInicioState();
 }
 
-class _InicioState extends State<Inicio> {
+class _TelaInicioState extends State<TelaInicio> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

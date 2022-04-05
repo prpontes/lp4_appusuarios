@@ -175,7 +175,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return TelaDetalhe(usuarios[index]);
+                            return TelaDetalheUsuario(usuario: usuarios[index]);
                           }));
                         },
                         leading: usuarios[index].avatar == ""
@@ -224,18 +224,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                     decoration:
                                                         const InputDecoration(
                                                             labelText: "Cpf",
-                                                            hintText:
-                                                                "digite um cpf"),
+                                                            hintText: "digite um cpf"),
                                                     controller:
                                                         controllerEditarCpfUsuario,
                                                     validator: (campoCpf) {
-                                                      if (campoCpf == null ||
-                                                          campoCpf.isEmpty) {
+                                                      if (campoCpf == null || campoCpf.isEmpty) {
                                                         return "Digite um cpf!";
                                                       }
-                                                      if (CPFValidator.isValid(
-                                                              campoCpf) ==
-                                                          false) {
+                                                      if (CPFValidator.isValid(campoCpf) == false) {
                                                         return "Cpf digitado inválido!";
                                                       }
                                                       return null;
@@ -247,21 +243,18 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                     decoration:
                                                         const InputDecoration(
                                                             labelText: "Nome",
-                                                            hintText:
-                                                                "digite um nome"),
+                                                            hintText: "digite um nome"),
                                                     controller:
                                                         controllerEditarNomeUsuario,
                                                     validator: (campoNome) {
-                                                      if (campoNome == null ||
-                                                          campoNome.isEmpty) {
+                                                      if (campoNome == null || campoNome.isEmpty) {
                                                         return "Digite um nome";
                                                       }
                                                       return null;
                                                     },
                                                   ),
                                                   TextFormField(
-                                                    keyboardType: TextInputType
-                                                        .emailAddress,
+                                                    keyboardType: TextInputType.emailAddress,
                                                     decoration:
                                                         const InputDecoration(
                                                             labelText: "E-mail",

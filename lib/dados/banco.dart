@@ -1,5 +1,4 @@
 import 'package:bd_usuarios/model/usuario.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';
@@ -32,7 +31,7 @@ class Banco {
 
   Future<void> inserirUsuario(Usuario user) async {
     var bd = await this.bd;
-    int resultado = await bd.insert(tabela, {
+    await bd.insert(tabela, {
       "cpf": user.cpf,
       "nome": user.nome,
       "email": user.email,
@@ -40,7 +39,6 @@ class Banco {
       "senha": user.senha,
       "avatar": user.avatar,
     });
-    debugPrint("$resultado inserido com sucesso!");
   }
 
   Future<List<Usuario>> listarUsuarios() async {
