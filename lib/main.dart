@@ -1,10 +1,10 @@
 import 'package:lp4_appusuarios/api/api.dart';
 import 'package:lp4_appusuarios/api/detalhe_album.dart';
 import 'package:lp4_appusuarios/provider/provider_usuario.dart';
-import 'package:lp4_appusuarios/view/detalhe.dart';
-import 'package:lp4_appusuarios/view/inicio.dart';
-import 'package:lp4_appusuarios/view/telalogin.dart';
-import 'package:lp4_appusuarios/view/telausuario.dart';
+import 'package:lp4_appusuarios/view/detalhe_usuario.dart';
+import 'package:lp4_appusuarios/view/tela_inicio.dart';
+import 'package:lp4_appusuarios/view/tela_login.dart';
+import 'package:lp4_appusuarios/view/tela_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

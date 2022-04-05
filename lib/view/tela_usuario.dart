@@ -1,7 +1,7 @@
 import 'package:lp4_appusuarios/dados/banco.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/provider_usuario.dart';
-import 'package:lp4_appusuarios/view/detalhe.dart';
+import 'package:lp4_appusuarios/view/detalhe_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
@@ -173,10 +173,25 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                     return Card(
                       child: ListTile(
                         onTap: () {
-                          Navigator.push(context,
+                          Navigator.pushNamed(
+                            context,
+                            "/detalheusuario",
+                            arguments: Usuario(
+                              id: usuarios[index].id,
+                              cpf: usuarios[index].cpf,
+                              nome: usuarios[index].nome,
+                              email: usuarios[index].email,
+                              login: usuarios[index].login,
+                              senha: usuarios[index].senha,
+                              avatar: usuarios[index].avatar
+                            )
+                          );
+
+                          /*Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return TelaDetalheUsuario(usuario: usuarios[index]);
                           }));
+                           */
                         },
                         leading: usuarios[index].avatar == ""
                             ? const Icon(
