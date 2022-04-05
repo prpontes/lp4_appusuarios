@@ -1,4 +1,4 @@
-import 'package:bd_usuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 
 class TelaDetalheUsuario extends StatefulWidget {

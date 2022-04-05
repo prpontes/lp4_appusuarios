@@ -1,10 +1,10 @@
-import 'package:bd_usuarios/api/api.dart';
-import 'package:bd_usuarios/api/detalhe_album.dart';
-import 'package:bd_usuarios/provider/provider_usuario.dart';
-import 'package:bd_usuarios/view/detalhe.dart';
-import 'package:bd_usuarios/view/inicio.dart';
-import 'package:bd_usuarios/view/telalogin.dart';
-import 'package:bd_usuarios/view/telausuario.dart';
+import 'package:lp4_appusuarios/api/api.dart';
+import 'package:lp4_appusuarios/api/detalhe_album.dart';
+import 'package:lp4_appusuarios/provider/provider_usuario.dart';
+import 'package:lp4_appusuarios/view/detalhe.dart';
+import 'package:lp4_appusuarios/view/inicio.dart';
+import 'package:lp4_appusuarios/view/telalogin.dart';
+import 'package:lp4_appusuarios/view/telausuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +18,9 @@ void main() {
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
-          "/": (context) => const TelaLogin(), // tela de login
+          "/": (context) => const TelaLogin(),
           "/telainicio": (context) => const TelaInicio(),
-          "/telausuario": (context) => const TelaUsuario(), // tela de usuário
+          "/telausuario": (context) => const TelaUsuario(),
           "/telaapi":(context) => const Api(),
           "/detalhealbum" : (context) => const DetalheAlbum(),
           "/detalheusuario" : (context) => const TelaDetalheUsuario(),

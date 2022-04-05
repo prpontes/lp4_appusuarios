@@ -1,4 +1,4 @@
-import 'package:bd_usuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:bd_usuarios/api/album.dart';
+import 'package:lp4_appusuarios/api/album.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 

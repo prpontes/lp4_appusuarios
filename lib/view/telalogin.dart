@@ -1,7 +1,7 @@
-import 'package:bd_usuarios/model/usuario.dart';
-import 'package:bd_usuarios/provider/provider_usuario.dart';
+import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/provider/provider_usuario.dart';
 import 'package:flutter/material.dart';
-import 'package:bd_usuarios/dados/banco.dart';
+import 'package:lp4_appusuarios/dados/banco.dart';
 import 'package:provider/provider.dart';
 
 class TelaLogin extends StatefulWidget {

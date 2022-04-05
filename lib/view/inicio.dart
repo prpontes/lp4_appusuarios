@@ -1,4 +1,4 @@
-import 'package:bd_usuarios/view/telamenu.dart';
+import 'package:lp4_appusuarios/view/telamenu.dart';
 import 'package:flutter/material.dart';
 
 class TelaInicio extends StatefulWidget {
