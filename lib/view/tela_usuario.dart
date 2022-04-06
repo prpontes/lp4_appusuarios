@@ -425,6 +425,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                   showDialog(
                                       context: context,
                                       builder: (context) {
+                                        Usuario temp = usuarios[index];
                                         return AlertDialog(
                                           content: Text(
                                               "Deseja excluir o usuário ${usuarios[index].nome!}?"),
@@ -441,6 +442,13 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   Navigator.pop(context);
                                                   ScaffoldMessenger.of(context).showSnackBar(
                                                       SnackBar(
+                                                        action: SnackBarAction(
+                                                          label: "Desfazer",
+                                                          onPressed: (){
+                                                            bd.inserirUsuario(temp);
+                                                            _listarUsuarios();
+                                                          },
+                                                        ),
                                                           backgroundColor: Colors.red,
                                                           content: Text("Usuário ${usuarios[index].nome} excluido com sucesso!",
                                                             style: const TextStyle(
