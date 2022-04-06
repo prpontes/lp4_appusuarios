@@ -1,7 +1,6 @@
 import 'package:lp4_appusuarios/dados/banco.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/provider_usuario.dart';
-import 'package:lp4_appusuarios/view/detalhe_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
@@ -200,7 +199,26 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               )
                             : CircleAvatar(
                                 backgroundImage:
-                                    NetworkImage(usuarios[index].avatar!)),
+                                    NetworkImage(
+                                        usuarios[index].avatar!,
+                                    ),
+                                onBackgroundImageError: (exception, stacktrace){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          action: SnackBarAction(
+                                            label: "Fechar",
+                                            onPressed: (){},
+                                          ),
+                                          backgroundColor: Colors.yellow,
+                                          content: Text("Aviso: avatar do usuário ${usuarios[index].nome} não encontrado!",
+                                            style: const TextStyle(
+                                              color: Colors.black
+                                            ),
+                                          )
+                                      )
+                                  );
+                                },
+                              ),
                         title: Text(usuarios[index].nome!),
                         subtitle: Text(usuarios[index].email!),
                         trailing: SizedBox(
@@ -380,6 +398,17 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
                                                     Navigator.pop(context);
                                                   }
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                          backgroundColor: Colors.green,
+                                                          content: Text("Usuário ${usuarios[index].nome} editado com sucesso!",
+                                                            style: const TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.bold
+                                                            ),
+                                                          )
+                                                      )
+                                                  );
                                                 },
                                                 child: const Text("Salvar")),
                                           ],
@@ -410,6 +439,17 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   _deletarUsuario(
                                                       usuarios[index].id!);
                                                   Navigator.pop(context);
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                          backgroundColor: Colors.red,
+                                                          content: Text("Usuário ${usuarios[index].nome} excluido com sucesso!",
+                                                            style: const TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.bold
+                                                            ),
+                                                          )
+                                                      )
+                                                  );
                                                 },
                                                 child: const Text("Sim")),
                                           ],
@@ -559,6 +599,17 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             _listarUsuarios();
 
                             Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    backgroundColor: Colors.green,
+                                    content: Text("Novo usuário criado com sucesso!",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    )
+                                )
+                            );
                           } // fim da validação do formAddUsuario
                         },
                         child: const Text("Salvar")),
