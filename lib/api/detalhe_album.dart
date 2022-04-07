@@ -12,40 +12,37 @@ class DetalheAlbum extends StatefulWidget {
 }
 
 class _DetalheAlbumState extends State<DetalheAlbum> {
-
   late Album album = ModalRoute.of(context)!.settings.arguments as Album;
   late Future<Album> _futureAlbum = fetchAlbum(album.id.toString());
 
   Future<Album> fetchAlbum(String id) async {
-    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/$id'));
+    final response = await http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/$id'));
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       return Album.fromJson(jsonDecode(response.body));
-    }else{
+    } else {
       throw Exception('Failed to load album');
     }
   }
 
-  Future<Album> deleteAlbum(String id) async  {
+  Future<Album> deleteAlbum(String id) async {
     http.Response response = await http.delete(
         Uri.parse("https://jsonplaceholder.typicode.com/albums/$id"),
         headers: <String, String>{
-          'Content-Type' : 'application/json; charset=UTF-8',
-        }
-    );
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
 
-    if(response.statusCode == 200)
-    {
-      print("album deletado: ${response.body}");
+    if (response.statusCode == 200) {
+      debugPrint("album deletado: ${response.body}");
       return Album.fromJson(jsonDecode(response.body));
-    }else{
+    } else {
       throw Exception("Falha ao deletar album.");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detalhe do album"),
@@ -56,14 +53,16 @@ class _DetalheAlbumState extends State<DetalheAlbum> {
                 _futureAlbum = deleteAlbum(album.id.toString());
               });
             },
-            icon: const Icon(Icons.delete,),
+            icon: const Icon(
+              Icons.delete,
+            ),
           ),
         ],
       ),
       body: Center(
         child: FutureBuilder<Album>(
-          future: _futureAlbum,
-            builder: (context, snapshot){
+            future: _futureAlbum,
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   return Column(
@@ -73,14 +72,13 @@ class _DetalheAlbumState extends State<DetalheAlbum> {
                       Text("Titulo: ${snapshot.data!.title}"),
                     ],
                   );
-                } else{
+                } else {
                   return const Text("Nenhum dado para exibir!");
                 }
               }
 
               return const CircularProgressIndicator();
-            }
-        ),
+            }),
       ),
     );
   }
