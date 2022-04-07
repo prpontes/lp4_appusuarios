@@ -185,12 +185,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               avatar: usuarios[index].avatar
                             )
                           );
-
-                          /*Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return TelaDetalheUsuario(usuario: usuarios[index]);
-                          }));
-                           */
                         },
                         leading: usuarios[index].avatar == ""
                             ? const Icon(
@@ -397,18 +391,18 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                             .text);
 
                                                     Navigator.pop(context);
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(
+                                                            backgroundColor: Colors.green,
+                                                            content: Text("Usuário ${usuarios[index].nome} editado com sucesso!",
+                                                              style: const TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.bold
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
                                                   }
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(
-                                                          backgroundColor: Colors.green,
-                                                          content: Text("Usuário ${usuarios[index].nome} editado com sucesso!",
-                                                            style: const TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.bold
-                                                            ),
-                                                          )
-                                                      )
-                                                  );
                                                 },
                                                 child: const Text("Salvar")),
                                           ],
@@ -449,13 +443,13 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                             _listarUsuarios();
                                                           },
                                                         ),
-                                                          backgroundColor: Colors.red,
-                                                          content: Text("Usuário ${usuarios[index].nome} excluido com sucesso!",
-                                                            style: const TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.bold
-                                                            ),
-                                                          )
+                                                        backgroundColor: Colors.red,
+                                                        content: Text("Usuário ${usuarios[index].nome} excluído com sucesso!",
+                                                          style: const TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.bold
+                                                          ),
+                                                        )
                                                       )
                                                   );
                                                 },
