@@ -98,7 +98,7 @@ class _MenuState extends State<Menu> {
                   ListTile(
                     onTap: () {},
                     leading: const Icon(
-                      Icons.add,
+                      Icons.inventory_2,
                       color: Colors.blue,
                     ),
                     title: const Text("Produtos"),
