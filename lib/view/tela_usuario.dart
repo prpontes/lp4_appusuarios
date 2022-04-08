@@ -374,7 +374,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   if (_formKeyEditUsuario
                                                       .currentState!
                                                       .validate()) {
-                                                    //editar usuario
                                                     _editarUsuario(
                                                         usuarios[index].id!,
                                                         controllerEditarCpfUsuario
