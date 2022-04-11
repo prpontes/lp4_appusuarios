@@ -21,29 +21,36 @@ void main() async {
 
   // delete database
   // await deleteDatabase(dir);
-  var database = await openDatabase(dir, onCreate: (db, version) async {
-    debugPrint("Database created");
-    await Future.wait(dbProviders.map((provider) async {
-      await provider.onCreate(db);
-    }));
-  }, version: 1);
+  await openDatabase(
+    dir,
+    onCreate: (db, version) async {
+      debugPrint("Database created");
+      await Future.wait(dbProviders.map((provider) async {
+        await provider.onCreate(db);
+      }));
+    },
+    version: 1,
+    onOpen: (db) async {
+      for (var provider in dbProviders) {
+        provider.onInit(db);
+      }
+      debugPrint("Database and providers started");
+    },
+  );
 
   // Start Providers with database depedency
-  await Future.wait(dbProviders.map((provider) async {
-    await provider.onInit(database);
-  }));
-
-  debugPrint("Database and providers started");
 
   runApp(
     MultiProvider(
-      providers: dbProviders
-          .map((provider) =>
-              ChangeNotifierProvider(create: (context) => provider))
-          .toList(),
+      providers: List.generate(
+        dbProviders.length,
+        (index) => ChangeNotifierProvider(
+          create: (context) => dbProviders[index],
+        ),
+      ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: "/telateste",
+        initialRoute: "/telaapi",
         routes: {
           "/": (context) => const TelaLogin(),
           "/telainicio": (context) => const TelaInicio(),
