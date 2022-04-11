@@ -34,11 +34,11 @@ class _TelaLoginState extends State<TelaLogin> {
             );
           });
     } else {
-      var resultado = await banco.consultarLoginUsuario(
+      var usuarioLogado = await banco.consultarLoginUsuario(
           controllerUsuario.text, controllerSenha.text);
 
-      if (resultado != null) {
-        Provider.of<UsuarioModel>(context, listen: false).user = resultado;
+      if (usuarioLogado != null) {
+        Provider.of<UsuarioModel>(context, listen: false).user = usuarioLogado;
         return Navigator.pushReplacementNamed(
           context,
           "/telainicio",
