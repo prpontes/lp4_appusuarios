@@ -58,9 +58,9 @@ class _TelaLoginState extends State<TelaLogin> {
                 ],
               );
             });
-      }
-    }
-  }
+      } // fim do else
+    } // fim do else
+  } // fim _autenticacao
 
   @override
   void initState() {
@@ -101,7 +101,8 @@ class _TelaLoginState extends State<TelaLogin> {
                     color: Colors.blue,
                   ),
                   hintText: "Senha",
-                  border: OutlineInputBorder()),
+                  border: OutlineInputBorder()
+              ),
               obscureText: true,
             ),
             const SizedBox(height: 10),
