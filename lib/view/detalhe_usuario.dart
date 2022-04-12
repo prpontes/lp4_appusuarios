@@ -46,41 +46,56 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                     children: [
                       usuario!.avatar == "" ?
                       const Icon(Icons.account_circle, color: Colors.blue, size: 150,) :
-                      CircleAvatar(backgroundImage: NetworkImage(usuario!.avatar!), radius: 80),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Nome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                          Text(usuario!.nome!, style: const TextStyle(fontSize: 20),)
-                        ],
+                      CircleAvatar(backgroundImage: NetworkImage(usuario!.avatar!), radius: 70),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Nome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            Text(usuario!.nome!, style: const TextStyle(fontSize: 20),)
+                          ],
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Cpf: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                          Text(usuario!.cpf!, style: const TextStyle(fontSize: 20),)
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Cpf: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            Text(usuario!.cpf!, style: const TextStyle(fontSize: 20),)
+                          ],
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("E-mail: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                          Text(usuario!.email!, style: const TextStyle(fontSize: 20),)
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("E-mail: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            Text(usuario!.email!, style: const TextStyle(fontSize: 20),)
+                          ],
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Login: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                          Text(usuario!.login!, style: const TextStyle(fontSize: 20),)
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Login: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            Text(usuario!.login!, style: const TextStyle(fontSize: 20),)
+                          ],
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text("Senha: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                          Text("******", style: TextStyle(fontSize: 20),)
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text("Senha: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            Text("******", style: TextStyle(fontSize: 20),)
+                          ],
+                        ),
                       ),
                     ],
                   ),
