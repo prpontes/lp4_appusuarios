@@ -24,9 +24,15 @@ void main() async {
         ),
       ],
       child: MaterialApp(
+        themeMode: ThemeMode.light,
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        darkTheme: ThemeData.dark().copyWith(
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: Colors.deepPurple, secondary: Colors.deepPurpleAccent),
         ),
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
