@@ -8,13 +8,5 @@ class Usuario {
   String? senha;
   String? avatar;
 
-  Usuario({
-    this.id,
-    this.cpf,
-    this.nome,
-    this.email,
-    this.login,
-    this.senha,
-    this.avatar,
-  });
+  Usuario({this.id, this.cpf, this.nome, this.email, this.login, this.senha, this.avatar});
 }
