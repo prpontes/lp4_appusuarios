@@ -1,5 +1,7 @@
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/view/tela_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TelaInicio extends StatefulWidget {
   const TelaInicio({Key? key}) : super(key: key);
@@ -16,16 +18,13 @@ class _TelaInicioState extends State<TelaInicio> {
         appBar: AppBar(
           title: const Text("Início"),
           actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.settings)
-            ),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
             IconButton(
                 onPressed: () {
+                  Provider.of<AuthProvider>(context, listen: false).logout();
                   Navigator.pushReplacementNamed(context, "/");
                 },
-                icon: const Icon(Icons.logout)
-            )
+                icon: const Icon(Icons.logout))
           ],
         ),
         body: Center(

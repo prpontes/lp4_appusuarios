@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +12,9 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  TextEditingController controllerUsuario = TextEditingController();
-  TextEditingController controllerSenha = TextEditingController();
+  TextEditingController controllerUsuario =
+      TextEditingController(text: "admin");
+  TextEditingController controllerSenha = TextEditingController(text: "123456");
 
   UsuarioProvider? usuarioProvider;
 
@@ -32,6 +34,7 @@ class _TelaLoginState extends State<TelaLogin> {
     );
 
     if (usuario != null) {
+      Provider.of<AuthProvider>(context, listen: false).user = usuario;
       Navigator.pushReplacementNamed(context, "/telainicio");
     } else {
       showDialog(
