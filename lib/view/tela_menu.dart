@@ -55,7 +55,7 @@ class _MenuState extends State<Menu> {
                             },
                           ),
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     TextField(
@@ -71,7 +71,7 @@ class _MenuState extends State<Menu> {
                 ),
               )),
           const Divider(color: Colors.black26),
-          Container(
+          SizedBox(
             height: 400,
             child: SingleChildScrollView(
               child: Column(
