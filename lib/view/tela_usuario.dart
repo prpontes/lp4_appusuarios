@@ -1,4 +1,5 @@
-import 'package:lp4_appusuarios/components/create_user_alert.dart';
+import 'package:lp4_appusuarios/components/create_user_dialog.dart';
+import 'package:lp4_appusuarios/components/details_user_dialog.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
@@ -69,6 +70,18 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                   ),
                             title: Text(usuario.nome!),
                             subtitle: Text(usuario.email!),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      DetailsUserDialog(
+                                    usuario: usuario,
+                                  ),
+                                  fullscreenDialog: true,
+                                ),
+                              );
+                            },
                           ),
                         );
                       } else {
@@ -86,7 +99,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            MaterialPageRoute(
               builder: (BuildContext context) => const CreateUserDialog(),
               fullscreenDialog: true,
             ),
