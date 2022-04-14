@@ -53,82 +53,84 @@ class _CreateUserDialogState extends State<CreateUserDialog> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _nomeController,
-                    decoration: const InputDecoration(
-                      labelText: 'Nome',
+        child: Card(
+          child: Column(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nomeController,
+                      decoration: const InputDecoration(
+                        labelText: 'Nome',
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Nome é obrigatório';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Nome é obrigatório';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Email é obrigatório';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Email é obrigatório';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _senhaController,
-                    decoration: const InputDecoration(
-                      labelText: 'Senha',
+                    TextFormField(
+                      controller: _senhaController,
+                      decoration: const InputDecoration(
+                        labelText: 'Senha',
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Senha é obrigatório';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Senha é obrigatório';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _avatarController,
-                    decoration: const InputDecoration(
-                      labelText: 'Avatar',
+                    TextFormField(
+                      controller: _avatarController,
+                      decoration: const InputDecoration(
+                        labelText: 'Avatar',
+                      ),
                     ),
-                  ),
-                  TextFormField(
-                    controller: _cpfController,
-                    decoration: const InputDecoration(
-                      labelText: 'CPF',
+                    TextFormField(
+                      controller: _cpfController,
+                      decoration: const InputDecoration(
+                        labelText: 'CPF',
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'CPF é obrigatório';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'CPF é obrigatório';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _loginController,
-                    decoration: const InputDecoration(
-                      labelText: 'Login',
+                    TextFormField(
+                      controller: _loginController,
+                      decoration: const InputDecoration(
+                        labelText: 'Login',
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Login é obrigatório';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Login é obrigatório';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

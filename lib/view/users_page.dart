@@ -1,10 +1,9 @@
 import 'package:lp4_appusuarios/components/create_user_dialog.dart';
 import 'package:lp4_appusuarios/components/details_user_dialog.dart';
-import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/components/search_user_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:diacritic/diacritic.dart';
 
 class TelaUsuario extends StatefulWidget {
   const TelaUsuario({Key? key}) : super(key: key);
@@ -35,7 +34,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: UserSearch(usuarios: usuarioProvider.usuarios),
+                delegate:
+                    SearchUserDelegate(usuarios: usuarioProvider.usuarios),
               );
             },
           ),
@@ -102,83 +102,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         },
         child: const Icon(Icons.add),
       ),
-    );
-  }
-}
-
-class UserSearch extends SearchDelegate<String> {
-  List<Usuario> usuarios;
-
-  UserSearch({required this.usuarios})
-      : super(searchFieldLabel: "Buscar usuários");
-
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = "";
-        },
-      )
-    ];
-  }
-
-  @override
-  Widget? buildLeading(BuildContext context) {
-    return IconButton(
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,
-      ),
-      onPressed: () {
-        close(context, "");
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return Container();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    final listaUsuarios = query.isEmpty
-        ? usuarios
-        : usuarios
-            .where(
-              (p) =>
-                  removeDiacritics(p.nome!.toLowerCase())
-                      .contains(removeDiacritics(query.toLowerCase())) ||
-                  p.email!.toLowerCase().contains(query.toLowerCase()) ||
-                  p.login!.toLowerCase().contains(query.toLowerCase()) ||
-                  p.cpf!.toLowerCase().contains(query.toLowerCase()),
-            )
-            .toList();
-
-    return ListView.builder(
-      itemCount: listaUsuarios.length,
-      itemBuilder: (context, index) {
-        final usuario = listaUsuarios[index];
-        return ListTile(
-          leading: usuario.avatar == ""
-              ? const Icon(
-                  Icons.account_circle,
-                  color: Colors.blue,
-                )
-              : CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    usuario.avatar!,
-                  ),
-                ),
-          title: Text(usuario.nome!),
-          subtitle: Text(usuario.email!),
-          onTap: () {
-            close(context, usuario.nome!);
-          },
-        );
-      },
     );
   }
 }
