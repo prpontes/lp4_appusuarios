@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Inicializa o singleton do banco de dados
   await DatabaseSingleton.startDatabase();
 
   runApp(
