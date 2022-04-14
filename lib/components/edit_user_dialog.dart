@@ -44,6 +44,7 @@ class _EditUserDialogState extends State<EditUserDialog> {
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             var novoUsuario = Usuario(
+              id: widget.usuario.id,
               nome: _nomeController.text,
               email: _emailController.text,
               senha: _senhaController.text,
