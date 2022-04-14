@@ -1,7 +1,6 @@
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
-import 'package:lp4_appusuarios/view/detalhe_usuario.dart';
 import 'package:lp4_appusuarios/view/tela_inicio.dart';
 import 'package:lp4_appusuarios/view/tela_login.dart';
 import 'package:lp4_appusuarios/view/tela_usuario.dart';
@@ -35,7 +34,6 @@ void main() async {
           "/": (context) => const TelaLogin(),
           "/telainicio": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(),
-          "/detalheusuario": (context) => const TelaDetalheUsuario(),
         },
       ),
     ),
