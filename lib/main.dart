@@ -1,5 +1,3 @@
-import 'package:lp4_appusuarios/api/api.dart';
-import 'package:lp4_appusuarios/api/detalhe_album.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
@@ -27,15 +25,16 @@ void main() async {
         ),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
-          //"/": (context) => const AuthCheck(),
           "/": (context) => const TelaLogin(),
           "/telainicio": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(),
-          "/telaapi": (context) => const Api(),
-          "/detalhealbum": (context) => const DetalheAlbum(),
           "/detalheusuario": (context) => const TelaDetalheUsuario(),
         },
       ),
