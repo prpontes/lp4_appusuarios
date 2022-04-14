@@ -9,7 +9,12 @@ class UsuarioProvider extends ChangeNotifier {
 
   List<Usuario> usuarios = [];
 
-  Future<List<Usuario>> getUsuarios() async {
+  UsuarioProvider() {
+    debugPrint("UsuarioProvider()");
+    // listarUsuarios();
+  }
+
+  Future<List<Usuario>> listarUsuarios() async {
     List lista = await db.query(nomeTabela);
 
     usuarios = List.generate(lista.length, (index) {
@@ -23,10 +28,11 @@ class UsuarioProvider extends ChangeNotifier {
         avatar: lista[index]["avatar"],
       );
     });
+    notifyListeners();
     return usuarios;
   }
 
-  consultarLoginUsuario(String login, String senha) async {
+  Future<Usuario?> consultarLoginUsuario(String login, String senha) async {
     List resultado = await db.query(nomeTabela,
         where: "login = ? and senha = ?", whereArgs: [login, senha]);
 
@@ -42,5 +48,28 @@ class UsuarioProvider extends ChangeNotifier {
     } else {
       return null;
     }
+  }
+
+  Future<int> inserirUsuario(Usuario usuario) async {
+    int id = await db.insert(nomeTabela, usuario.toMap());
+    usuario.id = id;
+    usuarios.add(usuario);
+    notifyListeners();
+    return id;
+  }
+
+  Future<int> editarUsuario(Usuario usuario) async {
+    int id = await db.update(nomeTabela, usuario.toMap(),
+        where: "id = ?", whereArgs: [usuario.id]);
+    notifyListeners();
+    return id;
+  }
+
+  Future<int> deletarUsuario(Usuario usuario) async {
+    int id =
+        await db.delete(nomeTabela, where: "id = ?", whereArgs: [usuario.id]);
+    usuarios.remove(usuario);
+    notifyListeners();
+    return id;
   }
 }
