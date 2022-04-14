@@ -1,16 +1,49 @@
-# lp4_appusuarios
+<h1 align="center" >LP4 Projeto</h1>
 
-A new Flutter project.
+## Descrição
 
-## Getting Started
+- O sistema consiste em simular um gerenciamento de vendas usando flutter
 
-This project is a starting point for a Flutter application.
+## Módulos
 
-A few resources to get you started if this is your first Flutter project:
+- Usuários
+- Produtos
+- Carrinho de compras
+- Clientes
+- Fornecedores
+- Configurações
+- Vendas
+- Estoque
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Começando
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1 - Primeiro, clone o repositório:
+
+```bash
+git clone https://github.com/prpontes/lp4_appusuarios.git
+# ou
+Fazer o download em Zip pelo Github (Não recomendado)
+```
+
+2 - Depois, atualize os pacotes dem pubspec.yaml:
+
+```bash
+flutter pub get
+# ou
+use atalhos da sua IDE (Android Stúdio ou VSCode)
+```
+
+3 - E finalmente, rode sua aplicação (Lembre-se de abrir seu emulador ou configurar o celular fisico):
+
+```bash
+flutter run -d android
+# ou
+use atalhos da sua IDE (Android Stúdio ou VSCode)
+```
+
+## Como contribuir
+
+- Evite fazer commits diretamente na branch main (crie uma branch e envie um Pull Request).
+- Se encontrar problemas, faça uma issue!
+- Poste dúvidas ou sugestões na aba Discussões.
+- Há um digrama de classe em `"/docs/Digrama de classe.drawio"` (Em construção).
