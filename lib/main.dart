@@ -15,11 +15,14 @@ void main() async {
 
   await DatabaseSingleton.startDatabase();
 
+  // run app with provider
+
   runApp(
     MultiProvider(
       providers: [
-        // ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => UsuarioProvider()),
+        ChangeNotifierProvider(
+          create: (_) => UsuarioProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
