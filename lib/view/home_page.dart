@@ -1,7 +1,5 @@
-import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/components/home_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TelaInicio extends StatefulWidget {
   const TelaInicio({Key? key}) : super(key: key);
