@@ -4,12 +4,12 @@ import '../model/usuario.dart';
 class AuthProvider extends ChangeNotifier {
   Usuario? _user;
 
-  Usuario get user => _user!;
+  Usuario? get user => isLoggedIn ? _user! : null;
 
   bool get isLoggedIn => _user != null;
 
-  set user(Usuario u) {
-    _user = u;
+  login(Usuario user) {
+    _user = user;
     notifyListeners();
   }
 
