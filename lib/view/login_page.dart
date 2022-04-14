@@ -16,26 +16,29 @@ class _TelaLoginState extends State<TelaLogin> {
       TextEditingController(text: "admin");
   TextEditingController controllerSenha = TextEditingController(text: "123456");
 
-  UsuarioProvider? usuarioProvider;
+  late UsuarioProvider usuarioProvider;
+
+  late AuthProvider authProvider;
 
   @override
   void initState() {
     super.initState();
     usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
   }
 
   _autenticacao() async {
     final String login = controllerUsuario.text;
     final String senha = controllerSenha.text;
 
-    final Usuario? usuario = await usuarioProvider!.consultarLoginUsuario(
+    final Usuario? usuario = await usuarioProvider.consultarLoginUsuario(
       login,
       senha,
     );
 
     if (usuario != null) {
-      Provider.of<AuthProvider>(context, listen: false).user = usuario;
-      Navigator.pushReplacementNamed(context, "/telainicio");
+      authProvider.login(usuario);
+      await Navigator.pushReplacementNamed(context, "/telainicio");
     } else {
       showDialog(
         context: context,

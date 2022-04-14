@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
-import '../model/usuario.dart';
-import '../provider/auth_provider.dart';
 
-class Menu extends StatefulWidget {
-  const Menu({Key? key}) : super(key: key);
+class HomeDrawer extends StatefulWidget {
+  const HomeDrawer({Key? key}) : super(key: key);
 
   @override
-  State<Menu> createState() => _MenuState();
+  State<HomeDrawer> createState() => _HomeDrawerState();
 }
 
-class _MenuState extends State<Menu> {
+class _HomeDrawerState extends State<HomeDrawer> {
+  late AuthProvider authProvider;
+  @override
+  void initState() {
+    super.initState();
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Usuario usuarioAutenticado =
-        Provider.of<AuthProvider>(context, listen: true).user;
-
     return Drawer(
       child: ListView(
         children: [
@@ -23,52 +27,42 @@ class _MenuState extends State<Menu> {
               decoration: const BoxDecoration(
                 color: Colors.white30,
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ListTile(
-                        leading: usuarioAutenticado.avatar! == ""
-                            ? const Icon(
-                                Icons.account_circle,
-                                color: Colors.blue,
-                              )
-                            : CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(usuarioAutenticado.avatar!),
-                                radius: 30,
-                              ),
-                        title: Text(
-                          usuarioAutenticado.nome!,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        subtitle: Text(usuarioAutenticado.email!),
-                        trailing: Container(
-                          padding: const EdgeInsets.only(left: 20),
-                          width: 50,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.blue,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+              child: Center(
+                child: Consumer<AuthProvider>(builder: (context, value, child) {
+                  if (!value.isLoggedIn) {
+                    return Container();
+                  }
+                  Usuario usuarioAutenticado = value.user!;
+                  return ListTile(
+                    leading: usuarioAutenticado.avatar! == ""
+                        ? const Icon(
+                            Icons.account_circle,
+                            color: Colors.blue,
+                          )
+                        : CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(usuarioAutenticado.avatar!),
+                            radius: 30,
                           ),
-                        )),
-                    const SizedBox(
-                      height: 10,
+                    title: Text(
+                      usuarioAutenticado.nome!,
+                      style: const TextStyle(fontSize: 18),
                     ),
-                    TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          hintText: "Buscar item do menu",
-                          //border: OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.search))),
-                    )
-                  ],
-                ),
+                    subtitle: Text(usuarioAutenticado.email!),
+                    trailing: Container(
+                      padding: const EdgeInsets.only(left: 20),
+                      width: 50,
+                      child: IconButton(
+                        tooltip: "Sair",
+                        onPressed: () {
+                          authProvider.logout();
+                          Navigator.pushReplacementNamed(context, "/");
+                        },
+                        icon: const Icon(Icons.logout),
+                      ),
+                    ),
+                  );
+                }),
               )),
           const Divider(color: Colors.black26),
           SizedBox(

@@ -1,5 +1,5 @@
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
-import 'package:lp4_appusuarios/view/tela_menu.dart';
+import 'package:lp4_appusuarios/components/home_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,17 +14,11 @@ class _TelaInicioState extends State<TelaInicio> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const Menu(),
+        drawer: const HomeDrawer(),
         appBar: AppBar(
           title: const Text("Início"),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
-            IconButton(
-                onPressed: () {
-                  Provider.of<AuthProvider>(context, listen: false).logout();
-                  Navigator.pushReplacementNamed(context, "/");
-                },
-                icon: const Icon(Icons.logout))
           ],
         ),
         body: Center(
