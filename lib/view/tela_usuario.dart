@@ -4,6 +4,7 @@ import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:diacritic/diacritic.dart';
 
 class TelaUsuario extends StatefulWidget {
   const TelaUsuario({Key? key}) : super(key: key);
@@ -291,7 +292,8 @@ class DataSearch extends SearchDelegate<String> {
         : usuarios
             .where(
               (p) =>
-                  p.nome!.toLowerCase().contains(query.toLowerCase()) ||
+                  removeDiacritics(p.nome!.toLowerCase())
+                      .contains(removeDiacritics(query.toLowerCase())) ||
                   p.email!.toLowerCase().contains(query.toLowerCase()) ||
                   p.login!.toLowerCase().contains(query.toLowerCase()) ||
                   p.cpf!.toLowerCase().contains(query.toLowerCase()),
