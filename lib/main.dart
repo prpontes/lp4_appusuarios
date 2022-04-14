@@ -1,6 +1,6 @@
 import 'package:lp4_appusuarios/api/api.dart';
 import 'package:lp4_appusuarios/api/detalhe_album.dart';
-import 'package:lp4_appusuarios/provider/provider_usuario.dart';
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:lp4_appusuarios/view/detalhe_usuario.dart';
@@ -15,13 +15,14 @@ void main() async {
 
   await DatabaseSingleton.startDatabase();
 
-  // run app with provider
-
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (_) => UsuarioProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
         ),
       ],
       child: MaterialApp(
