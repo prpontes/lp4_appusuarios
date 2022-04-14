@@ -35,65 +35,60 @@ class _TelaUsuarioState extends State<TelaUsuario> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: DataSearch(usuarios: usuarioProvider.usuarios),
+                delegate: UserSearch(usuarios: usuarioProvider.usuarios),
               );
             },
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await usuarioProvider.listarUsuarios();
-        },
-        child: Column(
-          children: [
-            Expanded(
-              child: Consumer<UsuarioProvider>(
-                builder: (BuildContext context, value, Widget? child) {
-                  final usuarios = value.usuarios;
-                  return ListView.builder(
-                    itemCount: usuarios.length,
-                    itemBuilder: (context, index) {
-                      if (usuarios.isNotEmpty == true) {
-                        final usuario = usuarios[index];
-                        return Card(
-                          child: ListTile(
-                            leading: usuario.avatar == ""
-                                ? const Icon(
-                                    Icons.account_circle,
-                                    color: Colors.blue,
-                                  )
-                                : CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      usuario.avatar!,
-                                    ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Consumer<UsuarioProvider>(
+              builder: (BuildContext context, value, Widget? child) {
+                final usuarios = value.usuarios;
+                return ListView.builder(
+                  itemCount: usuarios.length,
+                  itemBuilder: (context, index) {
+                    if (usuarios.isNotEmpty == true) {
+                      final usuario = usuarios[index];
+                      return Card(
+                        child: ListTile(
+                          leading: usuario.avatar == ""
+                              ? const Icon(
+                                  Icons.account_circle,
+                                  color: Colors.blue,
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    usuario.avatar!,
                                   ),
-                            title: Text(usuario.nome!),
-                            subtitle: Text(usuario.email!),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      DetailsUserDialog(
-                                    usuario: usuario,
-                                  ),
-                                  fullscreenDialog: true,
                                 ),
-                              );
-                            },
-                          ),
-                        );
-                      } else {
-                        return const Text("nenhum usuário");
-                      }
-                    },
-                  );
-                },
-              ),
-            )
-          ],
-        ),
+                          title: Text(usuario.nome!),
+                          subtitle: Text(usuario.email!),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    DetailsUserDialog(
+                                  usuario: usuario,
+                                ),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return const Text("nenhum usuário");
+                    }
+                  },
+                );
+              },
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -111,10 +106,10 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   }
 }
 
-class DataSearch extends SearchDelegate<String> {
+class UserSearch extends SearchDelegate<String> {
   List<Usuario> usuarios;
 
-  DataSearch({required this.usuarios})
+  UserSearch({required this.usuarios})
       : super(searchFieldLabel: "Buscar usuários");
 
   @override
