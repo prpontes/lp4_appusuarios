@@ -43,16 +43,13 @@ class _EditUserDialogState extends State<EditUserDialog> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            var novoUsuario = Usuario(
-              id: widget.usuario.id,
-              nome: _nomeController.text,
-              email: _emailController.text,
-              senha: _senhaController.text,
-              avatar: _avatarController.text,
-              cpf: _cpfController.text,
-              login: _loginController.text,
-            );
-            await _usuarioProvider.editarUsuario(novoUsuario);
+            widget.usuario.nome = _nomeController.text;
+            widget.usuario.email = _emailController.text;
+            widget.usuario.senha = _senhaController.text;
+            widget.usuario.avatar = _avatarController.text;
+            widget.usuario.cpf = _cpfController.text;
+            widget.usuario.login = _loginController.text;
+            await _usuarioProvider.editarUsuario(widget.usuario);
             Navigator.of(context).pop();
           }
         },
