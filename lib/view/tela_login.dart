@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -13,16 +14,45 @@ class _TelaLoginState extends State<TelaLogin> {
   TextEditingController controllerUsuario = TextEditingController();
   TextEditingController controllerSenha = TextEditingController();
 
-  _autenticacao() async {} // fim _autenticacao
-
   UsuarioProvider? usuarioProvider;
 
   @override
   void initState() {
     super.initState();
-    usuarioProvider = Provider.of<UsuarioProvider>(context);
-    debugPrint(usuarioProvider.toString());
+    usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
   }
+
+  _autenticacao() async {
+    final String login = controllerUsuario.text;
+    final String senha = controllerSenha.text;
+
+    final Usuario? usuario = await usuarioProvider!.consultarLoginUsuario(
+      login,
+      senha,
+    );
+
+    if (usuario != null) {
+      Navigator.pushReplacementNamed(context, "/telainicio");
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Erro"),
+            content: const Text("Usuário ou senha inválidos"),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  } // fim _autenticacao
 
   @override
   Widget build(BuildContext context) {
