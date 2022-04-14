@@ -253,7 +253,9 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
 class DataSearch extends SearchDelegate<String> {
   List<Usuario> usuarios;
-  DataSearch({required this.usuarios});
+
+  DataSearch({required this.usuarios})
+      : super(searchFieldLabel: "Buscar usuários");
 
   @override
   List<Widget>? buildActions(BuildContext context) {
