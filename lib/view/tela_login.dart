@@ -1,7 +1,5 @@
-import 'package:lp4_appusuarios/model/usuario.dart';
-import 'package:lp4_appusuarios/provider/provider_usuario.dart';
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/dados/banco.dart';
+import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
 class TelaLogin extends StatefulWidget {
@@ -14,58 +12,16 @@ class TelaLogin extends StatefulWidget {
 class _TelaLoginState extends State<TelaLogin> {
   TextEditingController controllerUsuario = TextEditingController();
   TextEditingController controllerSenha = TextEditingController();
-  var banco = Banco();
-  Usuario? usuarioAutenticado;
 
-  _autenticacao() async {
-    if (controllerUsuario.text == "" || controllerSenha.text == "") {
-      return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: const Text("Login e senha obrigatórios!"),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Ok"))
-              ],
-            );
-          });
-    } else {
-      var usuarioLogado = await banco.consultarLoginUsuario(
-          controllerUsuario.text, controllerSenha.text);
+  _autenticacao() async {} // fim _autenticacao
 
-      if (usuarioLogado != null) {
-        Provider.of<UsuarioModel>(context, listen: false).user = usuarioLogado;
-        return Navigator.pushReplacementNamed(
-          context,
-          "/telainicio",
-        );
-      } else {
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: const Text("Usuário ou senha incorreta!"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Ok"))
-                ],
-              );
-            });
-      } // fim do else
-    } // fim do else
-  } // fim _autenticacao
+  UsuarioProvider? usuarioProvider;
 
   @override
   void initState() {
     super.initState();
-    banco.criarUsuarioAdmin();
+    usuarioProvider = Provider.of<UsuarioProvider>(context);
+    debugPrint(usuarioProvider.toString());
   }
 
   @override
@@ -101,8 +57,7 @@ class _TelaLoginState extends State<TelaLogin> {
                     color: Colors.blue,
                   ),
                   hintText: "Senha",
-                  border: OutlineInputBorder()
-              ),
+                  border: OutlineInputBorder()),
               obscureText: true,
             ),
             const SizedBox(height: 10),
