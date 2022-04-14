@@ -29,4 +29,9 @@ class Usuario {
       "avatar": avatar,
     };
   }
+
+  @override
+  String toString() {
+    return 'Usuario{id: $id, cpf: $cpf, nome: $nome, email: $email, login: $login, senha: $senha, avatar: $avatar}';
+  }
 }
