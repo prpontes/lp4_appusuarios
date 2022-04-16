@@ -57,8 +57,37 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     ).then((value) => print("Usuário adiconado no firestore!"))
     .catchError((error) => print("Falha ao adiconar usuário no firestore: $error"));
   }
-  
-  
+
+  _listarUsuariosFirebase() async {
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+
+    if(this.usuarios.isNotEmpty)
+      this.usuarios.clear();
+
+    await usuarios.get().then(
+      (value) {
+        value.docs.forEach(
+            (usr) {
+              this.usuarios.add(
+                Usuario(
+                  cpf: usr['cpf'],
+                  nome: usr['nome'],
+                  email: usr['email'],
+                  login: usr['login'],
+                  senha: usr['senha'],
+                  avatar: usr['avatar'],
+                )
+              );
+            }
+        );
+      }
+    );
+    setState(() {
+      this.usuarios;
+    });
+  }
+
+
   Future<void> _listarUsuarios() async {
     usuarios = await bd.listarUsuarios();
 
@@ -161,7 +190,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   @override
   void initState() {
     super.initState();
-    _listarUsuarios();
+    //_listarUsuarios();
+    _listarUsuariosFirebase();
   }
 
   @override
@@ -604,14 +634,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                         onPressed: () {
                           //salvar novo usuario
                           if (_formKeyAddUsuario.currentState!.validate()) {
-                            bd.inserirUsuario(Usuario(
-                              cpf: controllerAddCpfUsuario.text,
-                              nome: controllerAddNomeUsuario.text,
-                              email: controllerAddEmailUsuario.text,
-                              login: controllerAddLoginUsuario.text,
-                              senha: controllerAddSenhaUsuario.text,
-                              avatar: controllerAddAvatarUsuario.text,
-                            ));
+                            // bd.inserirUsuario(Usuario(
+                            //   cpf: controllerAddCpfUsuario.text,
+                            //   nome: controllerAddNomeUsuario.text,
+                            //   email: controllerAddEmailUsuario.text,
+                            //   login: controllerAddLoginUsuario.text,
+                            //   senha: controllerAddSenhaUsuario.text,
+                            //   avatar: controllerAddAvatarUsuario.text,
+                            // ));
                             _addUserFirestore(Usuario(
                               cpf: controllerAddCpfUsuario.text,
                               nome: controllerAddNomeUsuario.text,
@@ -627,7 +657,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             controllerAddSenhaUsuario.clear();
                             controllerAddAvatarUsuario.clear();
 
-                            _listarUsuarios();
+                            //_listarUsuarios();
+                            _listarUsuariosFirebase();
 
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
