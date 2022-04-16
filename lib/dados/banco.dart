@@ -23,7 +23,7 @@ class Banco {
       return db.execute(
           "CREATE TABLE $tabela(id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)");
       //"CREATE TABLE modulo(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, ativo INTEGER);"
-      //"CREATE TABLE $tabelamodulo(id INTEGER PRIMARY KEY AUTOINCREMENT, acessar INTEGER, editar INTEGER, excluir INTEGER, pesquisar INTEGER, idUsuarios INTEGER, idModulo INTEGER, FOREIGN KEY(idUsuarios) REFERENCES $tabela(id), FOREIGN KEY(idModulo) REFERENCES modulo(id);"
+      //"CREATE TABLE $tabelamodulo(id INTEGER PRIMARY KEY AUTOINCREMENT, acessar INTEGER, adicionar INTEGER, editar INTEGER, excluir INTEGER, pesquisar INTEGER, idUsuarios INTEGER, idModulo INTEGER, FOREIGN KEY(idUsuarios) REFERENCES $tabela(id), FOREIGN KEY(idModulo) REFERENCES modulo(id);"
       //"INSERT INTO modulo(id, nome, ativo) VALUES(1, 'Usuários', 1)");
     }, version: 1);
     return bd;
@@ -94,7 +94,7 @@ class Banco {
         "senha": "123456",
         "avatar": "",
       });
-      await db.insert("$tabela-modulo", {
+      /*await db.insert("$tabela-modulo", {
         "id": 1,
         "acessar": 1,
         "editar": 1,
@@ -103,6 +103,7 @@ class Banco {
         "idUsuarios": 1,
         "idModulo": 1,
       });
+       */
     }
   }
 

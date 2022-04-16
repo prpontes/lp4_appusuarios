@@ -19,6 +19,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
     usuario = ModalRoute.of(context)!.settings.arguments as Usuario;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: DefaultTabController(
         length: 2,
         child: Scaffold(

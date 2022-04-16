@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TelaUsuario extends StatefulWidget {
   const TelaUsuario({Key? key}) : super(key: key);
@@ -14,7 +15,10 @@ class TelaUsuario extends StatefulWidget {
 }
 
 class _TelaUsuarioState extends State<TelaUsuario> {
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   Banco bd = Banco();
+
   TextEditingController controllerAddCpfUsuario = TextEditingController();
   TextEditingController controllerAddNomeUsuario = TextEditingController();
   TextEditingController controllerAddEmailUsuario = TextEditingController();
@@ -37,6 +41,24 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   final GlobalKey<FormState> _formKeyAddUsuario = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyEditUsuario = GlobalKey<FormState>();
 
+  _addUserFirestore(Usuario u)
+  {
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+
+    usuarios.add(
+      {
+        'avatar' : u.avatar,
+        'cpf' : u.cpf,
+        'email' : u.email,
+        'login' : u.login,
+        'nome' : u.nome,
+        'senha' : u.senha
+      }
+    ).then((value) => print("Usuário adiconado no firestore!"))
+    .catchError((error) => print("Falha ao adiconar usuário no firestore: $error"));
+  }
+  
+  
   Future<void> _listarUsuarios() async {
     usuarios = await bd.listarUsuarios();
 
@@ -583,6 +605,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                           //salvar novo usuario
                           if (_formKeyAddUsuario.currentState!.validate()) {
                             bd.inserirUsuario(Usuario(
+                              cpf: controllerAddCpfUsuario.text,
+                              nome: controllerAddNomeUsuario.text,
+                              email: controllerAddEmailUsuario.text,
+                              login: controllerAddLoginUsuario.text,
+                              senha: controllerAddSenhaUsuario.text,
+                              avatar: controllerAddAvatarUsuario.text,
+                            ));
+                            _addUserFirestore(Usuario(
                               cpf: controllerAddCpfUsuario.text,
                               nome: controllerAddNomeUsuario.text,
                               email: controllerAddEmailUsuario.text,

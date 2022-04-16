@@ -1,5 +1,5 @@
-// import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:lp4_appusuarios/api/api.dart';
 import 'package:lp4_appusuarios/api/detalhe_album.dart';
 import 'package:lp4_appusuarios/provider/provider_usuario.dart';
@@ -13,10 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  /*WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );*/
+  );
 
   runApp(
     MultiProvider(
