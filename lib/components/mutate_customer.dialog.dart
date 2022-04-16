@@ -97,12 +97,7 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
 
 
 
-            if (isUpdate) {
-              await _usuarioProvider.editarUsuario(usuario);
-
-            } else {
-              await _usuarioProvider.inserirUsuario(usuario);
-            }
+            
             Navigator.of(context).pop();
           }
         },

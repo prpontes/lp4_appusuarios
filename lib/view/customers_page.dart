@@ -21,7 +21,6 @@ class _TelaClienteState extends State<TelaCliente> {
   void initState() {
     super.initState();
     usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    usuarioProvider.listarUsuarios(isAdmin: 0);
   }
 
   @override

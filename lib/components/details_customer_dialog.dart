@@ -76,12 +76,10 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
                   return;
                 }
                 Navigator.pop(context);
-                await usuarioProvider.deletarUsuario(user);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   action: SnackBarAction(
                     label: 'Desfazer',
                     onPressed: () async {
-                      await usuarioProvider.inserirUsuario(user);
                     },
                   ),
                   content: const Text('Cliente deletado com sucesso!'),
