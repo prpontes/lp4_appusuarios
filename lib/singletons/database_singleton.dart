@@ -29,6 +29,15 @@ class DatabaseSingleton {
         for (var sql in criarTabelasLista) {
           await db.execute(sql);
         }
+        //  criar usuario admin apenas ao criar o banco
+        await db.insert("usuario", {
+          "cpf": "12345678910",
+          "nome": "Admin",
+          "email": "admin@gmail.com",
+          "login": "admin",
+          "senha": "123456",
+          "avatar": "",
+        });
         debugPrint("Database created");
       },
       version: 1,
