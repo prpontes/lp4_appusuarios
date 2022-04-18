@@ -14,12 +14,11 @@ class _TelaInicioState extends State<TelaInicio> {
     return Scaffold(
         drawer: const HomeDrawer(),
         appBar: AppBar(
-          title: const Text("Início"),
+          title: const Text("Início usuário"),
         ),
         body: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 300,

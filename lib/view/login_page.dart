@@ -38,6 +38,18 @@ class _TelaLoginState extends State<TelaLogin> {
 
     if (usuario != null) {
       authProvider.login(usuario);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Seja bem vindo ${usuario.nome}!"),
+            ],
+          ),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
       await Navigator.pushReplacementNamed(context, "/telainicio");
     } else {
       showDialog(
