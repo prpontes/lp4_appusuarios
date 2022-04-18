@@ -1,5 +1,6 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/components/details_user_dialog.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 
 class SearchUserDelegate extends SearchDelegate<String> {
@@ -62,16 +63,29 @@ class SearchUserDelegate extends SearchDelegate<String> {
               ? const Icon(
                   Icons.account_circle,
                   color: Colors.blue,
+                  size: 50,
                 )
-              : CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    usuario.avatar,
+              : SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      usuario.avatar,
+                    ),
                   ),
                 ),
           title: Text(usuario.nome!),
           subtitle: Text(usuario.email!),
           onTap: () {
-            close(context, usuario.nome!);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => DetailsUserDialog(
+                  usuario: usuario,
+                ),
+                fullscreenDialog: true,
+              ),
+            );
           },
         );
       },
