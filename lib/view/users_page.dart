@@ -58,10 +58,15 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               ? const Icon(
                                   Icons.account_circle,
                                   color: Colors.blue,
+                                  size: 50,
                                 )
-                              : CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    usuario.avatar,
+                              : SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      usuario.avatar,
+                                    ),
                                   ),
                                 ),
                           title: Text(usuario.nome!),
