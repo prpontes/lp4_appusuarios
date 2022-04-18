@@ -69,6 +69,8 @@ class _EditUserDialogState extends State<EditUserDialog> {
                       controller: _nomeController,
                       decoration: const InputDecoration(
                         labelText: 'Nome',
+                        hintText: "Login",
+                        border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -77,10 +79,15 @@ class _EditUserDialogState extends State<EditUserDialog> {
                         return null;
                       },
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
                         labelText: 'Email',
+                        hintText: "Login",
+                        border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -89,10 +96,15 @@ class _EditUserDialogState extends State<EditUserDialog> {
                         return null;
                       },
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       controller: _senhaController,
                       decoration: const InputDecoration(
                         labelText: 'Senha',
+                        hintText: "Login",
+                        border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -101,16 +113,26 @@ class _EditUserDialogState extends State<EditUserDialog> {
                         return null;
                       },
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       controller: _avatarController,
                       decoration: const InputDecoration(
                         labelText: 'Avatar',
+                        hintText: "Login",
+                        border: OutlineInputBorder(),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     TextFormField(
                       controller: _cpfController,
                       decoration: const InputDecoration(
                         labelText: 'CPF',
+                        hintText: "Login",
+                        border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -119,10 +141,15 @@ class _EditUserDialogState extends State<EditUserDialog> {
                         return null;
                       },
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       controller: _loginController,
                       decoration: const InputDecoration(
                         labelText: 'Login',
+                        hintText: "Login",
+                        border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {

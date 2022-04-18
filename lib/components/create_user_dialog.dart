@@ -53,84 +53,110 @@ class _CreateUserDialogState extends State<CreateUserDialog> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Card(
-          child: Column(
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _nomeController,
-                      decoration: const InputDecoration(
-                        labelText: 'Nome',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Nome é obrigatório';
-                        }
-                        return null;
-                      },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _nomeController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nome',
+                      hintText: "Login",
+                      border: OutlineInputBorder(),
                     ),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Email é obrigatório';
-                        }
-                        return null;
-                      },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Nome é obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      hintText: "Login",
+                      border: OutlineInputBorder(),
                     ),
-                    TextFormField(
-                      controller: _senhaController,
-                      decoration: const InputDecoration(
-                        labelText: 'Senha',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Senha é obrigatório';
-                        }
-                        return null;
-                      },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Email é obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: _senhaController,
+                    decoration: const InputDecoration(
+                      labelText: 'Senha',
+                      hintText: "Login",
+                      border: OutlineInputBorder(),
                     ),
-                    TextFormField(
-                      controller: _avatarController,
-                      decoration: const InputDecoration(
-                        labelText: 'Avatar',
-                      ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Senha é obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: _avatarController,
+                    decoration: const InputDecoration(
+                      labelText: 'Avatar',
+                      hintText: "Login",
+                      border: OutlineInputBorder(),
                     ),
-                    TextFormField(
-                      controller: _cpfController,
-                      decoration: const InputDecoration(
-                        labelText: 'CPF',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'CPF é obrigatório';
-                        }
-                        return null;
-                      },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: _cpfController,
+                    decoration: const InputDecoration(
+                      labelText: 'CPF',
+                      hintText: "Login",
+                      border: OutlineInputBorder(),
                     ),
-                    TextFormField(
-                      controller: _loginController,
-                      decoration: const InputDecoration(
-                        labelText: 'Login',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Login é obrigatório';
-                        }
-                        return null;
-                      },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'CPF é obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: _loginController,
+                    decoration: const InputDecoration(
+                      labelText: 'Login',
+                      hintText: "Login",
+                      border: OutlineInputBorder(),
                     ),
-                  ],
-                ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Login é obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
