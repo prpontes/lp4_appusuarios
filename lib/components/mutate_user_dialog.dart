@@ -1,3 +1,5 @@
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
@@ -45,8 +47,8 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Usuario usuario = isUpdate ? widget.usuario! : Usuario();
           if (_formKey.currentState!.validate()) {
+            Usuario usuario = isUpdate ? widget.usuario! : Usuario();
             usuario.nome = _nomeController.text;
             usuario.email = _emailController.text;
             usuario.senha = _senhaController.text;
@@ -77,7 +79,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                       controller: _nomeController,
                       decoration: const InputDecoration(
                         labelText: 'Nome',
-                        hintText: "Login",
+                        hintText: "Nome",
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -94,12 +96,15 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                       controller: _emailController,
                       decoration: const InputDecoration(
                         labelText: 'Email',
-                        hintText: "Login",
+                        hintText: "Email",
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Email é obrigatório';
+                        }
+                        if (EmailValidator.validate(value) == false) {
+                          return "Digite um e-mail válido";
                         }
                         return null;
                       },
@@ -111,7 +116,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                       controller: _senhaController,
                       decoration: const InputDecoration(
                         labelText: 'Senha',
-                        hintText: "Login",
+                        hintText: "Senha",
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -128,7 +133,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                       controller: _avatarController,
                       decoration: const InputDecoration(
                         labelText: 'Avatar',
-                        hintText: "Login",
+                        hintText: "Avatar",
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -139,12 +144,15 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                       controller: _cpfController,
                       decoration: const InputDecoration(
                         labelText: 'CPF',
-                        hintText: "Login",
+                        hintText: "CPF",
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'CPF é obrigatório';
+                        }
+                        if (CPFValidator.isValid(value) == false) {
+                          return "Cpf digitado inválido!";
                         }
                         return null;
                       },
