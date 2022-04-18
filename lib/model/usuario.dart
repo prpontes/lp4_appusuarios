@@ -6,7 +6,7 @@ class Usuario {
   String? email;
   String? login;
   String? senha;
-  String? avatar;
+  String avatar;
 
   Usuario({
     this.id,
@@ -15,7 +15,7 @@ class Usuario {
     this.email,
     this.login,
     this.senha,
-    this.avatar,
+    this.avatar = "",
   });
 
   Map<String, dynamic> toMap() {
