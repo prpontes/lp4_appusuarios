@@ -1,7 +1,7 @@
-import 'package:lp4_appusuarios/model/usuario.dart';
-import 'package:lp4_appusuarios/provider/provider_usuario.dart';
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/dados/banco.dart';
+import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
+import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
 class TelaLogin extends StatefulWidget {
@@ -12,61 +12,65 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  TextEditingController controllerUsuario = TextEditingController();
-  TextEditingController controllerSenha = TextEditingController();
-  var banco = Banco();
-  Usuario? usuarioAutenticado;
+  TextEditingController controllerUsuario =
+      TextEditingController(text: "admin");
+  TextEditingController controllerSenha = TextEditingController(text: "123456");
 
-  _autenticacao() async {
-    if (controllerUsuario.text == "" || controllerSenha.text == "") {
-      return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: const Text("Login e senha obrigatórios!"),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Ok"))
-              ],
-            );
-          });
-    } else {
-      var usuarioLogado = await banco.consultarLoginUsuario(
-          controllerUsuario.text, controllerSenha.text);
+  late UsuarioProvider usuarioProvider;
 
-      if (usuarioLogado != null) {
-        Provider.of<UsuarioModel>(context, listen: false).user = usuarioLogado;
-        return Navigator.pushReplacementNamed(
-          context,
-          "/telainicio",
-        );
-      } else {
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: const Text("Usuário ou senha incorreta!"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Ok"))
-                ],
-              );
-            });
-      } // fim do else
-    } // fim do else
-  } // fim _autenticacao
+  late AuthProvider authProvider;
 
   @override
   void initState() {
     super.initState();
-    banco.criarUsuarioAdmin();
+    usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
   }
+
+  _autenticacao() async {
+    final String login = controllerUsuario.text;
+    final String senha = controllerSenha.text;
+
+    final Usuario? usuario = await usuarioProvider.consultarLoginUsuario(
+      login,
+      senha,
+    );
+
+    if (usuario != null) {
+      authProvider.login(usuario);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Seja bem vindo ${usuario.nome}!"),
+            ],
+          ),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
+      await Navigator.pushReplacementNamed(context, "/telainicio");
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Erro"),
+            content: const Text("Usuário ou senha inválidos"),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  } // fim _autenticacao
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +105,7 @@ class _TelaLoginState extends State<TelaLogin> {
                     color: Colors.blue,
                   ),
                   hintText: "Senha",
-                  border: OutlineInputBorder()
-              ),
+                  border: OutlineInputBorder()),
               obscureText: true,
             ),
             const SizedBox(height: 10),

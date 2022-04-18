@@ -1,40 +1,45 @@
-// import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
-import 'package:lp4_appusuarios/api/api.dart';
-import 'package:lp4_appusuarios/api/detalhe_album.dart';
-import 'package:lp4_appusuarios/provider/provider_usuario.dart';
-// import 'package:lp4_appusuarios/services/auth_service.dart';
-// import 'package:lp4_appusuarios/view/AuthCheck.dart';
-import 'package:lp4_appusuarios/view/detalhe_usuario.dart';
-import 'package:lp4_appusuarios/view/tela_inicio.dart';
-import 'package:lp4_appusuarios/view/tela_login.dart';
-import 'package:lp4_appusuarios/view/tela_usuario.dart';
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
+import 'package:lp4_appusuarios/provider/usuario_provider.dart';
+import 'package:lp4_appusuarios/singletons/database_singleton.dart';
+import 'package:lp4_appusuarios/view/home_page.dart';
+import 'package:lp4_appusuarios/view/login_page.dart';
+import 'package:lp4_appusuarios/view/users_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  /*WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );*/
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializa o singleton do banco de dados
+  await DatabaseSingleton.startDatabase();
 
   runApp(
     MultiProvider(
       providers: [
-        // ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => UsuarioModel()),
+        ChangeNotifierProvider(
+          create: (_) => UsuarioProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
       ],
       child: MaterialApp(
+        themeMode: ThemeMode.light,
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        darkTheme: ThemeData.dark().copyWith(
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: Colors.deepPurple, secondary: Colors.deepPurpleAccent),
+        ),
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
-          //"/": (context) => const AuthCheck(),
           "/": (context) => const TelaLogin(),
           "/telainicio": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(),
-          "/telaapi": (context) => const Api(),
-          "/detalhealbum": (context) => const DetalheAlbum(),
-          "/detalheusuario": (context) => const TelaDetalheUsuario(),
         },
       ),
     ),
