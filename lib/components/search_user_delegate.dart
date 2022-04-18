@@ -65,7 +65,7 @@ class SearchUserDelegate extends SearchDelegate<String> {
                 )
               : CircleAvatar(
                   backgroundImage: NetworkImage(
-                    usuario.avatar!,
+                    usuario.avatar,
                   ),
                 ),
           title: Text(usuario.nome!),
