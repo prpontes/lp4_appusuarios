@@ -21,77 +21,60 @@ class _HomeDrawerState extends State<HomeDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.white30,
-              ),
+      child: SizedBox(
+        // screen height
+        height: 900,
+        child: ListView(
+          children: [
+            DrawerHeader(
               child: Center(
                 child: Consumer<AuthProvider>(builder: (context, value, child) {
                   if (!value.isLoggedIn) {
-                    return Container();
+                    return const CircularProgressIndicator();
                   }
                   Usuario usuarioAutenticado = value.user!;
                   return ListTile(
-                    leading: usuarioAutenticado.avatar! == ""
+                    leading: usuarioAutenticado.avatar == ""
                         ? const Icon(
                             Icons.account_circle,
                             color: Colors.blue,
+                            size: 30,
                           )
-                        : CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(usuarioAutenticado.avatar!),
-                            radius: 30,
+                        : SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(usuarioAutenticado.avatar),
+                              radius: 30,
+                            ),
                           ),
                     title: Text(
                       usuarioAutenticado.nome!,
                       style: const TextStyle(fontSize: 18),
                     ),
                     subtitle: Text(usuarioAutenticado.email!),
-                    trailing: Container(
-                      padding: const EdgeInsets.only(left: 20),
-                      width: 50,
-                      child: IconButton(
-                        tooltip: "Sair",
-                        onPressed: () {
-                          authProvider.logout();
-                          Navigator.pushReplacementNamed(context, "/");
-                        },
-                        icon: const Icon(Icons.logout),
-                      ),
+                    trailing: IconButton(
+                      tooltip: "Sair",
+                      onPressed: () {
+                        authProvider.logout();
+                        Navigator.pushReplacementNamed(context, "/");
+                      },
+                      icon: const Icon(Icons.logout),
                     ),
                   );
                 }),
-              )),
-          const Divider(color: Colors.black26),
-          SizedBox(
-            height: 400,
-            child: SingleChildScrollView(
+              ),
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
+            ),
+            SingleChildScrollView(
               child: Column(
                 children: [
-                  ListTile(
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, "/telainicio");
-                    },
-                    leading: const Icon(
-                      Icons.home,
-                      color: Colors.blue,
-                    ),
-                    title: const Text("Início"),
-                  ),
                   ListTile(
                     onTap: () {},
                     leading: const Icon(
                       Icons.shopping_cart,
-                      color: Colors.blue,
-                    ),
-                    title: const Text("Carrinho"),
-                  ),
-                  ListTile(
-                    onTap: () {},
-                    leading: const Icon(
-                      Icons.add,
                       color: Colors.blue,
                     ),
                     title: const Text("Produtos"),
@@ -123,16 +106,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     title: const Text("Usuários"),
                   ),
                   ListTile(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/telaapi");
-                    },
-                    leading: const Icon(
-                      Icons.api,
-                      color: Colors.blue,
-                    ),
-                    title: const Text("Api"),
-                  ),
-                  ListTile(
                     onTap: () {},
                     leading: const Icon(
                       Icons.settings,
@@ -143,19 +116,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                 ],
               ),
             ),
-          ),
-          const Divider(color: Colors.black26),
-          ListTile(
-            onTap: () {
-              Navigator.pushReplacementNamed(context, "/");
-            },
-            leading: const Icon(
-              Icons.logout,
-              color: Colors.blue,
-            ),
-            title: const Text("Sair"),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
