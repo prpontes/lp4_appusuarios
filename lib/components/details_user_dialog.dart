@@ -1,5 +1,5 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
-import 'package:lp4_appusuarios/components/edit_user_dialog.dart';
+import 'package:lp4_appusuarios/components/mutate_user_dialog.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
@@ -53,7 +53,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => EditUserDialog(
+                    builder: (BuildContext context) => MutateUserDialog(
                       usuario: user,
                     ),
                     fullscreenDialog: true,

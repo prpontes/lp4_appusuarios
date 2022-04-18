@@ -3,53 +3,61 @@ import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
-class EditUserDialog extends StatefulWidget {
-  final Usuario usuario;
-  const EditUserDialog({Key? key, required this.usuario}) : super(key: key);
+class MutateUserDialog extends StatefulWidget {
+  final Usuario? usuario;
+  const MutateUserDialog({Key? key, this.usuario}) : super(key: key);
 
   @override
-  State<EditUserDialog> createState() => _EditUserDialogState();
+  State<MutateUserDialog> createState() => _MutateUserDialogState();
 }
 
-class _EditUserDialogState extends State<EditUserDialog> {
+class _MutateUserDialogState extends State<MutateUserDialog> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _nomeController;
-  late final TextEditingController _emailController;
-  late final TextEditingController _senhaController;
-  late final TextEditingController _avatarController;
-  late final TextEditingController _cpfController;
-  late final TextEditingController _loginController;
+  final _nomeController = TextEditingController(text: "");
+  final _emailController = TextEditingController(text: "");
+  final _senhaController = TextEditingController(text: "");
+  final _avatarController = TextEditingController(text: "");
+  final _cpfController = TextEditingController(text: "");
+  final _loginController = TextEditingController(text: "");
 
   late final UsuarioProvider _usuarioProvider;
   @override
   void initState() {
     super.initState();
     _usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    _nomeController = TextEditingController(text: widget.usuario.nome);
-    _emailController = TextEditingController(text: widget.usuario.email);
-    _senhaController = TextEditingController(text: widget.usuario.senha);
-    _avatarController = TextEditingController(text: widget.usuario.avatar);
-    _cpfController = TextEditingController(text: widget.usuario.cpf);
-    _loginController = TextEditingController(text: widget.usuario.login);
+    if (widget.usuario != null) {
+      _nomeController.text = widget.usuario!.nome!;
+      _emailController.text = widget.usuario!.email!;
+      _senhaController.text = widget.usuario!.senha!;
+      _avatarController.text = widget.usuario!.avatar;
+      _cpfController.text = widget.usuario!.cpf!;
+      _loginController.text = widget.usuario!.login!;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isUpdate = widget.usuario != null;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar usuário'),
+        title: Text(isUpdate ? 'Editar usuário' : 'Criar usuário'),
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          Usuario usuario = isUpdate ? widget.usuario! : Usuario();
           if (_formKey.currentState!.validate()) {
-            widget.usuario.nome = _nomeController.text;
-            widget.usuario.email = _emailController.text;
-            widget.usuario.senha = _senhaController.text;
-            widget.usuario.avatar = _avatarController.text;
-            widget.usuario.cpf = _cpfController.text;
-            widget.usuario.login = _loginController.text;
-            await _usuarioProvider.editarUsuario(widget.usuario);
+            usuario.nome = _nomeController.text;
+            usuario.email = _emailController.text;
+            usuario.senha = _senhaController.text;
+            usuario.avatar = _avatarController.text;
+            usuario.cpf = _cpfController.text;
+            usuario.login = _loginController.text;
+            if (isUpdate) {
+              await _usuarioProvider.editarUsuario(usuario);
+            } else {
+              await _usuarioProvider.inserirUsuario(usuario);
+            }
             Navigator.of(context).pop();
           }
         },
