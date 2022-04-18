@@ -61,7 +61,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                 )
                               : CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                    usuario.avatar!,
+                                    usuario.avatar,
                                   ),
                                 ),
                           title: Text(usuario.nome!),
