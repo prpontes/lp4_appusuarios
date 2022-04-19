@@ -1,6 +1,6 @@
 class Usuario {
   // model usuário
-  int? id;
+  String? id;
   String? cpf;
   String? nome;
   String? email;

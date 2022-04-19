@@ -115,7 +115,7 @@ class Banco {
 
     if (resultado.isNotEmpty) {
       return Usuario(
-          id: resultado[0]["id"],
+          //id: resultado[0]["id"],
           cpf: resultado[0]["cpf"],
           nome: resultado[0]["nome"],
           email: resultado[0]["email"],

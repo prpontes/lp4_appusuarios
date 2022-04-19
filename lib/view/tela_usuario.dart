@@ -41,7 +41,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   final GlobalKey<FormState> _formKeyAddUsuario = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyEditUsuario = GlobalKey<FormState>();
 
-  _addUserFirestore(Usuario u)
+  _addUsuarioFirestore(Usuario u)
   {
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
 
@@ -58,18 +58,19 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     .catchError((error) => print("Falha ao adiconar usuário no firestore: $error"));
   }
 
-  _listarUsuariosFirebase() async {
+  _listarUsuariosFirestore() async {
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
 
     if(this.usuarios.isNotEmpty)
       this.usuarios.clear();
 
-    await usuarios.get().then(
+    await usuarios.orderBy('nome').get().then(
       (value) {
         value.docs.forEach(
             (usr) {
               this.usuarios.add(
                 Usuario(
+                  id: usr.id,
                   cpf: usr['cpf'],
                   nome: usr['nome'],
                   email: usr['email'],
@@ -87,6 +88,30 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     });
   }
 
+  _editarUsuarioFirestore(String id, String cpf, String nome, String email, String login,
+      String senha, String avatar) async {
+
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+
+    await usuarios.doc(id).update(
+      {
+        "cpf": cpf,
+        "nome": nome,
+        "email": email,
+        "login": login,
+        "senha": senha,
+        "avatar": avatar,
+      }
+    );
+    await _listarUsuariosFirestore();
+  }
+
+  _deletarUsuarioFirestore(String id) async {
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+
+    await usuarios.doc(id).delete();
+    await _listarUsuariosFirestore();
+  }
 
   Future<void> _listarUsuarios() async {
     usuarios = await bd.listarUsuarios();
@@ -96,13 +121,13 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     });
   }
 
-  Future<void> _deletarUsuario(int i) async {
-    await bd.deletarUsuario(i);
+  Future<void> _deletarUsuario(String i) async {
+    //await bd.deletarUsuario(i);
 
     _listarUsuarios();
   }
 
-  _editarUsuario(int id, String cpf, String nome, String email, String login,
+  _editarUsuario(String id, String cpf, String nome, String email, String login,
       String senha, String avatar) async {
     var editUsuario = Usuario(
       id: id,
@@ -191,7 +216,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   void initState() {
     super.initState();
     //_listarUsuarios();
-    _listarUsuariosFirebase();
+    _listarUsuariosFirestore();
   }
 
   @override
@@ -204,7 +229,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         actions: [
           IconButton(
               onPressed: () {
-                _listarUsuarios();
+                _listarUsuariosFirestore();
               },
               icon: const Icon(Icons.list)),
           IconButton(
@@ -426,7 +451,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   if (_formKeyEditUsuario
                                                       .currentState!
                                                       .validate()) {
-                                                    _editarUsuario(
+                                                    _editarUsuarioFirestore(
                                                         usuarios[index].id!,
                                                         controllerEditarCpfUsuario
                                                             .text,
@@ -482,7 +507,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                 child: const Text("Não")),
                                             TextButton(
                                                 onPressed: () {
-                                                  _deletarUsuario(
+                                                  _deletarUsuarioFirestore(
                                                       usuarios[index].id!);
                                                   Navigator.pop(context);
                                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -490,8 +515,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                         action: SnackBarAction(
                                                           label: "Desfazer",
                                                           onPressed: (){
-                                                            bd.inserirUsuario(temp);
-                                                            _listarUsuarios();
+                                                            _addUsuarioFirestore(temp);
+                                                            _listarUsuariosFirestore();
                                                           },
                                                         ),
                                                         backgroundColor: Colors.red,
@@ -642,7 +667,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             //   senha: controllerAddSenhaUsuario.text,
                             //   avatar: controllerAddAvatarUsuario.text,
                             // ));
-                            _addUserFirestore(Usuario(
+                            _addUsuarioFirestore(Usuario(
                               cpf: controllerAddCpfUsuario.text,
                               nome: controllerAddNomeUsuario.text,
                               email: controllerAddEmailUsuario.text,
@@ -658,7 +683,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                             controllerAddAvatarUsuario.clear();
 
                             //_listarUsuarios();
-                            _listarUsuariosFirebase();
+                            _listarUsuariosFirestore();
 
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
