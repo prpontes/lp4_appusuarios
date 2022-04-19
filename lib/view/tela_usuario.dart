@@ -41,11 +41,11 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   final GlobalKey<FormState> _formKeyAddUsuario = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyEditUsuario = GlobalKey<FormState>();
 
-  _addUsuarioFirestore(Usuario u)
+  _addUsuarioFirestore(Usuario u) async
   {
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
 
-    usuarios.add(
+    await usuarios.add(
       {
         'avatar' : u.avatar,
         'cpf' : u.cpf,
