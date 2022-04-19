@@ -229,84 +229,57 @@ class _TelaLoginState extends State<TelaLogin> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              content: const Text("Login e senha obrigatorios"),
+              content: const Text("Login e senha obrigatórios!"),
               actions: [
                 TextButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      setState(() => loading = false);
                     },
-                    child: const Text("ok"))
+                    child: const Text("Ok"))
               ],
             );
           });
-
-      await Navigator.pushReplacementNamed(context, "/telainicio");
-      // } if (usuario != null && usuario.isAdmin ==0) {
-      //   authProvider.login(usuario);
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       content: Row(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: [
-      //           Text("Seja bem vindo ${usuario.nome}!"),
-      //         ],
-      //       ),
-      //       duration: const Duration(seconds: 2),
-      //       backgroundColor: Colors.green,
-      //     ),
-      //   );
-      //   await Navigator.pushReplacementNamed(context, "/homecliente");
     } else {
-      // showDialog(
-      //   context: context,
-      //   builder: (context) {
-      //     return AlertDialog(
-      //       title: const Text("Erro"),
-      //       content: const Text("Usuário ou senha inválidos"),
-      //       actions: <Widget>[
-      //         ElevatedButton(
-      //           child: const Text("OK"),
-      //           onPressed: () {
-      //             Navigator.of(context).pop();
-      //           },
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // );
+
       try {
-        UsuarioFirebase usuario = UsuarioFirebase();
-        final credencial = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: controllerUsuario.text, password: controllerSenha.text);
-        await FirebaseFirestore.instance
-            .collection('usuarios')
-            .where('email', isEqualTo: controllerUsuario.text)
-            .get()
-            .then((value) {
-          value.docs.forEach((usr) {
-            usuario.id = usr.id;
-            usuario.cpf = usr['cpf'];
-            usuario.nome = usr['nome'];
-            usuario.email = usr['email'];
-            usuario.login = usr['login'];
-            usuario.senha = usr['senha'];
-            usuario.avatar = usr['avatar'];
-          });
-        });
-        Provider.of<AuthProvider>(context, listen: false).login(usuario);
-        await carregarPermissoesUsuarioAutenticado(usuario);
-        return Navigator.pushReplacementNamed(context, "/telainicio");
+        Usuario usuarioLogado = Usuario();
+        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: controllerUsuario.text,
+            password: controllerSenha.text
+        );
+        FirebaseFirestore.instance
+          .collection('usuarios')
+          .where('email', isEqualTo: controllerUsuario.text)
+          .get()
+          .then(
+            (value) {
+              value.docs.forEach(
+                (usr) {
+                  usuarioLogado.id = usr.id;
+                  usuarioLogado.cpf = usr['cpf'];
+                  usuarioLogado.nome = usr['nome'];
+                  usuarioLogado.email = usr['email'];
+                  usuarioLogado.login = usr['login'];
+                  usuarioLogado.senha = usr['senha'];
+                  usuarioLogado.avatar = usr['avatar'];
+                }
+              );
+            }
+          );
+
+        Provider.of<UsuarioModel>(context, listen: false).user = usuarioLogado;
+        return Navigator.pushReplacementNamed(
+          context,
+          "/telainicio",
+        );
       } on FirebaseAuthException catch (e) {
-        setState(() => loading = false);
         var msg_erro = "";
         if (e.code == 'user-not-found') {
-          msg_erro = " nenhum usuario encontradocom esse email";
+          msg_erro = 'Nenhum usuário encontrado com esse e-mail.';
         } else if (e.code == 'wrong-password') {
-          msg_erro = "Erro na senha para esse usuario";
-        } else {
-          msg_erro = "nenhum usuario encontrado";
+          msg_erro = 'Erro na senha para esse usuário.';
+        }else{
+          msg_erro = 'Nenhum usuário econtrado!';
         }
         return showDialog(
             context: context,
@@ -318,12 +291,12 @@ class _TelaLoginState extends State<TelaLogin> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text("ok"))
+                      child: const Text("Ok"))
                 ],
               );
-            });
+        });
       }
-    }
+    } // fim do else
   } // fim _autenticacao
 
   @override
@@ -340,10 +313,10 @@ class _TelaLoginState extends State<TelaLogin> {
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 prefixIcon: Icon(
-                  Icons.person,
+                  Icons.email,
                   color: Colors.blue,
                 ),
-                hintText: "Login",
+                hintText: "E-mail",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -359,7 +332,8 @@ class _TelaLoginState extends State<TelaLogin> {
                     color: Colors.blue,
                   ),
                   hintText: "Senha",
-                  border: OutlineInputBorder()),
+                  border: OutlineInputBorder()
+              ),
               obscureText: true,
             ),
             const SizedBox(height: 10),
@@ -367,19 +341,14 @@ class _TelaLoginState extends State<TelaLogin> {
               onPressed: () {
                 _autenticacao();
               },
-              child: (loading == true) ? const CircularProgressIndicator(color: Colors.white,) : const Text(
+              child: const Text(
                 "ENTRAR",
                 style: TextStyle(
                   fontSize: 17,
                   decoration: TextDecoration.none,
                 ),
               ),
-            ),
-            TextButton(
-                onPressed: () {
-                  _recuperarSenha();
-                },
-                child: const Text("Esqueci minha senha"))
+            )
           ],
         ),
       ),
