@@ -67,19 +67,19 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     await usuarios.orderBy('nome').get().then(
       (value) {
         value.docs.forEach(
-            (usr) {
-              this.usuarios.add(
-                Usuario(
-                  id: usr.id,
-                  cpf: usr['cpf'],
-                  nome: usr['nome'],
-                  email: usr['email'],
-                  login: usr['login'],
-                  senha: usr['senha'],
-                  avatar: usr['avatar'],
-                )
-              );
-            }
+          (usr) {
+            this.usuarios.add(
+              Usuario(
+                id: usr.id,
+                cpf: usr['cpf'],
+                nome: usr['nome'],
+                email: usr['email'],
+                login: usr['login'],
+                senha: usr['senha'],
+                avatar: usr['avatar'],
+              )
+            );
+          }
         );
       }
     );
