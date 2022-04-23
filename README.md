@@ -47,3 +47,4 @@ use atalhos da sua IDE (Android Stúdio ou VSCode)
 - Se encontrar problemas, faça uma issue!
 - Poste dúvidas ou sugestões na aba Discussões.
 - Há um digrama de classe em `"/docs/Digrama de classe.drawio"` (Em construção).
+-testetestetesteteste
