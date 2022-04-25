@@ -3,7 +3,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 const criarTabelasLista = [
-  "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)"
+  "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)",
+  "CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, price REAL, image TEXT)",
 ];
 
 class DatabaseSingleton {
@@ -22,7 +23,7 @@ class DatabaseSingleton {
     String dir = join(await getDatabasesPath(), "database.db");
 
     // delete database
-    // await deleteDatabase(dir);
+    await deleteDatabase(dir);
     DatabaseSingleton.instance.db = await openDatabase(
       dir,
       onCreate: (db, version) async {
