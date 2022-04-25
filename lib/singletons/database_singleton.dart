@@ -3,7 +3,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 const criarTabelasLista = [
-  "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)"
+  "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)",
+  "CREATE TABLE fornecedor (id INTEGER PRIMARY KEY AUTOINCREMENT, cnpj TEXT, razaoSocial TEXT, email TEXT, telefone TEXT, login TEXT, senha TEXT, produto TEXT, quantidade INTEGER)"
 ];
 
 class DatabaseSingleton {
