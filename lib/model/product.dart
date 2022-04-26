@@ -4,6 +4,8 @@ class Product {
   String description;
   String image;
   double price;
+  int quantity;
+  int idFornecedor;
 
   Product({
     this.id = 0,
@@ -11,6 +13,8 @@ class Product {
     this.description = "",
     this.image = "",
     this.price = 0.0,
+    required this.idFornecedor,
+    this.quantity = 0,
   });
 
   Map<String, dynamic> toMap() {
