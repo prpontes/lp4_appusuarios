@@ -9,6 +9,7 @@ class Fornecedor {
   String? senha;
   String? produto;
   int? quantidade;
+  String? avatar;
 
   Fornecedor({
     this.id,
@@ -20,6 +21,7 @@ class Fornecedor {
     this.senha,
     this.produto,
     this.quantidade,
+    this.avatar,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,12 +35,13 @@ class Fornecedor {
       "senha": senha,
       "produto": produto,
       "quantidade": quantidade,
+      "avatar": avatar,
     };
   }
 
   @override
-  String toString(){
+  String toString() {
     return 'Fornecedor{id: $id, cnpj: $cnpj, razaoSocial: $razaoSocial, email: $email, telefone: $telefone, login: $login,'
-        'senha: $senha, produto:$produto, quantidade:$quantidade}';
-    }
+        'senha: $senha, produto:$produto, quantidade:$quantidade, avatar:$avatar}';
+  }
 }

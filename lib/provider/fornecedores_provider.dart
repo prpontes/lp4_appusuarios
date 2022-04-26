@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:lp4_appusuarios/model/fornecedores.dart';
+import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
@@ -29,14 +29,14 @@ class FornecedoresProvider extends ChangeNotifier {
         senha: lista[index]["senha"],
         produto: lista[index]["produto"],
         quantidade: lista[index]["quantidade"],
-
       );
     });
     notifyListeners();
     return fornecedores;
   }
 
-  Future<Fornecedor?> consultarLoginFornecedor(String login, String senha) async {
+  Future<Fornecedor?> consultarLoginFornecedor(
+      String login, String senha) async {
     List resultado = await db.query(nomeTabela,
         where: "login = ? and senha = ?", whereArgs: [login, senha]);
 
@@ -64,7 +64,7 @@ class FornecedoresProvider extends ChangeNotifier {
     return id;
   }
 
-  Future<int> editarUsuario(Fornecedor fornecedor) async {
+  Future<int> editarFornecedor(Fornecedor fornecedor) async {
     int id = await db.update(nomeTabela, fornecedor.toMap(),
         where: "id = ?", whereArgs: [fornecedor.id]);
     debugPrint(id.toString());
@@ -72,9 +72,9 @@ class FornecedoresProvider extends ChangeNotifier {
     return id;
   }
 
-  Future<int> deletarUsuario(Fornecedor fornecedor) async {
-    int id =
-        await db.delete(nomeTabela, where: "id = ?", whereArgs: [fornecedor.id]);
+  Future<int> deletarFornecedor(Fornecedor fornecedor) async {
+    int id = await db
+        .delete(nomeTabela, where: "id = ?", whereArgs: [fornecedor.id]);
     fornecedores.remove(fornecedores);
     notifyListeners();
     return id;
