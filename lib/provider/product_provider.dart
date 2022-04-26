@@ -1,3 +1,4 @@
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
@@ -19,8 +20,11 @@ class ProductProvider extends ChangeNotifier {
         description: productsList[index]["description"],
         price: productsList[index]["price"],
         image: productsList[index]["image"],
+        idFornecedor: productsList[index]["idFornecedor"],
+        quantity: productsList[index]["quantity"],
       );
     });
+
     notifyListeners();
     return products;
   }
@@ -36,6 +40,8 @@ class ProductProvider extends ChangeNotifier {
         description: resultado[0]["description"],
         price: resultado[0]["price"],
         image: resultado[0]["image"],
+        idFornecedor: resultado[0]["idFornecedor"],
+        quantity: resultado[0]["quantity"],
       );
     } else {
       return null;
@@ -62,9 +68,9 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> deleteProduct(int productId) async {
+  Future<bool> deleteProduct(Product product) async {
     int result =
-        await db.delete(tableName, where: "id = ?", whereArgs: [productId]);
+        await db.delete(tableName, where: "id = ?", whereArgs: [product.id]);
     if (result > 0) {
       await getProducts();
       return true;
