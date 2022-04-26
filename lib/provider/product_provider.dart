@@ -1,4 +1,3 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
