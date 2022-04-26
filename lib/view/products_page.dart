@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/components/details_product_dialog.dart';
 import 'package:lp4_appusuarios/components/search_product_delegate.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,14 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
+  late ProductProvider productProvider;
+  @override
+  void initState() {
+    super.initState();
+    productProvider = Provider.of<ProductProvider>(context, listen: false);
+    productProvider.getProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,13 +66,31 @@ class _ProductsPageState extends State<ProductsPage> {
                                   ),
                                 ),
                           title: Text(product.name),
-                          subtitle: Text(product.description),
-                          trailing: Text(product.price.toString()),
-                          onTap: () {},
+                          subtitle: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            child: Text(
+                              product.description,
+                              maxLines: 1,
+                            ),
+                          ),
+                          trailing: Text("R\$ ${product.price.toStringAsFixed(2)}"),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    DetailsProductDialog(
+                                  product: product,
+                                ),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
                         ),
                       );
                     } else {
-                      return const Text("nenhum usuário");
+                      return const Text("nenhum produto");
                     }
                   },
                 );
