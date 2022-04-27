@@ -31,7 +31,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   TextEditingController controllerEditarLoginUsuario = TextEditingController();
   TextEditingController controllerEditarSenhaUsuario = TextEditingController();
   TextEditingController controllerEditarAvatarUsuario = TextEditingController();
-
   TextEditingController controllerBuscaUsuario = TextEditingController();
 
   List<Usuario> usuarios = [];
@@ -108,9 +107,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
   _editarUsuarioFirestore(String id, String cpf, String nome, String email, String login,
       String senha, String avatar) async {
-
+    
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+    // atualiza e-mail e senha do serviço de autenticação. 
+    final user = FirebaseAuth.instance.currentUser;
+    await user!.updateEmail(email);
+    await user.updatePassword(senha);
 
+    // atualiza as informações da coleção usuarios do serviço Firestore
     await usuarios.doc(id).update(
       {
         "cpf": cpf,

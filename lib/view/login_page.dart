@@ -215,6 +215,8 @@ class _TelaLoginState extends State<TelaLogin> {
         });
   }
 
+  
+
   _autenticacao() async {
     final String login = controllerUsuario.text;
     final String senha = controllerSenha.text;
@@ -226,27 +228,28 @@ class _TelaLoginState extends State<TelaLogin> {
     setState(() => loading = true);
     if (controllerUsuario.text == "" || controllerSenha == "") {
       return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: const Text("Login e senha obrigatórios!"),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Ok"))
-              ],
-            );
-          });
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Text("Login e senha obrigatórios!"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Ok"))
+            ],
+          );
+        }
+      );
     } else {
-
       try {
         Usuario usuarioLogado = Usuario();
         final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: controllerUsuario.text,
             password: controllerSenha.text
         );
+        // Pega os dados do usuário autenticado e passa para o Provider
         FirebaseFirestore.instance
           .collection('usuarios')
           .where('email', isEqualTo: controllerUsuario.text)
@@ -279,21 +282,21 @@ class _TelaLoginState extends State<TelaLogin> {
         } else if (e.code == 'wrong-password') {
           msg_erro = 'Erro na senha para esse usuário.';
         }else{
-          msg_erro = 'Nenhum usuário econtrado!';
+          msg_erro = 'Nenhum usuário encontrado!';
         }
         return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Text(msg_erro),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Ok"))
-                ],
-              );
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(msg_erro),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Ok"))
+              ],
+            );
         });
       }
     } // fim do else
@@ -348,6 +351,12 @@ class _TelaLoginState extends State<TelaLogin> {
                   decoration: TextDecoration.none,
                 ),
               ),
+            ),
+            TextButton(
+                onPressed: (){
+                  _recuperarSenha();
+                },
+                child: const Text('Esqueceu sua senha')
             )
           ],
         ),
