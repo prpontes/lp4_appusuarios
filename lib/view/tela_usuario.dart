@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lp4_appusuarios/dados/banco.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/provider_usuario.dart';
@@ -40,6 +41,25 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
   final GlobalKey<FormState> _formKeyAddUsuario = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyEditUsuario = GlobalKey<FormState>();
+
+  _addAuthUsuario(email, password)
+  {
+    try{
+      final credencial = FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password
+      );
+    }on FirebaseAuthException catch (e){
+      if(e.code == 'weak-password'){
+        print('A senha é muita fraca!');
+      }else if(e.code == 'email-already-in-use'){
+        print('A conta já existe para esse e-mail!');
+      }
+    }catch(e){
+      print(e);
+    }
+  }
+
 
   _addUsuarioFirestore(Usuario u) async
   {
@@ -675,6 +695,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               senha: controllerAddSenhaUsuario.text,
                               avatar: controllerAddAvatarUsuario.text,
                             ));
+                            _addAuthUsuario(controllerAddEmailUsuario.text, controllerAddSenhaUsuario.text);
                             controllerAddCpfUsuario.clear();
                             controllerAddNomeUsuario.clear();
                             controllerAddEmailUsuario.clear();
