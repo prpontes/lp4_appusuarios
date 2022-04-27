@@ -16,27 +16,68 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController controllerUsuario = TextEditingController();
   TextEditingController controllerSenha = TextEditingController();
+  TextEditingController controllerRecuperarSenha = TextEditingController();
+
   var banco = Banco();
   Usuario? usuarioAutenticado;
+
+  _recuperarSenha(){
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Recuperar senha"),
+          content: TextField(
+            controller: controllerRecuperarSenha,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+              labelText: "E-mail",
+              hintText: "digite seu e-mail"
+            ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Cancelar")
+            ),
+            TextButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.sendPasswordResetEmail(email: controllerRecuperarSenha.text);
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: Colors.green,
+                      content: Text("Email de recuperação enviado!")
+                    )
+                  );
+                  Navigator.pop(context);
+                },
+                child: const Text("Recuperar")
+            )
+          ],
+        );
+      }
+    );
+  }
 
   _autenticacao() async {
     if (controllerUsuario.text == "" || controllerSenha.text == "") {
       return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: const Text("Login e senha obrigatórios!"),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Ok"))
-              ],
-            );
-          });
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Text("Login e senha obrigatórios!"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Ok"))
+            ],
+          );
+        }
+      );
     } else {
-
       try {
         Usuario usuarioLogado = Usuario();
         final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -150,6 +191,12 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: TextDecoration.none,
                 ),
               ),
+            ),
+            TextButton(
+                onPressed: (){
+                  _recuperarSenha();
+                },
+                child: Text('Esqueceu sua senha')
             )
           ],
         ),
