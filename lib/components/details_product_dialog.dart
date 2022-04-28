@@ -15,7 +15,6 @@ class DetailsProductDialog extends StatefulWidget {
 
 class _DetailsProductDialogState extends State<DetailsProductDialog> {
   late ProductProvider productProvider;
-
   @override
   void initState() {
     super.initState();
@@ -25,170 +24,204 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
   @override
   Widget build(BuildContext context) {
     final Product product = widget.product;
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(product.name),
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () async {
+              // await Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (BuildContext context) => MutateUserDialog(
+              //       usuario: user,
+              //     ),
+              //     fullscreenDialog: true,
+              //   ),
+              // );
             },
           ),
-          title: const Text("Detalhe produto"),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () async {
-                // await Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => MutateUserDialog(
-                //       usuario: user,
-                //     ),
-                //     fullscreenDialog: true,
-                //   ),
-                // );
-              },
-            ),
-            IconButton(
-              onPressed: () async {
-                // show alert dialog
-                final bool confirm = await showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (BuildContext context) => const DeleteDialog(
-                    title: "Excluir produto",
-                    description: "Tem certeza que deseja excluir o produto?",
-                  ),
-                );
-                if (!confirm) return;
-                Navigator.pop(context);
-                await productProvider.deleteProduct(product);
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  action: SnackBarAction(
-                    label: 'Desfazer',
-                    onPressed: () async {
-                      await productProvider.createProduct(product);
-                    },
-                  ),
-                  content: const Text('Produto deletado com sucesso!'),
-                ));
-              },
-              icon: const Icon(Icons.delete),
-            ),
-          ],
-        ),
-        body: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Consumer<ProductProvider>(
-              builder: (context, value, child) {
-                Product product = value.products.firstWhere(
-                  (product) => product.id == widget.product.id,
-                  orElse: () => Product(
-                    name: "",
-                    id: -1,
-                    idFornecedor: -1,
-                  ),
-                );
+          IconButton(
+            onPressed: () async {
+              // show alert dialog
+              final bool confirm = await showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) => const DeleteDialog(
+                  title: "Excluir produto",
+                  description: "Tem certeza que deseja excluir o produto?",
+                ),
+              );
+              if (!confirm) return;
+              Navigator.pop(context);
+              await productProvider.deleteProduct(product);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                action: SnackBarAction(
+                  label: 'Desfazer',
+                  onPressed: () async {
+                    await productProvider.createProduct(product);
+                  },
+                ),
+                content: const Text('Produto deletado com sucesso!'),
+              ));
+            },
+            icon: const Icon(Icons.delete),
+          ),
+        ],
+      ),
+      body: Consumer<ProductProvider>(builder: (context, value, child) {
+        Product product = value.products.firstWhere(
+          (product) => product.id == widget.product.id,
+          orElse: () => Product(
+            name: "",
+            id: -1,
+            idFornecedor: -1,
+          ),
+        );
 
-                if (product.id == -1) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                return Column(
+        if (product.id == -1) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Theme.of(context).primaryColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 30, bottom: 30),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    product.image == ""
-                        ? const Icon(
-                            Icons.warning_rounded,
-                            color: Colors.blue,
-                            size: 150,
-                          )
-                        : CircleAvatar(
-                            backgroundImage: NetworkImage(product.image),
-                            radius: 70),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
+                    Expanded(
+                      flex: 1,
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Text(
-                            "Nome: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                            "Fornecedor:",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
-                          Text(
-                            product.name,
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
                           const Text(
-                            "Descrição: ",
+                            "Um Qualquer",
                             style: TextStyle(
                               fontSize: 20,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            product.description,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
                           const Text(
-                            "Preço: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                            "Preço",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                           Text(
                             "R\$ ${product.price.toStringAsFixed(2)}",
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Fornecedor: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          Text(
-                            "kkkkkkkkkkk Não tem",
-                            style: TextStyle(fontSize: 20),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.remove_circle_outline),
+                              ),
+                              Text(
+                                "${product.quantity}",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.add_circle_outline),
+                              )
+                            ],
                           )
                         ],
                       ),
                     ),
+                    Expanded(
+                      flex: 1,
+                      child: Hero(
+                        tag: "${product.id}",
+                        child: product.image == ""
+                            ? const Icon(
+                                Icons.warning_rounded,
+                                color: Colors.blue,
+                                size: 150,
+                              )
+                            : CircleAvatar(
+                                backgroundImage: NetworkImage(product.image),
+                                radius: 70),
+                      ),
+                    )
                   ],
-                );
-              },
-            ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Text(
+                          "Descrição",
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          product.description,
+                          textAlign: TextAlign.justify,
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-      ),
+        );
+      }),
     );
   }
 }
