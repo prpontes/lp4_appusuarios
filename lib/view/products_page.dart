@@ -17,7 +17,8 @@ class _ProductsPageState extends State<ProductsPage> {
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-    WidgetsBinding.instance!.addPostFrameCallback((_) => productProvider.getProducts());
+    WidgetsBinding.instance!
+        .addPostFrameCallback((_) => productProvider.getProducts());
   }
 
   @override
@@ -59,9 +60,12 @@ class _ProductsPageState extends State<ProductsPage> {
                               : SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      product.image,
+                                  child: Hero(
+                                    tag: "${product.id}",
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                        product.image,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -74,7 +78,8 @@ class _ProductsPageState extends State<ProductsPage> {
                               maxLines: 1,
                             ),
                           ),
-                          trailing: Text("R\$ ${product.price.toStringAsFixed(2)}"),
+                          trailing:
+                              Text("R\$ ${product.price.toStringAsFixed(2)}"),
                           onTap: () {
                             Navigator.push(
                               context,
