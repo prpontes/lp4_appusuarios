@@ -45,9 +45,16 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.sendPasswordResetEmail(email: controllerRecuperarSenha.text);
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       backgroundColor: Colors.green,
-                      content: Text("Email de recuperação enviado!")
+                      content: SingleChildScrollView(
+                        child: Row(
+                          children: const [
+                            Icon(Icons.email, color: Colors.white,),
+                            Text("Email de recuperação enviado!"),
+                          ],
+                        ),
+                      )
                     )
                   );
                   Navigator.pop(context);
@@ -84,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
             email: controllerUsuario.text,
             password: controllerSenha.text
         );
+        // Pega os dados do usuário autenticado e passa para o Provider
         FirebaseFirestore.instance
           .collection('usuarios')
           .where('email', isEqualTo: controllerUsuario.text)
