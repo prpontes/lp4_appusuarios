@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Recuperar senha"),
+          title: const Text("Recuperar senha"),
           content: TextField(
             controller: controllerRecuperarSenha,
             keyboardType: TextInputType.emailAddress,
@@ -44,19 +44,37 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton(
                 onPressed: () async {
-                  await FirebaseAuth.instance.sendPasswordResetEmail(email: controllerRecuperarSenha.text);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      backgroundColor: Colors.green,
-                      content: SingleChildScrollView(
-                        child: Row(
-                          children: const [
-                            Icon(Icons.email, color: Colors.white,),
-                            Text("Email de recuperação enviado!"),
-                          ],
-                        ),
+                  try {
+                    await FirebaseAuth.instance.sendPasswordResetEmail(
+                        email: controllerRecuperarSenha.text);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.green,
+                          content: SingleChildScrollView(
+                            child: Row(
+                              children: const [
+                                Icon(Icons.email, color: Colors.white,),
+                                Text("Email de recuperação enviado!"),
+                              ],
+                            ),
+                          )
+                        )
+                      );
+                  }on FirebaseAuthException catch (e){
+                    var msg_erro = "";
+                    if(e.code == 'invalid-email'){
+                      msg_erro = 'Endereço de e-mail inválido!';
+                    }else if(e.code == 'user-not-found'){
+                      msg_erro = 'Não existe um usuário correspondente para o endereço de e-mail fornecido!';
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(msg_erro),
                       )
-                    )
-                  );
+                    );
+                  }catch(e){
+                    print(e);
+                  }
                   Navigator.pop(context);
                 },
                 child: const Text("Recuperar")
@@ -65,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     );
-  }
+  } // fim do _recuperarSenha
 
   _autenticacao() async {
     if (controllerUsuario.text == "" || controllerSenha.text == "") {
@@ -124,21 +142,21 @@ class _LoginPageState extends State<LoginPage> {
         } else if (e.code == 'wrong-password') {
           msg_erro = 'Erro na senha para esse usuário.';
         }else{
-          msg_erro = 'Nenhum usuário econtrado!';
+          msg_erro = 'Nenhum usuário encontrado!';
         }
         return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Text(msg_erro),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Ok"))
-                ],
-              );
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(msg_erro),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Ok"))
+              ],
+            );
         });
       }
     } // fim do else
@@ -204,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: (){
                   _recuperarSenha();
                 },
-                child: Text('Esqueceu sua senha')
+                child: const Text('Esqueceu sua senha')
             )
           ],
         ),
