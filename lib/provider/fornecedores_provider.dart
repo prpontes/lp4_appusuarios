@@ -15,7 +15,7 @@ class FornecedoresProvider extends ChangeNotifier {
     // listarFornecedores();
   }
 
-  Future<List<Fornecedor>> listaFornecedores() async {
+  Future<List<Fornecedor>> listarFornecedores() async {
     List lista = await db.query(nomeTabela);
 
     fornecedores = List.generate(lista.length, (index) {
@@ -25,36 +25,28 @@ class FornecedoresProvider extends ChangeNotifier {
         razaoSocial: lista[index]["razaoSocial"],
         email: lista[index]["email"],
         telefone: lista[index]["telefone"],
-        login: lista[index]["login"],
-        senha: lista[index]["senha"],
-        produto: lista[index]["produto"],
-        quantidade: lista[index]["quantidade"],
       );
     });
     notifyListeners();
     return fornecedores;
   }
 
-  Future<Fornecedor?> consultarLoginFornecedor(
-      String login, String senha) async {
-    List resultado = await db.query(nomeTabela,
-        where: "login = ? and senha = ?", whereArgs: [login, senha]);
+  // Future<Fornecedor?> consultarLoginFornecedor(
+  //     String login, String senha) async {
+  //   List resultado = await db.query(nomeTabela,
+  //       where: "login = ? and senha = ?", whereArgs: [login, senha]);
 
-    if (resultado.isNotEmpty) {
-      return Fornecedor(
-          id: resultado[0]["id"],
-          cnpj: resultado[0]["cnpj"],
-          razaoSocial: resultado[0]["razaoSocial"],
-          email: resultado[0]["email"],
-          telefone: resultado[0]["telefone"],
-          login: resultado[0]["login"],
-          senha: resultado[0]["senha"],
-          produto: resultado[0]["produto"],
-          quantidade: resultado[0]["quantidade"]);
-    } else {
-      return null;
-    }
-  }
+  //   if (resultado.isNotEmpty) {
+  //     return Fornecedor(
+  //         id: resultado[0]["id"],
+  //         cnpj: resultado[0]["cnpj"],
+  //         razaoSocial: resultado[0]["razaoSocial"],
+  //         email: resultado[0]["email"],
+  //         telefone: resultado[0]["telefone"],);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   Future<int> inserirFornecedor(Fornecedor fornecedor) async {
     int id = await db.insert(nomeTabela, fornecedor.toMap());
@@ -75,7 +67,7 @@ class FornecedoresProvider extends ChangeNotifier {
   Future<int> deletarFornecedor(Fornecedor fornecedor) async {
     int id = await db
         .delete(nomeTabela, where: "id = ?", whereArgs: [fornecedor.id]);
-    fornecedores.remove(fornecedores);
+    fornecedores.remove(fornecedor);
     notifyListeners();
     return id;
   }

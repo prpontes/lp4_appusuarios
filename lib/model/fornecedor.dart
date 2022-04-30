@@ -5,11 +5,7 @@ class Fornecedor {
   String? razaoSocial;
   String? email;
   String? telefone;
-  String? login;
-  String? senha;
-  String? produto;
-  int? quantidade;
-  String? avatar;
+  String imagem;
 
   Fornecedor({
     this.id,
@@ -17,11 +13,7 @@ class Fornecedor {
     this.razaoSocial,
     this.email,
     this.telefone,
-    this.login,
-    this.senha,
-    this.produto,
-    this.quantidade,
-    this.avatar,
+    this.imagem ="", //TODO Se não inicializar, dá erro. Se inicializar, qualquer imagem adicionada depois, volta pro estágio vazio, quando atualizado.
   });
 
   Map<String, dynamic> toMap() {
@@ -31,17 +23,12 @@ class Fornecedor {
       "razaoSocial": razaoSocial,
       "email": email,
       "telefone": telefone,
-      "login": login,
-      "senha": senha,
-      "produto": produto,
-      "quantidade": quantidade,
-      "avatar": avatar,
+      "imagem": imagem,
     };
   }
 
   @override
   String toString() {
-    return 'Fornecedor{id: $id, cnpj: $cnpj, razaoSocial: $razaoSocial, email: $email, telefone: $telefone, login: $login,'
-        'senha: $senha, produto:$produto, quantidade:$quantidade, avatar:$avatar}';
+    return 'Fornecedor{id: $id, razaoSocial: $razaoSocial, cnpj: $cnpj, , email: $email, telefone: $telefone, imagem:$imagem}';
   }
 }

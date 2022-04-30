@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 const criarTabelasLista = [
   "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)",
-  "CREATE TABLE fornecedor (id INTEGER PRIMARY KEY AUTOINCREMENT, cnpj TEXT, razaoSocial TEXT, email TEXT, telefone TEXT, login TEXT, senha TEXT, produto TEXT, quantidade INTEGER)"
+  "CREATE TABLE fornecedor (id INTEGER PRIMARY KEY AUTOINCREMENT, razaoSocial TEXT, cnpj TEXT, email TEXT, telefone TEXT, imagem TEXT)"
 ];
 
 class DatabaseSingleton {
@@ -38,6 +38,13 @@ class DatabaseSingleton {
           "login": "admin",
           "senha": "123456",
           "avatar": "",
+        });
+        await db.insert("fornecedor", {
+          "razaoSocial": "Construtora Dois Irmaos",
+          "cnpj": "01022859422",
+          "email": "construtoradoisirmaos@gmail.com",
+          "telefone": "92319709",
+          "imagem": "https://quartaparede.s3.us-east-2.amazonaws.com/wp-content/uploads/2020/03/30221043/Dois-Irmaos.jpg",
         });
         debugPrint("Database created");
       },

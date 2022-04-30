@@ -3,7 +3,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:provider/provider.dart';
-
 import '../provider/fornecedores_provider.dart';
 
 class MutateProviderDialog extends StatefulWidget {
@@ -17,13 +16,10 @@ class MutateProviderDialog extends StatefulWidget {
 class _MutateProviderDialogState extends State<MutateProviderDialog> {
   final _formKey = GlobalKey<FormState>();
   final _razaoSocialController = TextEditingController(text: "");
-  final _emailController = TextEditingController(text: "");
-  final _senhaController = TextEditingController(text: "");
-  final _avatarController = TextEditingController(text: "");
   final _cnpjController = TextEditingController(text: "");
-  final _loginController = TextEditingController(text: "");
-  final _produtoController = TextEditingController(text: "");
-  final _quantidadeController = TextEditingController(text: "");
+  final _emailController = TextEditingController(text: "");
+  final _telefoneController = TextEditingController(text: "");
+  final _imagemController = TextEditingController(text: "");
 
   late final FornecedoresProvider _fornecedoresProvider;
   @override
@@ -33,11 +29,10 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
         Provider.of<FornecedoresProvider>(context, listen: false);
     if (widget.fornecedor != null) {
       _razaoSocialController.text = widget.fornecedor!.razaoSocial!;
-      _emailController.text = widget.fornecedor!.email!;
-      _senhaController.text = widget.fornecedor!.senha!;
-      _avatarController.text = widget.fornecedor!.avatar!;
       _cnpjController.text = widget.fornecedor!.cnpj!;
-      _loginController.text = widget.fornecedor!.login!;
+      _emailController.text = widget.fornecedor!.email!;
+      _telefoneController.text = widget.fornecedor!.email!;
+      _imagemController.text = widget.fornecedor!.imagem;
     }
   }
 
@@ -46,23 +41,22 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
     final bool isUpdate = widget.fornecedor != null;
     return Scaffold(
       appBar: AppBar(
-        title: Text(isUpdate ? 'Editar fornecedor' : 'Criar fornecedor'),
+        title: Text(isUpdate ? 'Editar Fornecedor' : 'Criar Fornecedor'),
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            Fornecedor usuario = isUpdate ? widget.fornecedor! : Fornecedor();
-            usuario.razaoSocial = _razaoSocialController.text;
-            usuario.email = _emailController.text;
-            usuario.senha = _senhaController.text;
-            usuario.avatar = _avatarController.text;
-            usuario.cnpj = _cnpjController.text;
-            usuario.login = _loginController.text;
+            Fornecedor fornecedor = isUpdate ? widget.fornecedor! : Fornecedor();
+            fornecedor.razaoSocial = _razaoSocialController.text;
+            fornecedor.cnpj = _cnpjController.text;
+            fornecedor.email = _emailController.text;
+            fornecedor.telefone = _telefoneController.text;
+            fornecedor.imagem = _imagemController.text;
             if (isUpdate) {
-              await _fornecedoresProvider.editarFornecedor(usuario);
+              await _fornecedoresProvider.editarFornecedor(fornecedor);
             } else {
-              await _fornecedoresProvider.inserirFornecedor(usuario);
+              await _fornecedoresProvider.inserirFornecedor(fornecedor);
             }
             Navigator.of(context).pop();
           }
@@ -95,6 +89,26 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
                 height: 10,
               ),
               TextFormField(
+                controller: _cnpjController,
+                decoration: const InputDecoration(
+                  labelText: 'CNPJ',
+                  hintText: "CNPJ",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'CNPJ é obrigatório';
+                  }
+                  if (CPFValidator.isValid(value) == false) {
+                    return "CNPJ digitado inválido!";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
                 controller: _emailController,
                 autofillHints: const [AutofillHints.email],
                 decoration: const InputDecoration(
@@ -116,17 +130,31 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
                 height: 10,
               ),
               TextFormField(
-                controller: _senhaController,
-                autofillHints: const [AutofillHints.password],
+                controller: _telefoneController,
                 decoration: const InputDecoration(
-                  labelText: 'Senha',
-                  hintText: "Senha",
+                  labelText: 'Telefone',
+                  hintText: "Telefone",
                   border: OutlineInputBorder(),
                 ),
-                obscureText: true,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Senha é obrigatório';
+                    return 'Telefone é obrigatório';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),TextFormField(
+                controller: _imagemController,
+                decoration: const InputDecoration(
+                  labelText: 'Imagem',
+                  hintText: "Imagem",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Imagem é obrigatório';
                   }
                   return null;
                 },
@@ -134,51 +162,7 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
               const SizedBox(
                 height: 10,
               ),
-              TextFormField(
-                controller: _avatarController,
-                decoration: const InputDecoration(
-                  labelText: 'Avatar',
-                  hintText: "Avatar",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: _cnpjController,
-                decoration: const InputDecoration(
-                  labelText: 'CNPJ',
-                  hintText: "CNPJ",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'CNPJ é obrigatório';
-                  }
-                  if (CPFValidator.isValid(value) == false) {
-                    return "CNPJ digitado inválido!";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: _loginController,
-                decoration: const InputDecoration(
-                  labelText: 'Login',
-                  hintText: "Login",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Login é obrigatório';
-                  }
-                  return null;
-                },
-              ),
+              
             ],
           ),
         ),

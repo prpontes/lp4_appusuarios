@@ -84,7 +84,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       Navigator.pushNamed(context, "/telafornecedor");
                     },
                     leading: const Icon(
-                      Icons.store,
+                      Icons.add_business_outlined,
                       color: Colors.blue,
                     ),
                     title: const Text("Fornecedores"),
