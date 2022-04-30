@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../components/mutate_provider_dialog.dart';
 
 class TelaFornecedor extends StatefulWidget {
   const TelaFornecedor({Key? key}) : super(key: key);
@@ -9,28 +10,23 @@ class TelaFornecedor extends StatefulWidget {
 }
 
 class _TelaFornecedorState extends State<TelaFornecedor> {
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Lista de Fornecedores"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                    context,
-                    "/cadastrarfornecedor"
-                );
-              },
-              icon: const Icon(Icons.add)),
-          IconButton(
-              onPressed: () {
-
-              },
-              icon: const Icon(Icons.search))
-        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => const MutateProviderDialog(),
+              fullscreenDialog: true,
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
