@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/components/details_product_dialog.dart';
+import 'package:lp4_appusuarios/components/mutate_product_dialog.dart';
 import 'package:lp4_appusuarios/components/search_product_delegate.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
@@ -32,11 +33,25 @@ class _ProductsPageState extends State<ProductsPage> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: SearchProductDelegate(),
+                delegate: SearchProductDelegate(
+                  products: productProvider.products,
+                ),
               );
             },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => const MutateProductDialog(),
+              fullscreenDialog: true,
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
       body: Column(
         children: [
@@ -53,7 +68,7 @@ class _ProductsPageState extends State<ProductsPage> {
                         child: ListTile(
                           leading: product.image.isEmpty
                               ? const Icon(
-                                  Icons.no_backpack,
+                                  Icons.warning_rounded,
                                   color: Colors.blue,
                                   size: 50,
                                 )

@@ -1,4 +1,5 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
+import 'package:lp4_appusuarios/components/mutate_product_dialog.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
@@ -23,74 +24,72 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = widget.product;
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+    return Consumer<ProductProvider>(builder: (context, value, child) {
+      Product product = value.products.firstWhere(
+        (product) => product.id == widget.product.id,
+        orElse: () => Product(
+          name: "",
+          id: -1,
         ),
-        title: Text(product.name),
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () async {
-              // await Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (BuildContext context) => MutateUserDialog(
-              //       usuario: user,
-              //     ),
-              //     fullscreenDialog: true,
-              //   ),
-              // );
-            },
-          ),
-          IconButton(
-            onPressed: () async {
-              // show alert dialog
-              final bool confirm = await showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) => const DeleteDialog(
-                  title: "Excluir produto",
-                  description: "Tem certeza que deseja excluir o produto?",
-                ),
-              );
-              if (!confirm) return;
-              Navigator.pop(context);
-              await productProvider.deleteProduct(product);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                action: SnackBarAction(
-                  label: 'Desfazer',
-                  onPressed: () async {
-                    await productProvider.createProduct(product);
-                  },
-                ),
-                content: const Text('Produto deletado com sucesso!'),
-              ));
-            },
-            icon: const Icon(Icons.delete),
-          ),
-        ],
-      ),
-      body: Consumer<ProductProvider>(builder: (context, value, child) {
-        Product product = value.products.firstWhere(
-          (product) => product.id == widget.product.id,
-          orElse: () => Product(
-            name: "",
-            id: -1,
-            idFornecedor: -1,
-          ),
-        );
+      );
 
-        if (product.id == -1) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Container(
+      if (product.id == -1) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Text(product.name),
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => MutateProductDialog(
+                      product: product,
+                    ),
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              onPressed: () async {
+                // show alert dialog
+                final bool confirm = await showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) => const DeleteDialog(
+                    title: "Excluir produto",
+                    description: "Tem certeza que deseja excluir o produto?",
+                  ),
+                );
+                if (!confirm) return;
+                Navigator.pop(context);
+                await productProvider.deleteProduct(product);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  action: SnackBarAction(
+                    label: 'Desfazer',
+                    onPressed: () async {
+                      await productProvider.createProduct(product);
+                    },
+                  ),
+                  content: const Text('Produto deletado com sucesso!'),
+                ));
+              },
+              icon: const Icon(Icons.delete),
+            ),
+          ],
+        ),
+        body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           color: Theme.of(context).primaryColor,
@@ -138,31 +137,6 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.remove_circle_outline),
-                              ),
-                              Text(
-                                "${product.quantity}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.add_circle_outline),
-                              )
-                            ],
-                          )
                         ],
                       ),
                     ),
@@ -220,8 +194,8 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
               ),
             ],
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 }

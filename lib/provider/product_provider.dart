@@ -20,7 +20,6 @@ class ProductProvider extends ChangeNotifier {
         price: productsList[index]["price"],
         image: productsList[index]["image"],
         idFornecedor: productsList[index]["idFornecedor"],
-        quantity: productsList[index]["quantity"],
       );
     });
 
@@ -40,19 +39,22 @@ class ProductProvider extends ChangeNotifier {
         price: resultado[0]["price"],
         image: resultado[0]["image"],
         idFornecedor: resultado[0]["idFornecedor"],
-        quantity: resultado[0]["quantity"],
       );
     } else {
       return null;
     }
   }
 
-  Future<int> createProduct(Product product) async {
+  Future<bool> createProduct(Product product) async {
+    debugPrint(product.toMap().toString());
     int id = await db.insert(tableName, product.toMap());
-    product.id = id;
-    products.add(product);
-    notifyListeners();
-    return id;
+    if (id != 0) {
+      product.id = id;
+      products.add(product);
+      notifyListeners();
+      return true;
+    }
+    return false;
   }
 
   Future<bool> updateProduct(Product product) async {
