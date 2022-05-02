@@ -1,12 +1,10 @@
-
 import 'package:flutter/material.dart';
-import '../view/sales.page.dart';
-
+import '../view/sell_page.dart';
 
 class detalheVendas extends StatefulWidget {
- 
-
-   detalheVendas({ Key? key,}) : super(key: key);
+  detalheVendas({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _detalheVendasState createState() => _detalheVendasState();
@@ -16,65 +14,41 @@ class _detalheVendasState extends State<detalheVendas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
-        title: Text("Detalhes da Venda"),
-        actions: []
-        ),
-       
-      body: Column(children: [
-      
-                        const Icon(
-                            Icons.price_check_outlined,
-                            color: Colors.blue,
-                            size: 150,
-                          ),
-                       
+      appBar: AppBar(title: Text("Detalhes da Venda"), actions: []),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        height: 180,
+        width: double.maxFinite,
+        child: Card(
+          elevation: 5,
+          child: Padding(
+            padding: EdgeInsets.all(7),
+            child: Stack(children: <Widget>[
+              Align(
+                alignment: Alignment.centerRight,
+                child: Stack(
+                  children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Nome do Produto: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          
-                        ],
-                      ),
-                    ),
-                    
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Cliente: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                         
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Fornecedor: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        
-                        ],
-                      ),
-                    ),
-                   
-      ]),
+                        padding: const EdgeInsets.only(left: 10, top: 5),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                              Image.network('https://vxcase.vteximg.com.br/arquivos/ids/267650-1000-1000/acessorios-vxcase-22379.png?v=637079860645670000'),
+                              SizedBox(
+                              height: 10,
+                               ),
+                            ])
 
+                          ],
+                        ))
+                  ],
+                ),
+              )
+            ]),
+          ),
+        ),
+      ),
     );
   }
 }
