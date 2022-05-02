@@ -55,21 +55,24 @@ class SearchProductDelegate extends SearchDelegate<String> {
       itemBuilder: (context, index) {
         final product = listProducts[index];
         return ListTile(
-          leading: product.image == ""
-              ? const Icon(
-                  Icons.warning_rounded,
-                  color: Colors.blue,
-                  size: 50,
-                )
-              : SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      product.image,
+          leading: Hero(
+            tag: "${product.id}",
+            child: product.image == ""
+                ? const Icon(
+                    Icons.warning_rounded,
+                    color: Colors.blue,
+                    size: 50,
+                  )
+                : SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        product.image,
+                      ),
                     ),
                   ),
-                ),
+          ),
           title: Text(product.name),
           subtitle: Text(product.description),
           onTap: () {
