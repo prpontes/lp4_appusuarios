@@ -98,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    setState(() => loading = false);
                   },
                   child: const Text("Ok"))
             ],
