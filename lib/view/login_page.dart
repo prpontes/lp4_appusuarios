@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   Usuario? usuarioAutenticado;
 
   _recuperarSenha(){
+    controllerRecuperarSenha.clear();
     return showDialog(
       context: context,
       builder: (context) {
