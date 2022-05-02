@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../model/usuario.dart';
@@ -12,6 +13,10 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   late Usuario usuarioAutenticado;
+
+  logoutFirebaseAuth() async {
+    await FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +62,7 @@ class _MenuState extends State<Menu> {
                           ),
                         )
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     TextField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
@@ -132,6 +137,7 @@ class _MenuState extends State<Menu> {
           const Divider(color: Colors.black26),
           ListTile(
             onTap: () {
+              logoutFirebaseAuth;
               Navigator.pushReplacementNamed(context, "/");
             },
             leading: const Icon(Icons.logout, color: Colors.blue,),

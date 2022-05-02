@@ -236,6 +236,7 @@ class _TelaLoginState extends State<TelaLogin> {
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    setState(() => loading = false);
                   },
                   child: const Text("Ok"))
             ],
@@ -276,6 +277,7 @@ class _TelaLoginState extends State<TelaLogin> {
           "/telainicio",
         );
       } on FirebaseAuthException catch (e) {
+        setState(() => loading = false);
         var msg_erro = "";
         if (e.code == 'user-not-found') {
           msg_erro = 'Nenhum usuário encontrado com esse e-mail.';
@@ -313,7 +315,7 @@ class _TelaLoginState extends State<TelaLogin> {
           children: [
             TextField(
               controller: controllerUsuario,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.email,
@@ -344,7 +346,7 @@ class _TelaLoginState extends State<TelaLogin> {
               onPressed: () {
                 _autenticacao();
               },
-              child: const Text(
+              child: (loading == true) ? const CircularProgressIndicator(color: Colors.white,) : const Text(
                 "ENTRAR",
                 style: TextStyle(
                   fontSize: 17,
