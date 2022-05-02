@@ -1,4 +1,5 @@
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
+import 'package:lp4_appusuarios/provider/sell_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:lp4_appusuarios/view/home_page.dart';
@@ -23,6 +24,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => SellProvider(),
+        )
       ],
       child: MaterialApp(
         themeMode: ThemeMode.light,
