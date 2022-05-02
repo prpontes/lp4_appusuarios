@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import '../view/sell_page.dart';
 
-class detalheVendas extends StatefulWidget {
-  detalheVendas({
+class DetalheVendas extends StatefulWidget {
+  const DetalheVendas({
     Key? key,
   }) : super(key: key);
 
   @override
-  _detalheVendasState createState() => _detalheVendasState();
+  _DetalheVendasState createState() => _DetalheVendasState();
 }
 
-class _detalheVendasState extends State<detalheVendas> {
+class _DetalheVendasState extends State<DetalheVendas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

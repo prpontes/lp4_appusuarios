@@ -39,6 +39,18 @@ class DatabaseSingleton {
           "senha": "123456",
           "avatar": "",
         });
+        await db.insert("sell",{
+          "date" : "25/02/2020",
+          "id_user" : 1,
+        });
+          await db.insert("sell",{
+          "date" : "10/07/2022",
+          "id_user" : 1,
+        });
+        await db.insert("sell",{
+          "date" : "26/11/2019",
+          "id_user" : 1,
+        });
         debugPrint("Database created");
       },
       version: 1,

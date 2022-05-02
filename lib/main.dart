@@ -4,7 +4,7 @@ import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:lp4_appusuarios/view/home_page.dart';
 import 'package:lp4_appusuarios/view/login_page.dart';
-import 'package:lp4_appusuarios/view/sales.page.dart';
+import 'package:lp4_appusuarios/view/sell_page.dart';
 import 'package:lp4_appusuarios/view/users_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
