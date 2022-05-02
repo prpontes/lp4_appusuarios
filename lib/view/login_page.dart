@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 _autenticacao();
               },
-              child: (loading == true) ? CircularProgressIndicator(color: Colors.white,) : const Text(
+              child: (loading == true) ? const CircularProgressIndicator(color: Colors.white,) : const Text(
                 "ENTRAR",
                 style: TextStyle(
                   fontSize: 17,

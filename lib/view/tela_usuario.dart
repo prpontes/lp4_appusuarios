@@ -59,7 +59,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     }
   }
 
-
   _addUsuarioFirestore(Usuario u) async
   {
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
@@ -267,7 +266,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          (loading == true) ? Center(child: CircularProgressIndicator()) :
+          (loading == true) ? const Center(child: CircularProgressIndicator()) :
           Expanded(
             child: ListView.builder(
                 itemCount: usuarios.length,

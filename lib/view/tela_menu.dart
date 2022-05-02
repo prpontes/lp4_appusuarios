@@ -14,7 +14,7 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   late Usuario usuarioAutenticado;
 
-  logoutFireAuth() async {
+  logoutFirebaseAuth() async {
     await FirebaseAuth.instance.signOut();
   }
 
@@ -62,7 +62,7 @@ class _MenuState extends State<Menu> {
                           ),
                         )
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     TextField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
@@ -137,7 +137,7 @@ class _MenuState extends State<Menu> {
           const Divider(color: Colors.black26),
           ListTile(
             onTap: () {
-              logoutFireAuth;
+              logoutFirebaseAuth;
               Navigator.pushReplacementNamed(context, "/");
             },
             leading: const Icon(Icons.logout, color: Colors.blue,),
