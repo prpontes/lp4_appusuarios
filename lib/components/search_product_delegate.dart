@@ -57,7 +57,7 @@ class SearchProductDelegate extends SearchDelegate<String> {
         return ListTile(
           leading: product.image == ""
               ? const Icon(
-                  Icons.account_circle,
+                  Icons.warning_rounded,
                   color: Colors.blue,
                   size: 50,
                 )
