@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController controllerUsuario = TextEditingController();
   TextEditingController controllerSenha = TextEditingController();
   TextEditingController controllerRecuperarSenha = TextEditingController();
-
+  bool loading = false;
   var banco = Banco();
   Usuario? usuarioAutenticado;
 
@@ -86,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
   } // fim do _recuperarSenha
 
   _autenticacao() async {
+    setState(() => loading = true);
     if (controllerUsuario.text == "" || controllerSenha.text == "") {
       return showDialog(
         context: context,
@@ -136,6 +137,7 @@ class _LoginPageState extends State<LoginPage> {
           "/telainicio",
         );
       } on FirebaseAuthException catch (e) {
+        setState(() => loading = false);
         var msg_erro = "";
         if (e.code == 'user-not-found') {
           msg_erro = 'Nenhum usuário encontrado com esse e-mail.';
@@ -179,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             TextField(
               controller: controllerUsuario,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.email,
@@ -210,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 _autenticacao();
               },
-              child: const Text(
+              child: (loading == true) ? CircularProgressIndicator(color: Colors.white,) : const Text(
                 "ENTRAR",
                 style: TextStyle(
                   fontSize: 17,

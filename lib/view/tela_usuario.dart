@@ -37,7 +37,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
   List<Usuario> usuarios = [];
   Usuario? usuarioAutenticado;
-
+  bool loading = true;
   final GlobalKey<FormState> _formKeyAddUsuario = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyEditUsuario = GlobalKey<FormState>();
 
@@ -104,6 +104,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     );
     setState(() {
       this.usuarios;
+      loading = false;
     });
   }
 
@@ -264,7 +265,9 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          (loading == true) ? Center(child: CircularProgressIndicator()) :
           Expanded(
             child: ListView.builder(
                 itemCount: usuarios.length,
