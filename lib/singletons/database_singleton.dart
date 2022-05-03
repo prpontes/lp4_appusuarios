@@ -4,6 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 const criarTabelasLista = [
   "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)",
+  "CREATE TABLE fornecedor (id INTEGER PRIMARY KEY AUTOINCREMENT, razaoSocial TEXT, cnpj TEXT, email TEXT, telefone TEXT, imagem TEXT)",
   "CREATE TABLE sell (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, id_user INTEGER, FOREIGN KEY (id_user) REFERENCES usuario(id))",
 ];
 
@@ -38,18 +39,6 @@ class DatabaseSingleton {
           "login": "admin",
           "senha": "123456",
           "avatar": "",
-        });
-        await db.insert("sell",{
-          "date" : "25/02/2020",
-          "id_user" : 1,
-        });
-          await db.insert("sell",{
-          "date" : "10/07/2022",
-          "id_user" : 1,
-        });
-        await db.insert("sell",{
-          "date" : "26/11/2019",
-          "id_user" : 1,
         });
         debugPrint("Database created");
       },
