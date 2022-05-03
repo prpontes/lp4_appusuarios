@@ -6,6 +6,7 @@ const criarTabelasLista = [
   "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT)",
   "CREATE TABLE fornecedor (id INTEGER PRIMARY KEY AUTOINCREMENT, razaoSocial TEXT, cnpj TEXT, email TEXT, telefone TEXT, imagem TEXT)",
   "CREATE TABLE sell (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, id_user INTEGER, FOREIGN KEY (id_user) REFERENCES usuario(id))",
+  "CREATE TABLE item_venda(id INTEGER PRIMARY KEY AUTOINCREMENT, quantidade INTEGER, price TEXT, id_produto INTEGER, FOREIGN KEY (id_produto) REFERENCES product(id), id_venda INTEGER, FOREIGN KEY(id_venda) REFERENCES sell(id))",
   "CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, price REAL, image TEXT, quantity INTEGER, idFornecedor INTEGER, FOREIGN KEY(idFornecedor) REFERENCES fornecedor(id))",
 ];
 
