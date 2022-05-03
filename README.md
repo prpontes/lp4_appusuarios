@@ -22,7 +22,7 @@
 ```bash
 git clone https://github.com/prpontes/lp4_appusuarios.git
 # ou
-Fazer o download em Zip pelo Github (Não recomendado)
+Fazer o download em Zip, pelo Github (Não recomendado)
 ```
 
 2 - Depois, atualize os pacotes dem pubspec.yaml:
@@ -47,3 +47,4 @@ use atalhos da sua IDE (Android Stúdio ou VSCode)
 - Se encontrar problemas, faça uma issue!
 - Poste dúvidas ou sugestões na aba Discussões.
 - Há um digrama de classe em `"/docs/Digrama de classe.drawio"` (Em construção).
+-testetestetestetestetestestestes
