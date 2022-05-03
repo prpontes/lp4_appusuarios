@@ -1,33 +1,31 @@
-import 'package:lp4_appusuarios/components/details_user_dialog.dart';
-import 'package:lp4_appusuarios/components/mutate_user_dialog.dart';
-import 'package:lp4_appusuarios/components/search_user_delegate.dart';
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
+import '../components/details_provider_dialog.dart';
+import '../components/mutate_provider_dialog.dart';
+import '../components/search_provider_delegate.dart';
+import '../provider/fornecedores_provider.dart';
 
-class TelaUsuario extends StatefulWidget {
-  const TelaUsuario({Key? key}) : super(key: key);
+class TelaFornecedor extends StatefulWidget {
+  const TelaFornecedor({Key? key}) : super(key: key);
 
   @override
-  State<TelaUsuario> createState() => _TelaUsuarioState();
+  State<TelaFornecedor> createState() => _TelaFornecedorState();
 }
 
-class _TelaUsuarioState extends State<TelaUsuario> {
-  late UsuarioProvider usuarioProvider;
+class _TelaFornecedorState extends State<TelaFornecedor> {
+  late FornecedoresProvider fornecedorProvider;
 
   @override
   void initState() {
     super.initState();
-    usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    usuarioProvider.listarUsuarios();
+    fornecedorProvider = Provider.of<FornecedoresProvider>(context, listen: false);
+    fornecedorProvider.listarFornecedores();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Lista de usuários"),
-        // input Search bar on changed
+        title: const Text("Lista de Fornecedores"),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search),
@@ -35,29 +33,29 @@ class _TelaUsuarioState extends State<TelaUsuario> {
               showSearch(
                 context: context,
                 delegate:
-                    SearchUserDelegate(usuarios: usuarioProvider.usuarios),
+                    SearchProviderDelegate(fornecedores: fornecedorProvider.fornecedores),
               );
             },
           ),
         ],
       ),
       body: Column(
-        children: [
+        children:[
           Expanded(
-            child: Consumer<UsuarioProvider>(
-              builder: (BuildContext context, value, Widget? child) {
-                final usuarios = value.usuarios;
+            child: Consumer<FornecedoresProvider>(
+              builder:(BuildContext context, value, Widget? child){
+                final fornecedores = value.fornecedores;
                 return ListView.builder(
-                  itemCount: usuarios.length,
+                  itemCount: fornecedores.length,
                   itemBuilder: (context, index) {
-                    if (usuarios.isNotEmpty == true) {
-                      final usuario = usuarios[index];
+                    if(fornecedores.isNotEmpty == true){
+                      final fornecedor = fornecedores[index];
                       return Card(
                         child: ListTile(
-                          leading: usuario.avatar == ""
+                          leading: fornecedor.imagem == ""
                               ? const Icon(
                                   Icons.account_circle,
-                                  color: Colors.blue,
+                                  color: Colors.pink,
                                   size: 50,
                                 )
                               : SizedBox(
@@ -65,42 +63,42 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                   height: 50,
                                   child: CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                      usuario.avatar,
+                                      fornecedor.imagem,
                                     ),
                                   ),
                                 ),
-                          title: Text(usuario.nome!),
-                          subtitle: Text(usuario.email!),
+                                title: Text(fornecedor.razaoSocial!),
+                          subtitle: Text(fornecedor.email!),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    DetailsUserDialog(
-                                  usuario: usuario,
+                                    DetailsProviderDialog(
+                                  fornecedor: fornecedor,
                                 ),
                                 fullscreenDialog: true,
                               ),
                             );
                           },
-                        ),
+                        )
                       );
                     } else {
-                      return const Text("nenhum usuário");
+                      return const Text("Nenhum fornecedor encontrado!");
                     }
                   },
                 );
-              },
-            ),
-          )
-        ],
+              }
+            )
+            )
+        ]
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (BuildContext context) => const MutateUserDialog(),
+              builder: (BuildContext context) => const MutateProviderDialog(),
               fullscreenDialog: true,
             ),
           );

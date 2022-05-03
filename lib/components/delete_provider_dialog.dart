@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class DeleteDialog extends StatefulWidget {
+class DeleteProviderDialog extends StatefulWidget {
   final String title;
   final String description;
-  const DeleteDialog({Key? key, this.title = "", this.description = ""})
+  const DeleteProviderDialog({Key? key, this.title = "", this.description = ""})
       : super(key: key);
 
   @override
-  State<DeleteDialog> createState() => _DeleteDialogState();
+  State<DeleteProviderDialog> createState() => _DeleteProviderDialogState();
 }
 
-class _DeleteDialogState extends State<DeleteDialog> {
+class _DeleteProviderDialogState extends State<DeleteProviderDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

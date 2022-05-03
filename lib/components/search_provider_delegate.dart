@@ -1,13 +1,13 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/components/details_user_dialog.dart';
-import 'package:lp4_appusuarios/model/usuario.dart';
+import '../model/fornecedor.dart';
+import 'details_provider_dialog.dart';
 
-class SearchUserDelegate extends SearchDelegate<String> {
-  List<Usuario> usuarios;
+class SearchProviderDelegate extends SearchDelegate<String> {
+  List<Fornecedor> fornecedores;
 
-  SearchUserDelegate({required this.usuarios})
-      : super(searchFieldLabel: "Buscar usuários");
+  SearchProviderDelegate({required this.fornecedores})
+      : super(searchFieldLabel: "Buscar fornecedores");
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -41,25 +41,24 @@ class SearchUserDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final listaUsuarios = query.isEmpty
-        ? usuarios
-        : usuarios
+    final listaFornecedores = query.isEmpty
+        ? fornecedores
+        : fornecedores
             .where(
               (p) =>
-                  removeDiacritics(p.nome!.toLowerCase())
+                  removeDiacritics(p.razaoSocial!.toLowerCase())
                       .contains(removeDiacritics(query.toLowerCase())) ||
                   p.email!.toLowerCase().contains(query.toLowerCase()) ||
-                  p.login!.toLowerCase().contains(query.toLowerCase()) ||
-                  p.cpf!.toLowerCase().contains(query.toLowerCase()),
+                  p.cnpj!.toLowerCase().contains(query.toLowerCase()),
             )
             .toList();
 
     return ListView.builder(
-      itemCount: listaUsuarios.length,
+      itemCount: listaFornecedores.length,
       itemBuilder: (context, index) {
-        final usuario = listaUsuarios[index];
+        final fornecedor = listaFornecedores[index];
         return ListTile(
-          leading: usuario.avatar == ""
+          leading: fornecedor.imagem == ""
               ? const Icon(
                   Icons.account_circle,
                   color: Colors.blue,
@@ -70,18 +69,18 @@ class SearchUserDelegate extends SearchDelegate<String> {
                   height: 50,
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                      usuario.avatar,
+                      fornecedor.imagem,
                     ),
                   ),
                 ),
-          title: Text(usuario.nome!),
-          subtitle: Text(usuario.email!),
+          title: Text(fornecedor.razaoSocial!),
+          subtitle: Text(fornecedor.email!),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => DetailsUserDialog(
-                  usuario: usuario,
+                builder: (BuildContext context) => DetailsProviderDialog(
+                  fornecedor: fornecedor,
                 ),
                 fullscreenDialog: true,
               ),

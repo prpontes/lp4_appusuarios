@@ -25,24 +25,24 @@ class _TelaInicioState extends State<TelaInicio> {
                   height: 100,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/telausuario");
+                      Navigator.pushNamed(context, "/telafornecedor");
                     },
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red),
+                          MaterialStateProperty.all<Color>(Colors.pinkAccent),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Icon(
-                          Icons.store,
+                          Icons.add_business_outlined,
                           size: 50,
                         ),
                         SizedBox(
                           width: 15,
                         ),
                         Text(
-                          "Usuários",
+                          "Fornecedores",
                           style: TextStyle(fontSize: 30),
                         ),
                       ],

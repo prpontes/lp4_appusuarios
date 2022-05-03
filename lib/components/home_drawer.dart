@@ -72,17 +72,21 @@ class _HomeDrawerState extends State<HomeDrawer> {
               child: Column(
                 children: [
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/productspage");
+                    },
                     leading: const Icon(
                       Icons.shopping_cart,
                       color: Colors.blue,
                     ),
-                    title: const Text("Produtos"),
+                    title: const Text("Carrinho"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/telafornecedor");
+                    },
                     leading: const Icon(
-                      Icons.store,
+                      Icons.add_business_outlined,
                       color: Colors.blue,
                     ),
                     title: const Text("Fornecedores"),
@@ -96,6 +100,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       color: Colors.blue,
                     ),
                     title: const Text("Clientes"),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/telavendas");
+                    },
+                    leading: const Icon(
+                      Icons.monetization_on,
+                      color: Colors.blue,
+                    ),
+                    title: const Text("Vendas"),
                   ),
                   ListTile(
                     onTap: () {

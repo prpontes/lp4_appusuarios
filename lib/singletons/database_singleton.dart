@@ -3,9 +3,10 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 const criarTabelasLista = [
- "CREATE TABLE endereco(id INTEGER PRIMARY KEY AUTOINCREMENT, rua TEXT, bairro TEXT, cep TEXT, cidade TEXT, numero INTEGER, complemento TEXT)",
   "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT,telefone TEXT,isAdmin BOOLEAN)",
-
+  "CREATE TABLE fornecedor (id INTEGER PRIMARY KEY AUTOINCREMENT, razaoSocial TEXT, cnpj TEXT, email TEXT, telefone TEXT, imagem TEXT)",
+  "CREATE TABLE sell (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, id_user INTEGER, FOREIGN KEY (id_user) REFERENCES usuario(id))",
+  "CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, price REAL, image TEXT, quantity INTEGER, idFornecedor INTEGER, FOREIGN KEY(idFornecedor) REFERENCES fornecedor(id))",
 ];
 
 class DatabaseSingleton {
@@ -24,7 +25,7 @@ class DatabaseSingleton {
     String dir = join(await getDatabasesPath(), "database.db");
 
     // delete database
-    // await deleteDatabase(dir);
+    await deleteDatabase(dir);
     DatabaseSingleton.instance.db = await openDatabase(
       dir,
       onCreate: (db, version) async {
@@ -34,13 +35,13 @@ class DatabaseSingleton {
         //  criar usuario admin apenas ao criar o banco
         await db.insert("usuario", {
           "cpf": "12345678910",
-          "nome": "admin",
+          "nome": "Admin",
           "email": "admin@gmail.com",
           "login": "admin",
           "senha": "123456",
           "avatar": "",
           "telefone": "(00)0000-0000",
-          "isAdmin": true,
+          "isAdmin": true
         });
         debugPrint("Database created");
       },
