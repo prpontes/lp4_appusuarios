@@ -72,7 +72,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
               child: Column(
                 children: [
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/productspage");
+                    },
                     leading: const Icon(
                       Icons.shopping_cart,
                       color: Colors.blue,

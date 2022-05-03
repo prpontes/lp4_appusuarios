@@ -1,10 +1,12 @@
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
+import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:lp4_appusuarios/provider/sell_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:lp4_appusuarios/view/home_page.dart';
 import 'package:lp4_appusuarios/view/login_page.dart';
+import 'package:lp4_appusuarios/view/products_page.dart';
 import 'package:lp4_appusuarios/view/providers_page.dart';
 import 'package:lp4_appusuarios/view/sell_page.dart';
 import 'package:lp4_appusuarios/view/users_page.dart';
@@ -27,10 +29,13 @@ void main() async {
           create: (_) => AuthProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => FornecedoresProvider(),
+          create: (_) => ProductProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => SellProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FornecedoresProvider(),
         ),
       ],
       child: MaterialApp(
@@ -50,6 +55,7 @@ void main() async {
           "/": (context) => const TelaLogin(),
           "/telainicio": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(),
+          "/productspage": (context) => const ProductsPage(),
           "/telafornecedor": (context) => const TelaFornecedor(),
           "/telavendas": (context) => const TelaVendas(),
         },
