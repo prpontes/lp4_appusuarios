@@ -77,7 +77,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       Icons.shopping_cart,
                       color: Colors.blue,
                     ),
-                    title: const Text("Produtos"),
+                    title: const Text("Carrinho"),
                   ),
                   ListTile(
                     onTap: () {
@@ -99,6 +99,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   ),
                   ListTile(
                     onTap: () {
+                      Navigator.pushNamed(context, "/telavendas");
+                    },
+                    leading: const Icon(
+                      Icons.monetization_on,
+                      color: Colors.blue,
+                    ),
+                    title: const Text("Vendas"),
+                  ),
+                  ListTile(
+                    onTap: () {
                       Navigator.pushNamed(context, "/telausuario");
                     },
                     leading: const Icon(
@@ -106,6 +116,17 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       color: Colors.blue,
                     ),
                     title: const Text("Usuários"),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/telavendas");
+ 
+                    },
+                    leading: const Icon(
+                      Icons.monetization_on,
+                      color: Colors.blue,
+                    ),
+                    title: const Text("Vendas"),
                   ),
                   ListTile(
                     onTap: () {},
