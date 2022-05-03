@@ -44,15 +44,15 @@ class SearchUserDelegate extends SearchDelegate<String> {
     final listaUsuarios = query.isEmpty
         ? usuarios
         : usuarios
-            .where(
-              (p) =>
-                  removeDiacritics(p.nome!.toLowerCase())
-                      .contains(removeDiacritics(query.toLowerCase())) ||
-                  p.email!.toLowerCase().contains(query.toLowerCase()) ||
-                  p.login!.toLowerCase().contains(query.toLowerCase()) ||
-                  p.cpf!.toLowerCase().contains(query.toLowerCase()),
-            )
-            .toList();
+        .where(
+          (p) =>
+      removeDiacritics(p.nome!.toLowerCase())
+          .contains(removeDiacritics(query.toLowerCase())) ||
+          p.email!.toLowerCase().contains(query.toLowerCase()) ||
+          p.login!.toLowerCase().contains(query.toLowerCase()) ||
+          p.cpf!.toLowerCase().contains(query.toLowerCase()),
+    )
+        .toList();
 
     return ListView.builder(
       itemCount: listaUsuarios.length,
@@ -61,19 +61,19 @@ class SearchUserDelegate extends SearchDelegate<String> {
         return ListTile(
           leading: usuario.avatar == ""
               ? const Icon(
-                  Icons.account_circle,
-                  color: Colors.blue,
-                  size: 50,
-                )
+            Icons.account_circle,
+            color: Colors.blue,
+            size: 50,
+          )
               : SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      usuario.avatar,
-                    ),
-                  ),
-                ),
+            width: 50,
+            height: 50,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                usuario.avatar,
+              ),
+            ),
+          ),
           title: Text(usuario.nome!),
           subtitle: Text(usuario.email!),
           onTap: () {

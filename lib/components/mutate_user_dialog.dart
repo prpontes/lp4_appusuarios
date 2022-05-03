@@ -5,6 +5,18 @@ import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
+// FUNÇÃO PARA VALIDAÇÃO DE NUMERO DE TELEFONE
+String? validateMobile(String value) {
+  String pattern = r'(^\(?[1-9]{2}\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$)';
+  RegExp regExp = new RegExp(pattern);
+  if (value.length == 0) {
+    return 'Por favor, insira um numero!';
+  } else if (!regExp.hasMatch(value)) {
+    return 'Por favor, coloque um telefone valido!';
+  }
+  return null;
+}
+
 class MutateUserDialog extends StatefulWidget {
   final Usuario? usuario;
   const MutateUserDialog({Key? key, this.usuario}) : super(key: key);
@@ -194,6 +206,21 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                   }
 
                   return null;
+                },
+              ),
+              TextFormField(
+                controller: _telefoneController,
+                decoration: const InputDecoration(
+                  labelText: 'telefone',
+                  hintText: "Telefone",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Telefone é obrigatório';
+                  }else{
+                    return validateMobile(value);
+                  }
                 },
               ),
             ],
