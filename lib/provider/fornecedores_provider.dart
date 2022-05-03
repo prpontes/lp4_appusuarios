@@ -20,12 +20,12 @@ class FornecedoresProvider extends ChangeNotifier {
 
     fornecedores = List.generate(lista.length, (index) {
       return Fornecedor(
-        id: lista[index]["id"],
-        cnpj: lista[index]["cnpj"],
-        razaoSocial: lista[index]["razaoSocial"],
-        email: lista[index]["email"],
-        telefone: lista[index]["telefone"],
-      );
+          id: lista[index]["id"],
+          cnpj: lista[index]["cnpj"],
+          razaoSocial: lista[index]["razaoSocial"],
+          email: lista[index]["email"],
+          telefone: lista[index]["telefone"],
+          imagem: lista[index]["imagem"]);
     });
     notifyListeners();
     return fornecedores;

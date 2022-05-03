@@ -13,7 +13,7 @@ class Fornecedor {
     this.razaoSocial,
     this.email,
     this.telefone,
-    this.imagem ="", //TODO Se não inicializar, dá erro. Se inicializar, qualquer imagem adicionada depois, volta pro estágio vazio, quando atualizado.
+    this.imagem = "",
   });
 
   Map<String, dynamic> toMap() {
