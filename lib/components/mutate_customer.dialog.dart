@@ -17,15 +17,15 @@ String? validateMobile(String value) {
   return null;
 }
 
-class MutateUserDialog extends StatefulWidget {
+class MutateCustomerDialog extends StatefulWidget {
   final Usuario? usuario;
-  const MutateUserDialog({Key? key, this.usuario}) : super(key: key);
+  const MutateCustomerDialog({Key? key, this.usuario}) : super(key: key);
 
   @override
-  State<MutateUserDialog> createState() => _MutateUserDialogState();
+  State<MutateCustomerDialog> createState() => _MutateCustomerDialogState();
 }
 
-class _MutateUserDialogState extends State<MutateUserDialog> {
+class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController(text: "");
   final _emailController = TextEditingController(text: "");
@@ -33,7 +33,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
   final _avatarController = TextEditingController(text: "");
   final _cpfController = TextEditingController(text: "");
   final _loginController = TextEditingController(text: "");
-  final _telefoneController = TextEditingController(text:  "" );
+  final _telefoneController = TextEditingController(text: "");
 
 
   late final UsuarioProvider _usuarioProvider;
@@ -72,7 +72,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
             usuario.cpf = _cpfController.text;
             usuario.login = _loginController.text;
             usuario.telefone= _telefoneController.text;
-            usuario.isAdmin= true;
+            usuario.isAdmin= false;
             if (isUpdate) {
               await _usuarioProvider.editarUsuario(usuario);
             } else {
@@ -203,23 +203,8 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Telefone é obrigatório';
-                  }
-
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _telefoneController,
-                decoration: const InputDecoration(
-                  labelText: 'telefone',
-                  hintText: "Telefone",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Telefone é obrigatório';
                   }else{
-                    return validateMobile(value);
+                  return validateMobile(value);
                   }
                 },
               ),

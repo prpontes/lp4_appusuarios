@@ -4,6 +4,7 @@ import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:lp4_appusuarios/provider/sell_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
+import 'package:lp4_appusuarios/view/customers_page.dart';
 import 'package:lp4_appusuarios/view/home_page.dart';
 import 'package:lp4_appusuarios/view/login_page.dart';
 import 'package:lp4_appusuarios/view/products_page.dart';
@@ -58,6 +59,7 @@ void main() async {
           "/productspage": (context) => const ProductsPage(),
           "/telafornecedor": (context) => const TelaFornecedor(),
           "/telavendas": (context) => const TelaVendas(),
+          "/telacliente": (context) => const TelaCliente(),
         },
       ),
     ),

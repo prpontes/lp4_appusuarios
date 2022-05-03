@@ -54,7 +54,7 @@ class _TelaInicioState extends State<TelaInicio> {
                   height: 100,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/telausuario");
+                      Navigator.pushNamed(context, "/telacliente");
                     },
                     style: ButtonStyle(
                       backgroundColor:

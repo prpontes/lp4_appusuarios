@@ -9,8 +9,13 @@ class UsuarioProvider extends ChangeNotifier {
 
   List<Usuario> usuarios = [];
 
+  UsuarioProvider() {
+    debugPrint("UsuarioProvider()");
+    // listarUsuarios();
+  }
+
   Future<List<Usuario>> listarUsuarios() async {
-    List lista = await db.query(nomeTabela);
+    List lista = await db.query(nomeTabela, where:" isAdmin=?", whereArgs: [1]);
 
     usuarios = List.generate(lista.length, (index) {
       return Usuario(
@@ -21,6 +26,29 @@ class UsuarioProvider extends ChangeNotifier {
         login: lista[index]["login"],
         senha: lista[index]["senha"],
         avatar: lista[index]["avatar"],
+        telefone: lista[index]["telefone"],
+
+      );
+    });
+    notifyListeners();
+    return usuarios;
+  }
+
+  Future<List<Usuario>> listarClientes() async {
+
+    List lista = await db.query(nomeTabela,where:" isAdmin=?", whereArgs: [0]);
+
+    usuarios = List.generate(lista.length, (index) {
+      return Usuario(
+        id: lista[index]["id"],
+        cpf: lista[index]["cpf"],
+        nome: lista[index]["nome"],
+        email: lista[index]["email"],
+        login: lista[index]["login"],
+        senha: lista[index]["senha"],
+        avatar: lista[index]["avatar"],
+        telefone: lista[index]["telefone"],
+
       );
     });
     notifyListeners();
@@ -39,7 +67,10 @@ class UsuarioProvider extends ChangeNotifier {
           email: resultado[0]["email"],
           login: resultado[0]["login"],
           senha: resultado[0]["senha"],
-          avatar: resultado[0]["avatar"]);
+          avatar: resultado[0]["avatar"],
+          telefone: resultado[0]["telefone"],
+
+      );
     } else {
       return null;
     }
@@ -53,27 +84,19 @@ class UsuarioProvider extends ChangeNotifier {
     return id;
   }
 
-  Future<bool> editarUsuario(Usuario usuario) async {
-    int result = await db.update(nomeTabela, usuario.toMap(),
+  Future<int> editarUsuario(Usuario usuario) async {
+    int id = await db.update(nomeTabela, usuario.toMap(),
         where: "id = ?", whereArgs: [usuario.id]);
-    if (result > 0) {
-      await listarUsuarios();
-      return true;
-    } else {
-      debugPrint("Não foi possível deletar o usuário");
-      return false;
-    }
+    debugPrint(id.toString());
+    notifyListeners();
+    return id;
   }
 
-  Future<bool> deletarUsuario(Usuario usuario) async {
-    int result =
+  Future<int> deletarUsuario(Usuario usuario) async {
+    int id =
         await db.delete(nomeTabela, where: "id = ?", whereArgs: [usuario.id]);
-    if (result > 0) {
-      await listarUsuarios();
-      return true;
-    } else {
-      debugPrint("Não foi possível deletar o usuário");
-      return false;
-    }
+    usuarios.remove(usuario);
+    notifyListeners();
+    return id;
   }
 }

@@ -113,6 +113,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                     email: "",
                     avatar: "",
                     cpf: "",
+
                   ),
                 );
 
@@ -216,6 +217,29 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                             "******",
                             style: TextStyle(fontSize: 20),
                           )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:  [
+                          Text(
+                            "isAdmin: ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          (usuario.isAdmin == true) ? Text(
+
+                            "é admin",
+                            style: TextStyle(fontSize: 20),
+                          ):Text(
+
+                            "não é admin",
+                            style: TextStyle(fontSize: 20),
+                          )
+
                         ],
                       ),
                     ),

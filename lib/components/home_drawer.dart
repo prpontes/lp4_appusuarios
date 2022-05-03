@@ -92,7 +92,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     title: const Text("Fornecedores"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/telacliente");
+                    },
                     leading: const Icon(
                       Icons.apartment,
                       color: Colors.blue,
