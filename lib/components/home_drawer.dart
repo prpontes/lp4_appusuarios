@@ -118,17 +118,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     title: const Text("Usuários"),
                   ),
                   ListTile(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/telavendas");
- 
-                    },
-                    leading: const Icon(
-                      Icons.monetization_on,
-                      color: Colors.blue,
-                    ),
-                    title: const Text("Vendas"),
-                  ),
-                  ListTile(
                     onTap: () {},
                     leading: const Icon(
                       Icons.settings,
