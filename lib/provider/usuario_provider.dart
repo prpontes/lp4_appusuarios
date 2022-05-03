@@ -9,11 +9,6 @@ class UsuarioProvider extends ChangeNotifier {
 
   List<Usuario> usuarios = [];
 
-  UsuarioProvider() {
-    debugPrint("UsuarioProvider()");
-    // listarUsuarios();
-  }
-
   Future<List<Usuario>> listarUsuarios() async {
     List lista = await db.query(nomeTabela);
 
@@ -58,19 +53,27 @@ class UsuarioProvider extends ChangeNotifier {
     return id;
   }
 
-  Future<int> editarUsuario(Usuario usuario) async {
-    int id = await db.update(nomeTabela, usuario.toMap(),
+  Future<bool> editarUsuario(Usuario usuario) async {
+    int result = await db.update(nomeTabela, usuario.toMap(),
         where: "id = ?", whereArgs: [usuario.id]);
-    debugPrint(id.toString());
-    notifyListeners();
-    return id;
+    if (result > 0) {
+      await listarUsuarios();
+      return true;
+    } else {
+      debugPrint("Não foi possível deletar o usuário");
+      return false;
+    }
   }
 
-  Future<int> deletarUsuario(Usuario usuario) async {
-    int id =
+  Future<bool> deletarUsuario(Usuario usuario) async {
+    int result =
         await db.delete(nomeTabela, where: "id = ?", whereArgs: [usuario.id]);
-    usuarios.remove(usuario);
-    notifyListeners();
-    return id;
+    if (result > 0) {
+      await listarUsuarios();
+      return true;
+    } else {
+      debugPrint("Não foi possível deletar o usuário");
+      return false;
+    }
   }
 }
