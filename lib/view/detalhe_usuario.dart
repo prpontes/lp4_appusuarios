@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lp4_appusuarios/model/permissoes.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/provider_permissoes.dart';
-import 'package:lp4_appusuarios/provider/provider_usuario.dart';
 import 'package:provider/provider.dart';
 
 class TelaDetalheUsuario extends StatefulWidget {
@@ -16,7 +16,7 @@ class TelaDetalheUsuario extends StatefulWidget {
 class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
 
   Usuario? usuario;
-  Permissoes? permissoes;
+  Permissoes permissoes = Permissoes();
   bool listarUsuarios = true;
   bool pesquisarUsuarios = true;
   bool adicionarUsuarios = true;
@@ -43,12 +43,168 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
   bool deletarVendas = true;
   bool editarVendas = true;
 
+  Future<void> _definirPermissoesUsuario() async {
+
+    permissoes.modUsuarios =
+    {
+      'listar'  : listarUsuarios,
+      'pesquisar' : pesquisarUsuarios,
+      'adicionar' : adicionarUsuarios,
+      'deletar' : deletarUsuarios,
+      'editar' : editarUsuarios,
+    };
+
+    permissoes.modClientes =
+    {
+      'listar'  : listarClientes,
+      'pesquisar' : pesquisarClientes,
+      'adicionar' : adicionarClientes,
+      'deletar' : deletarClientes,
+      'editar' : editarClientes,
+    };
+
+    permissoes.modFornecedores =
+    {
+      'listar'  : listarFornecedores,
+      'pesquisar' : pesquisarFornecedores,
+      'adicionar' : adicionarFornecedores,
+      'deletar' : deletarFornecedores,
+      'editar' : editarFornecedores,
+    };
+
+    permissoes.modProdutos =
+    {
+      'listar'  : listarProdutos,
+      'pesquisar' : pesquisarProdutos,
+      'adicionar' : adicionarProdutos,
+      'deletar' : deletarProdutos,
+      'editar' : editarProdutos,
+    };
+
+    permissoes.modVendas =
+    {
+      'listar'  : listarVendas,
+      'pesquisar' : pesquisarVendas,
+      'adicionar' : adicionarVendas,
+      'deletar' : deletarVendas,
+      'editar' : editarVendas,
+    };
+
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+
+    await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modClientes').set(permissoes.modClientes);
+    await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modUsuarios').set(permissoes.modUsuarios);
+    await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modFornecedores').set(permissoes.modFornecedores);
+    await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modProdutos').set(permissoes.modProdutos);
+    await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modVendas').set(permissoes.modVendas);
+
+    Provider.of<PermissoesModel>(context, listen: false).permissoes = permissoes;
+  }
+
+  Future<void> _carregarPermissoesUsuario() async {
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+
+    await usuarios.doc(usuario!.id).collection(usuario!.cpf!).get().then(
+            (value) {
+          value.docs.forEach(
+                  (usr) {
+                if(usr.id == 'modClientes') {
+                  permissoes.modClientes = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                  setState(() {
+                    adicionarClientes = usr['adicionar'];
+                    deletarClientes = usr['deletar'];
+                    editarClientes = usr['editar'];
+                    listarClientes = usr['listar'];
+                    pesquisarClientes = usr['pesquisar'];
+                  });
+                }
+                if(usr.id == 'modUsuarios') {
+                  permissoes.modUsuarios = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                  setState(() {
+                    adicionarUsuarios = usr['adicionar'];
+                    deletarUsuarios = usr['deletar'];
+                    editarUsuarios = usr['editar'];
+                    listarUsuarios = usr['listar'];
+                    pesquisarUsuarios = usr['pesquisar'];
+                  });
+                }
+                if(usr.id == 'modFornecedores') {
+                  permissoes.modFornecedores = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                  setState(() {
+                    adicionarFornecedores = usr['adicionar'];
+                    deletarFornecedores = usr['deletar'];
+                    editarFornecedores = usr['editar'];
+                    listarFornecedores = usr['listar'];
+                    pesquisarFornecedores = usr['pesquisar'];
+                  });
+                }
+                if(usr.id == 'modProdutos') {
+                  permissoes.modProdutos = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                  setState(() {
+                    adicionarProdutos = usr['adicionar'];
+                    deletarProdutos = usr['deletar'];
+                    editarProdutos = usr['editar'];
+                    listarProdutos = usr['listar'];
+                    pesquisarProdutos = usr['pesquisar'];
+                  });
+                }
+                if(usr.id == 'modVendas') {
+                  permissoes.modVendas = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                  setState(() {
+                    adicionarVendas = usr['adicionar'];
+                    deletarVendas = usr['deletar'];
+                    editarVendas = usr['editar'];
+                    listarVendas = usr['listar'];
+                    pesquisarVendas = usr['pesquisar'];
+                  });
+                }
+              }
+          );
+        }
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    usuario = ModalRoute.of(context)!.settings.arguments as Usuario;
+    _carregarPermissoesUsuario();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    usuario = ModalRoute.of(context)!.settings.arguments as Usuario;
-    //Provider.of<PermissoesModel>(context).user = usuario!;
-   // permissoes = Provider.of<PermissoesModel>(context).permissoes;
+    //permissoes = Provider.of<PermissoesModel>(context, listen: false).getPermissoes(usuario!);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -182,6 +338,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                   deletarUsuarios = v;
                                                   editarUsuarios = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -208,6 +365,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   pesquisarUsuarios = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -234,6 +392,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   adicionarUsuarios = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -257,6 +416,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               deletarUsuarios = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -278,6 +438,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               editarUsuarios = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -331,6 +492,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                   deletarClientes = v;
                                                   editarClientes = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -357,6 +519,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   pesquisarClientes = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -383,6 +546,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   adicionarClientes = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -406,6 +570,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               deletarClientes = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -427,6 +592,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               editarClientes = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -480,6 +646,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                   deletarFornecedores = v;
                                                   editarFornecedores = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -506,6 +673,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   pesquisarFornecedores = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -532,6 +700,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   adicionarFornecedores = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -555,6 +724,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               deletarFornecedores = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -576,6 +746,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               editarFornecedores = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -629,6 +800,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                   deletarProdutos = v;
                                                   editarProdutos = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -655,6 +827,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   pesquisarProdutos = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -681,6 +854,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   adicionarProdutos = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -704,6 +878,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               deletarProdutos = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -725,6 +900,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               editarProdutos = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -778,6 +954,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                   deletarVendas = v;
                                                   editarVendas = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -804,6 +981,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   pesquisarVendas = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -830,6 +1008,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   adicionarVendas = v;
                                                 });
+                                                _definirPermissoesUsuario();
                                               }
                                           ),
                                         ],
@@ -853,6 +1032,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               deletarVendas = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],
@@ -874,6 +1054,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             setState(() {
                                               editarVendas = v;
                                             });
+                                            _definirPermissoesUsuario();
                                           }
                                       )
                                     ],

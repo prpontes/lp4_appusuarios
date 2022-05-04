@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/dados/banco.dart';
 import 'package:provider/provider.dart';
 
+import '../model/permissoes.dart';
+import '../provider/provider_permissoes.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -19,7 +22,66 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController controllerRecuperarSenha = TextEditingController();
   bool loading = false;
   var banco = Banco();
-  Usuario? usuarioAutenticado;
+  Permissoes permissoes = Permissoes();
+
+  carregarPermissoesUsuarioAutenticado(Usuario user) async {
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+
+    await usuarios.doc(user.id).collection(user.cpf!).get().then(
+            (value) {
+          value.docs.forEach(
+                  (usr) {
+                if(usr.id == 'modClientes') {
+                  permissoes.modClientes = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                }
+                if(usr.id == 'modUsuarios') {
+                  permissoes.modUsuarios = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                }
+                if(usr.id == 'modFornecedores') {
+                  permissoes.modFornecedores = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                }
+                if(usr.id == 'modProdutos') {
+                  permissoes.modProdutos = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                }
+                if(usr.id == 'modVendas') {
+                  permissoes.modVendas = {
+                    'adicionar' : usr['adicionar'],
+                    'deletar' : usr['deletar'],
+                    'editar' : usr['editar'],
+                    'listar' : usr['listar'],
+                    'pesquisar' : usr['pesquisar'],
+                  };
+                }
+              }
+          );
+        }
+    );
+    Provider.of<PermissoesModel>(context, listen: false).permissoes = permissoes;
+  }
 
   _recuperarSenha(){
     controllerRecuperarSenha.clear();
@@ -113,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
             password: controllerSenha.text
         );
         // Pega os dados do usuário autenticado e passa para o Provider
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
           .collection('usuarios')
           .where('email', isEqualTo: controllerUsuario.text)
           .get()
@@ -134,6 +196,7 @@ class _LoginPageState extends State<LoginPage> {
           );
 
         Provider.of<UsuarioModel>(context, listen: false).user = usuarioLogado;
+        carregarPermissoesUsuarioAutenticado(usuarioLogado);
         return Navigator.pushReplacementNamed(
           context,
           "/telainicio",

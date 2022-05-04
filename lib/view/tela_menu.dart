@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/provider/provider_permissoes.dart';
 import 'package:provider/provider.dart';
+import '../model/permissoes.dart';
 import '../model/usuario.dart';
 import '../provider/provider_usuario.dart';
 
@@ -13,6 +15,7 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   late Usuario usuarioAutenticado;
+  late Permissoes permissoes;
 
   logoutFirebaseAuth() async {
     await FirebaseAuth.instance.signOut();
@@ -21,6 +24,7 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     usuarioAutenticado = Provider.of<UsuarioModel>(context, listen: true).user;
+    permissoes = Provider.of<PermissoesModel>(context, listen: true).permissoes;
 
     return Drawer(
       child: ListView(
@@ -113,7 +117,17 @@ class _MenuState extends State<Menu> {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.pushNamed(context, "/telausuario");
+                      if(permissoes.modUsuarios['listar'] == true){
+                        Navigator.pushNamed(context, "/telausuario");
+                      }else{
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.red,
+                                content: Text("Você não tem permissão para acessar esse módulo!")
+                            )
+                        );
+                      }
                     },
                     leading: const Icon(Icons.person, color: Colors.blue,),
                     title: const Text("Usuários"),

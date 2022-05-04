@@ -1,5 +1,9 @@
 import 'package:lp4_appusuarios/view/tela_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../model/usuario.dart';
+import '../provider/provider_usuario.dart';
 
 class TelaInicio extends StatefulWidget {
   const TelaInicio({Key? key}) : super(key: key);
@@ -9,8 +13,10 @@ class TelaInicio extends StatefulWidget {
 }
 
 class _TelaInicioState extends State<TelaInicio> {
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         drawer: const Menu(),
         appBar: AppBar(
