@@ -19,22 +19,27 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
   Permissoes? permissoes;
   bool listarUsuarios = true;
   bool pesquisarUsuarios = true;
+  bool adicionarUsuarios = true;
   bool deletarUsuarios = true;
   bool editarUsuarios = true;
   bool listarClientes = true;
   bool pesquisarClientes = true;
+  bool adicionarClientes = true;
   bool deletarClientes = true;
   bool editarClientes = true;
   bool listarFornecedores = true;
   bool pesquisarFornecedores = true;
+  bool adicionarFornecedores = true;
   bool deletarFornecedores = true;
   bool editarFornecedores = true;
   bool listarProdutos = true;
   bool pesquisarProdutos = true;
+  bool adicionarProdutos = true;
   bool deletarProdutos = true;
   bool editarProdutos = true;
   bool listarVendas = true;
   bool pesquisarVendas = true;
+  bool adicionarVendas = true;
   bool deletarVendas = true;
   bool editarVendas = true;
 
@@ -173,6 +178,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   listarUsuarios = v;
                                                   pesquisarUsuarios = v;
+                                                  adicionarUsuarios = v;
                                                   deletarUsuarios = v;
                                                   editarUsuarios = v;
                                                 });
@@ -201,6 +207,32 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                               onChanged: (v){
                                                 setState(() {
                                                   pesquisarUsuarios = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Adicionar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: adicionarUsuarios,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  adicionarUsuarios = v;
                                                 });
                                               }
                                           ),
@@ -295,6 +327,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                 setState(() {
                                                   listarClientes = v;
                                                   pesquisarClientes = v;
+                                                  adicionarClientes = v;
                                                   deletarClientes = v;
                                                   editarClientes = v;
                                                 });
@@ -323,6 +356,32 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                               onChanged: (v){
                                                 setState(() {
                                                   pesquisarClientes = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Adicionar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: adicionarClientes,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  adicionarClientes = v;
                                                 });
                                               }
                                           ),
@@ -412,8 +471,15 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Switch(
-                                              value: true,
+                                              value: listarFornecedores,
                                               onChanged: (v){
+                                                setState(() {
+                                                  listarFornecedores = v;
+                                                  pesquisarFornecedores = v;
+                                                  adicionarFornecedores = v;
+                                                  deletarFornecedores = v;
+                                                  editarFornecedores = v;
+                                                });
                                               }
                                           ),
                                         ],
@@ -435,8 +501,38 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Switch(
-                                              value: true,
-                                              onChanged: (v){}
+                                              value: pesquisarFornecedores,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  pesquisarFornecedores = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Adicionar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: adicionarFornecedores,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  adicionarFornecedores = v;
+                                                });
+                                              }
                                           ),
                                         ],
                                       )
@@ -454,8 +550,12 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                           )
                                       ),
                                       Switch(
-                                          value: true,
-                                          onChanged: (v){}
+                                          value: deletarFornecedores,
+                                          onChanged: (v){
+                                            setState(() {
+                                              deletarFornecedores = v;
+                                            });
+                                          }
                                       )
                                     ],
                                   ),
@@ -471,8 +571,12 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                           )
                                       ),
                                       Switch(
-                                          value: true,
-                                          onChanged: (v){}
+                                          value: editarFornecedores,
+                                          onChanged: (v){
+                                            setState(() {
+                                              editarFornecedores = v;
+                                            });
+                                          }
                                       )
                                     ],
                                   ),
@@ -516,8 +620,15 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Switch(
-                                              value: true,
+                                              value: listarProdutos,
                                               onChanged: (v){
+                                                setState(() {
+                                                  listarProdutos = v;
+                                                  pesquisarProdutos = v;
+                                                  adicionarProdutos = v;
+                                                  deletarProdutos = v;
+                                                  editarProdutos = v;
+                                                });
                                               }
                                           ),
                                         ],
@@ -539,8 +650,38 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Switch(
-                                              value: true,
-                                              onChanged: (v){}
+                                              value: pesquisarProdutos,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  pesquisarProdutos = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Adicionar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: adicionarProdutos,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  adicionarProdutos = v;
+                                                });
+                                              }
                                           ),
                                         ],
                                       )
@@ -558,8 +699,12 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                           )
                                       ),
                                       Switch(
-                                          value: true,
-                                          onChanged: (v){}
+                                          value: deletarProdutos,
+                                          onChanged: (v){
+                                            setState(() {
+                                              deletarProdutos = v;
+                                            });
+                                          }
                                       )
                                     ],
                                   ),
@@ -575,8 +720,12 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                           )
                                       ),
                                       Switch(
-                                          value: true,
-                                          onChanged: (v){}
+                                          value: editarProdutos,
+                                          onChanged: (v){
+                                            setState(() {
+                                              editarProdutos = v;
+                                            });
+                                          }
                                       )
                                     ],
                                   ),
@@ -620,8 +769,15 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Switch(
-                                              value: true,
+                                              value: listarVendas,
                                               onChanged: (v){
+                                                setState(() {
+                                                  listarVendas = v;
+                                                  pesquisarVendas = v;
+                                                  adicionarVendas = v;
+                                                  deletarVendas = v;
+                                                  editarVendas = v;
+                                                });
                                               }
                                           ),
                                         ],
@@ -643,8 +799,38 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Switch(
-                                              value: true,
-                                              onChanged: (v){}
+                                              value: pesquisarVendas,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  pesquisarVendas = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Adicionar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: adicionarVendas,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  adicionarVendas = v;
+                                                });
+                                              }
                                           ),
                                         ],
                                       )
@@ -662,8 +848,12 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                           )
                                       ),
                                       Switch(
-                                          value: true,
-                                          onChanged: (v){}
+                                          value: deletarVendas,
+                                          onChanged: (v){
+                                            setState(() {
+                                              deletarVendas = v;
+                                            });
+                                          }
                                       )
                                     ],
                                   ),
@@ -679,8 +869,12 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                           )
                                       ),
                                       Switch(
-                                          value: true,
-                                          onChanged: (v){}
+                                          value: editarVendas,
+                                          onChanged: (v){
+                                            setState(() {
+                                              editarVendas = v;
+                                            });
+                                          }
                                       )
                                     ],
                                   ),

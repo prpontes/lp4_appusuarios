@@ -78,12 +78,14 @@ class _TelaUsuarioState extends State<TelaUsuario> {
       }
     ).then((value) {
       value.collection(u.cpf!).doc("modClientes").set({
+        'adicionar' : true,
         'deletar' : true,
         'editar' : true,
         'listar' : true,
         'pesquisar' : true,
       });
       value.collection(u.cpf!).doc("modUsuarios").set({
+        'adicionar' : true,
         'deletar' : true,
         'editar' : true,
         'listar' : true,
