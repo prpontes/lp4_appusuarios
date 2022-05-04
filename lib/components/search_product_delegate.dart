@@ -60,7 +60,7 @@ class SearchProductDelegate extends SearchDelegate<String> {
             child: product.image == ""
                 ? const Icon(
                     Icons.warning_rounded,
-                    color: Colors.blue,
+                    color: Colors.amber,
                     size: 50,
                   )
                 : SizedBox(
