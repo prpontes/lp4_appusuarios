@@ -1,5 +1,9 @@
+import 'package:lp4_appusuarios/model/permissoes.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/provider/provider_permissoes.dart';
+import 'package:lp4_appusuarios/provider/provider_usuario.dart';
+import 'package:provider/provider.dart';
 
 class TelaDetalheUsuario extends StatefulWidget {
 
@@ -12,11 +16,34 @@ class TelaDetalheUsuario extends StatefulWidget {
 class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
 
   Usuario? usuario;
+  Permissoes? permissoes;
+  bool listarUsuarios = true;
+  bool pesquisarUsuarios = true;
+  bool deletarUsuarios = true;
+  bool editarUsuarios = true;
+  bool listarClientes = true;
+  bool pesquisarClientes = true;
+  bool deletarClientes = true;
+  bool editarClientes = true;
+  bool listarFornecedores = true;
+  bool pesquisarFornecedores = true;
+  bool deletarFornecedores = true;
+  bool editarFornecedores = true;
+  bool listarProdutos = true;
+  bool pesquisarProdutos = true;
+  bool deletarProdutos = true;
+  bool editarProdutos = true;
+  bool listarVendas = true;
+  bool pesquisarVendas = true;
+  bool deletarVendas = true;
+  bool editarVendas = true;
 
   @override
   Widget build(BuildContext context) {
 
     usuario = ModalRoute.of(context)!.settings.arguments as Usuario;
+    //Provider.of<PermissoesModel>(context).user = usuario!;
+   // permissoes = Provider.of<PermissoesModel>(context).permissoes;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -101,7 +128,571 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                     ],
                   ),
                 ),
-                const Text("Tab 2"),
+                Container(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Card(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.person),
+                                    SizedBox(width: 10,),
+                                    Text("Usuários",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        //fontWeight: FontWeight.bold
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Listar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: listarUsuarios,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  listarUsuarios = v;
+                                                  pesquisarUsuarios = v;
+                                                  deletarUsuarios = v;
+                                                  editarUsuarios = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Pesquisar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: pesquisarUsuarios,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  pesquisarUsuarios = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                          child: Text("Deletar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: deletarUsuarios,
+                                          onChanged: (v){
+                                            setState(() {
+                                              deletarUsuarios = v;
+                                            });
+                                          }
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Editar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: editarUsuarios,
+                                          onChanged: (v){
+                                            setState(() {
+                                              editarUsuarios = v;
+                                            });
+                                          }
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Card(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.apartment),
+                                    SizedBox(width: 10,),
+                                    Text("Clientes",
+                                      style: TextStyle(
+                                          fontSize: 24
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Listar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: listarClientes,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  listarClientes = v;
+                                                  pesquisarClientes = v;
+                                                  deletarClientes = v;
+                                                  editarClientes = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Pesquisar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: pesquisarClientes,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  pesquisarClientes = v;
+                                                });
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Deletar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: deletarClientes,
+                                          onChanged: (v){
+                                            setState(() {
+                                              deletarClientes = v;
+                                            });
+                                          }
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Editar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: editarClientes,
+                                          onChanged: (v){
+                                            setState(() {
+                                              editarClientes = v;
+                                            });
+                                          }
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Card(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.store),
+                                    SizedBox(width: 10,),
+                                    Text("Fornecedores",
+                                      style: TextStyle(
+                                          fontSize: 24
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Listar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: true,
+                                              onChanged: (v){
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Pesquisar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: true,
+                                              onChanged: (v){}
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Deletar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: true,
+                                          onChanged: (v){}
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Editar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: true,
+                                          onChanged: (v){}
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Card(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.add),
+                                    SizedBox(width: 10,),
+                                    Text("Produtos",
+                                      style: TextStyle(
+                                          fontSize: 24
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Listar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: true,
+                                              onChanged: (v){
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Pesquisar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: true,
+                                              onChanged: (v){}
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Deletar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: true,
+                                          onChanged: (v){}
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Editar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: true,
+                                          onChanged: (v){}
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Card(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.reorder),
+                                    SizedBox(width: 10,),
+                                    Text("Vendas",
+                                      style: TextStyle(
+                                          fontSize: 24
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Listar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: true,
+                                              onChanged: (v){
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 100,
+                                        child: Text("Pesquisar",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: true,
+                                              onChanged: (v){}
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Deletar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: true,
+                                          onChanged: (v){}
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                          width: 100,
+                                          child: Text("Editar",
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          )
+                                      ),
+                                      Switch(
+                                          value: true,
+                                          onChanged: (v){}
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
             ]
           ),
         ),

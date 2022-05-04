@@ -41,21 +41,25 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   final GlobalKey<FormState> _formKeyAddUsuario = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyEditUsuario = GlobalKey<FormState>();
 
-  _addAuthUsuario(email, password)
-  {
+  _addAuthUsuario(email, password) async {
     try{
-      final credencial = FirebaseAuth.instance.createUserWithEmailAndPassword(
+       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password
       );
     }on FirebaseAuthException catch (e){
+      var msg_erro = '';
       if(e.code == 'weak-password'){
-        print('A senha é muita fraca!');
+        msg_erro = 'A senha é muita fraca!';
       }else if(e.code == 'email-already-in-use'){
-        print('A conta já existe para esse e-mail!');
+        msg_erro = 'A conta já existe para esse e-mail!';
       }
-    }catch(e){
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(msg_erro)
+        )
+      );
     }
   }
 
@@ -72,8 +76,21 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         'nome' : u.nome,
         'senha' : u.senha
       }
-    ).then((value) => print("Usuário adiconado no firestore!"))
-    .catchError((error) => print("Falha ao adiconar usuário no firestore: $error"));
+    ).then((value) {
+      value.collection(u.cpf!).doc("modClientes").set({
+        'deletar' : true,
+        'editar' : true,
+        'listar' : true,
+        'pesquisar' : true,
+      });
+      value.collection(u.cpf!).doc("modUsuarios").set({
+        'deletar' : true,
+        'editar' : true,
+        'listar' : true,
+        'pesquisar' : true,
+      });
+    });
+    //.catchError((error) => print("Falha ao adiconar usuário no firestore: $error"));
   }
 
   _listarUsuariosFirestore() async {

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:lp4_appusuarios/provider/provider_permissoes.dart';
 import 'package:lp4_appusuarios/view/login_page.dart';
 import 'firebase_options.dart';
 import 'package:lp4_appusuarios/api/api.dart';
@@ -20,6 +21,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UsuarioModel()),
+        ChangeNotifierProvider(create: (context) => PermissoesModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
