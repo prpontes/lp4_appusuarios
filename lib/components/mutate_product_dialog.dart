@@ -55,6 +55,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                 : 0.0;
             product.image = _imageController.text;
             product.idFornecedor = -1;
+            await product.getMainColorFromImage();
             if (isUpdate) {
               await _productProvider.updateProduct(product);
             } else {

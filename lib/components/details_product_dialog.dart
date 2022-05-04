@@ -40,6 +40,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
       }
       return Scaffold(
         appBar: AppBar(
+          backgroundColor: product.mainColor,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context),
@@ -92,7 +93,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
         body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Theme.of(context).primaryColor,
+          color: product.mainColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -147,11 +148,12 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                         child: product.image == ""
                             ? const Icon(
                                 Icons.warning_rounded,
-                                color: Colors.blue,
+                                color: Colors.amber,
                                 size: 150,
                               )
                             : CircleAvatar(
-                                backgroundImage: NetworkImage(product.image),
+                                backgroundColor: product.mainColor,
+                                foregroundImage: NetworkImage(product.image),
                                 radius: 70),
                       ),
                     )

@@ -11,17 +11,19 @@ class ProductProvider extends ChangeNotifier {
 
   Future<List<Product>> getProducts() async {
     List productsList = await db.query(tableName);
-
-    products = List.generate(productsList.length, (index) {
-      return Product(
-        id: productsList[index]["id"],
-        name: productsList[index]["name"],
-        description: productsList[index]["description"],
-        price: productsList[index]["price"],
-        image: productsList[index]["image"],
-        idFornecedor: productsList[index]["idFornecedor"],
+    products = List.empty(growable: true);
+    for (var product in productsList) {
+      products.add(
+        await Product(
+          id: product["id"],
+          name: product["name"],
+          description: product["description"],
+          price: product["price"],
+          image: product["image"],
+          idFornecedor: product["idFornecedor"],
+        ).getMainColorFromImage(),
       );
-    });
+    }
 
     notifyListeners();
     return products;
@@ -32,14 +34,14 @@ class ProductProvider extends ChangeNotifier {
         await db.query(tableName, where: "id = ?", whereArgs: [id]);
 
     if (resultado.isNotEmpty) {
-      return Product(
+      return await Product(
         id: resultado[0]["id"],
         name: resultado[0]["name"],
         description: resultado[0]["description"],
         price: resultado[0]["price"],
         image: resultado[0]["image"],
         idFornecedor: resultado[0]["idFornecedor"],
-      );
+      ).getMainColorFromImage();
     } else {
       return null;
     }

@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
+
 class Product {
   int? id;
   String name;
@@ -5,6 +8,7 @@ class Product {
   String image;
   double price;
   int idFornecedor;
+  Color mainColor;
 
   Product({
     this.id,
@@ -13,6 +17,7 @@ class Product {
     this.image = "",
     this.price = 0.0,
     this.idFornecedor = -1,
+    this.mainColor = Colors.deepPurple,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,5 +29,21 @@ class Product {
       "price": price,
       "idFornecedor": idFornecedor,
     };
+  }
+
+  Future<Product> getMainColorFromImage() async {
+    try {
+      if (image != "") {
+        PaletteGenerator paletteGenerator =
+            await PaletteGenerator.fromImageProvider(NetworkImage(image));
+        mainColor = paletteGenerator.vibrantColor!.color;
+        return this;
+      }
+      throw Exception();
+    } catch (e) {
+      image = "";
+      mainColor = Colors.deepPurple;
+    }
+    return this;
   }
 }
