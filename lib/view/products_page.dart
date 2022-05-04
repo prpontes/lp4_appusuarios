@@ -66,24 +66,25 @@ class _ProductsPageState extends State<ProductsPage> {
                       final product = products[index];
                       return Card(
                         child: ListTile(
-                          leading: product.image.isEmpty
-                              ? const Icon(
-                                  Icons.warning_rounded,
-                                  color: Colors.blue,
-                                  size: 50,
-                                )
-                              : SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Hero(
-                                    tag: "${product.id}",
+                          leading: Hero(
+                            tag: "${product.id}",
+                            child: product.image.isEmpty
+                                ? const Icon(
+                                    Icons.warning_rounded,
+                                    color: Colors.amber,
+                                    size: 50,
+                                  )
+                                : SizedBox(
+                                    width: 50,
+                                    height: 50,
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(
+                                      backgroundColor: Colors.transparent,
+                                      foregroundImage: NetworkImage(
                                         product.image,
                                       ),
                                     ),
                                   ),
-                                ),
+                          ),
                           title: Text(product.name),
                           subtitle: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
