@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:lp4_appusuarios/model/sell.dart';
-import 'package:lp4_appusuarios/model/itemVenda.dart';
+import 'package:lp4_appusuarios/model/item_venda.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:sqflite/sqflite.dart';
 
