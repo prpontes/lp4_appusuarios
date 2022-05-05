@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:lp4_appusuarios/model/product.dart';
+import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +19,16 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
   final _descriptionController = TextEditingController(text: "");
   final _priceController = TextEditingController(text: "0.0");
   final _imageController = TextEditingController(text: "");
+  Fornecedor? _selectedFornecedor;
 
+  late final FornecedoresProvider _fornecedoresProvider;
   late final ProductProvider _productProvider;
   @override
   void initState() {
     super.initState();
     _productProvider = Provider.of<ProductProvider>(context, listen: false);
+    _fornecedoresProvider =
+        Provider.of<FornecedoresProvider>(context, listen: false);
     if (widget.product != null) {
       _nameController.text = widget.product!.name;
       _descriptionController.text = widget.product!.description;
@@ -41,8 +47,9 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          debugPrint("Formulário válido");
-          if (_formKey.currentState!.validate()) {
+          if (_formKey.currentState!.validate() &&
+              _selectedFornecedor != null) {
+            debugPrint("Formulário válido");
             Product product = isUpdate
                 ? widget.product!
                 : Product(name: _nameController.text);
@@ -54,7 +61,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                 ? double.parse(_priceController.text)
                 : 0.0;
             product.image = _imageController.text;
-            product.idFornecedor = -1;
+            product.idFornecedor = _selectedFornecedor!.id!;
             await product.getMainColorFromImage();
             if (isUpdate) {
               await _productProvider.updateProduct(product);
@@ -69,74 +76,121 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _nameController,
-                autofillHints: const [AutofillHints.name],
-                decoration: const InputDecoration(
-                  labelText: 'Nome',
-                  hintText: "Nome",
-                  border: OutlineInputBorder(),
+        child: FutureBuilder(
+          future: _fornecedoresProvider.listarFornecedores(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<Fornecedor> fornecedores = snapshot.data as List<Fornecedor>;
+              return Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      autofillHints: const [AutofillHints.name],
+                      decoration: const InputDecoration(
+                        labelText: 'Nome',
+                        hintText: "Nome",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Nome é obrigatório';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _descriptionController,
+                      autofillHints: const [AutofillHints.email],
+                      decoration: const InputDecoration(
+                        labelText: 'Descrição',
+                        hintText: "Descrição",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _priceController,
+                      decoration: const InputDecoration(
+                        labelText: 'Preço',
+                        hintText: "Preço",
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Preço é obrigatório';
+                        }
+                        if (double.tryParse(value) == null) {
+                          return 'Preço inválido';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _imageController,
+                      decoration: const InputDecoration(
+                        labelText: 'Imagem',
+                        hintText: "Imagem",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    DropdownButtonFormField<int>(
+                      value: (_selectedFornecedor == null)
+                          ? null
+                          : _selectedFornecedor!.id,
+                      hint: Text(
+                          fornecedores.isNotEmpty
+                              ? "Selecione o Fornecedor"
+                              : "Nenhum Fornecedor Cadastrado",
+                          style: TextStyle(color: Colors.deepPurple)),
+                      icon: RotatedBox(
+                          quarterTurns: 1,
+                          child: Icon(Icons.chevron_right,
+                              color: Colors.deepPurple)),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: TextStyle(color: Colors.deepPurple),
+                      decoration: InputDecoration(border: OutlineInputBorder()),
+                      validator: (id) {
+                        if (id == null) {
+                          return "Selecione um Fornecedor";
+                        }
+                        return null;
+                      },
+                      onChanged: (idSelecionado) {
+                        setState(() {
+                          _selectedFornecedor = fornecedores.firstWhere(
+                              (cliente) => cliente.id == idSelecionado);
+                        });
+                      },
+                      items: fornecedores
+                          .map<DropdownMenuItem<int>>((Fornecedor fornecedor) {
+                        return DropdownMenuItem<int>(
+                          value: fornecedor.id,
+                          child: Text(fornecedor.razaoSocial!),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Nome é obrigatório';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: _descriptionController,
-                autofillHints: const [AutofillHints.email],
-                decoration: const InputDecoration(
-                  labelText: 'Descrição',
-                  hintText: "Descrição",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: _priceController,
-                decoration: const InputDecoration(
-                  labelText: 'Preço',
-                  hintText: "Preço",
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Preço é obrigatório';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Preço inválido';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: _imageController,
-                decoration: const InputDecoration(
-                  labelText: 'Imagem',
-                  hintText: "Imagem",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
+              );
+            } else {
+              return Container();
+            }
+          },
         ),
       ),
     );
