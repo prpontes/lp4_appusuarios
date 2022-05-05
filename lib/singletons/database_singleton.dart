@@ -26,7 +26,7 @@ class DatabaseSingleton {
     String dir = join(await getDatabasesPath(), "database.db");
 
     // delete database
-    await deleteDatabase(dir);
+    // await deleteDatabase(dir);
     
     DatabaseSingleton.instance.db = await openDatabase(
       dir,
