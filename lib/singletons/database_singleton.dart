@@ -26,7 +26,7 @@ class DatabaseSingleton {
     String dir = join(await getDatabasesPath(), "database.db");
 
     // delete database
-    await deleteDatabase(dir);
+    // await deleteDatabase(dir);
     
     DatabaseSingleton.instance.db = await openDatabase(
       dir,
@@ -42,6 +42,12 @@ class DatabaseSingleton {
           "login": "admin",
           "senha": "123456",
           "avatar": "",
+        });
+
+        await db.insert("sell", {
+          "date":"05/04/2022",
+          "iduser": "1",
+          
         });
         debugPrint("Database created");
       },
