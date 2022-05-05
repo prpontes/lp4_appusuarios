@@ -66,6 +66,12 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     }
   }
 
+  _deletarUserAuth()
+  {
+    final user = FirebaseAuth.instance.currentUser;
+    print(user!.email);
+  }
+
   _addUsuarioFirestore(Usuario u) async
   {
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
@@ -627,6 +633,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                                   onPressed: () {
                                                     _deletarUsuarioFirestore(
                                                         usuarios[index].id!);
+                                                    _deletarUserAuth();
                                                     Navigator.pop(context);
                                                     ScaffoldMessenger.of(
                                                         context).showSnackBar(

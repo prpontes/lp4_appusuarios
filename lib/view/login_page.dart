@@ -128,6 +128,8 @@ class _LoginPageState extends State<LoginPage> {
                       msg_erro = 'Endereço de e-mail inválido!';
                     }else if(e.code == 'user-not-found'){
                       msg_erro = 'Não existe um usuário correspondente para o endereço de e-mail fornecido!';
+                    }else{
+                      msg_erro = 'Digite um e-mail cadastrado!';
                     }
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
