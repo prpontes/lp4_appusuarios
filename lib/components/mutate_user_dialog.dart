@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 // FUNÇÃO PARA VALIDAÇÃO DE NUMERO DE TELEFONE
 String? validateMobile(String value) {
   String pattern = r'(^\(?[1-9]{2}\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$)';
-  RegExp regExp = new RegExp(pattern);
-  if (value.length == 0) {
+  RegExp regExp = RegExp(pattern);
+  if (value.isEmpty) {
     return 'Por favor, insira um numero!';
   } else if (!regExp.hasMatch(value)) {
     return 'Por favor, coloque um telefone valido!';
@@ -33,8 +33,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
   final _avatarController = TextEditingController(text: "");
   final _cpfController = TextEditingController(text: "");
   final _loginController = TextEditingController(text: "");
-  final _telefoneController = TextEditingController(text:  "" );
-
+  final _telefoneController = TextEditingController(text: "");
 
   late final UsuarioProvider _usuarioProvider;
   @override
@@ -48,8 +47,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
       _avatarController.text = widget.usuario!.avatar;
       _cpfController.text = widget.usuario!.cpf!;
       _loginController.text = widget.usuario!.login!;
-      _telefoneController.text= widget.usuario!.telefone!;
-
+      _telefoneController.text = widget.usuario!.telefone!;
     }
   }
 
@@ -71,8 +69,8 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
             usuario.avatar = _avatarController.text;
             usuario.cpf = _cpfController.text;
             usuario.login = _loginController.text;
-            usuario.telefone= _telefoneController.text;
-            usuario.isAdmin= true;
+            usuario.telefone = _telefoneController.text;
+            usuario.isAdmin = 1;
             if (isUpdate) {
               await _usuarioProvider.editarUsuario(usuario);
             } else {
@@ -193,6 +191,9 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                   return null;
                 },
               ),
+              const SizedBox(
+                height: 10,
+              ),
               TextFormField(
                 controller: _telefoneController,
                 decoration: const InputDecoration(
@@ -206,21 +207,6 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
                   }
 
                   return null;
-                },
-              ),
-              TextFormField(
-                controller: _telefoneController,
-                decoration: const InputDecoration(
-                  labelText: 'telefone',
-                  hintText: "Telefone",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Telefone é obrigatório';
-                  }else{
-                    return validateMobile(value);
-                  }
                 },
               ),
             ],

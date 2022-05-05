@@ -9,13 +9,10 @@ class UsuarioProvider extends ChangeNotifier {
 
   List<Usuario> usuarios = [];
 
-  UsuarioProvider() {
-    debugPrint("UsuarioProvider()");
-    // listarUsuarios();
-  }
-
-  Future<List<Usuario>> listarUsuarios() async {
-    List lista = await db.query(nomeTabela, where:" isAdmin=?", whereArgs: [1]);
+  Future<List<Usuario>> listarUsuarios({int? isAdmin}) async {
+    List lista = await db.query(nomeTabela,
+        where: isAdmin == null ? null : "isAdmin=?",
+        whereArgs: isAdmin == null ? null : [isAdmin]);
 
     usuarios = List.generate(lista.length, (index) {
       return Usuario(
@@ -27,28 +24,7 @@ class UsuarioProvider extends ChangeNotifier {
         senha: lista[index]["senha"],
         avatar: lista[index]["avatar"],
         telefone: lista[index]["telefone"],
-
-      );
-    });
-    notifyListeners();
-    return usuarios;
-  }
-
-  Future<List<Usuario>> listarClientes() async {
-
-    List lista = await db.query(nomeTabela,where:" isAdmin=?", whereArgs: [0]);
-
-    usuarios = List.generate(lista.length, (index) {
-      return Usuario(
-        id: lista[index]["id"],
-        cpf: lista[index]["cpf"],
-        nome: lista[index]["nome"],
-        email: lista[index]["email"],
-        login: lista[index]["login"],
-        senha: lista[index]["senha"],
-        avatar: lista[index]["avatar"],
-        telefone: lista[index]["telefone"],
-
+        isAdmin: lista[index]["isAdmin"],
       );
     });
     notifyListeners();
@@ -61,15 +37,15 @@ class UsuarioProvider extends ChangeNotifier {
 
     if (resultado.isNotEmpty) {
       return Usuario(
-          id: resultado[0]["id"],
-          cpf: resultado[0]["cpf"],
-          nome: resultado[0]["nome"],
-          email: resultado[0]["email"],
-          login: resultado[0]["login"],
-          senha: resultado[0]["senha"],
-          avatar: resultado[0]["avatar"],
-          telefone: resultado[0]["telefone"],
-
+        id: resultado[0]["id"],
+        cpf: resultado[0]["cpf"],
+        nome: resultado[0]["nome"],
+        email: resultado[0]["email"],
+        login: resultado[0]["login"],
+        senha: resultado[0]["senha"],
+        avatar: resultado[0]["avatar"],
+        telefone: resultado[0]["telefone"],
+        isAdmin: resultado[0]["isAdmin"],
       );
     } else {
       return null;

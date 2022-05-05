@@ -1,5 +1,5 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
-import 'package:lp4_appusuarios/components/mutate_user_dialog.dart';
+import 'package:lp4_appusuarios/components/mutate_customer.dialog.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
@@ -28,9 +28,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
   @override
   Widget build(BuildContext context) {
     final Usuario user = widget.usuario;
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -38,14 +36,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
               Navigator.pop(context);
             },
           ),
-          bottom: const TabBar(tabs: [
-            Tab(
-                icon: Icon(
-              Icons.list_outlined,
-            )),
-            Tab(icon: Icon(Icons.settings)),
-          ]),
-          title: const Text("Detalhe usuário"),
+          title: const Text("Detalhe cliente"),
           actions: [
             IconButton(
               icon: const Icon(Icons.edit),
@@ -53,7 +44,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => MutateUserDialog(
+                    builder: (BuildContext context) => MutateCustomerDialog(
                       usuario: user,
                     ),
                     fullscreenDialog: true,
@@ -98,159 +89,152 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
             ),
           ],
         ),
-        body: TabBarView(children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Consumer<UsuarioProvider>(
-              builder: (context, value, child) {
-                Usuario usuario = value.usuarios.firstWhere(
-                  (usuario) => usuario.id == widget.usuario.id,
-                  orElse: () => Usuario(
-                    id: null,
-                    login: "",
-                    senha: "",
-                    nome: "",
-                    email: "",
-                    avatar: "",
-                    cpf: "",
+        body: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Consumer<UsuarioProvider>(
+            builder: (context, value, child) {
+              Usuario usuario = value.usuarios.firstWhere(
+                (usuario) => usuario.id == widget.usuario.id,
+                orElse: () => Usuario(
+                  id: null,
+                  login: "",
+                  senha: "",
+                  nome: "",
+                  email: "",
+                  avatar: "",
+                  cpf: "",
+                ),
+              );
 
+              if (usuario.id == null) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  usuario.avatar == ""
+                      ? const Icon(
+                          Icons.account_circle,
+                          color: Colors.blue,
+                          size: 150,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(usuario.avatar),
+                          radius: 70),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Nome: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          usuario.nome!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
                   ),
-                );
-
-                if (usuario.id == null) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    usuario.avatar == ""
-                        ? const Icon(
-                            Icons.account_circle,
-                            color: Colors.blue,
-                            size: 150,
-                          )
-                        : CircleAvatar(
-                            backgroundImage: NetworkImage(usuario.avatar),
-                            radius: 70),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Nome: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            usuario.nome!,
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Cpf: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          usuario.cpf!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Cpf: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            usuario.cpf!,
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "E-mail: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          usuario.email!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "E-mail: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            usuario.email!,
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Login: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          usuario.login!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Login: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            usuario.login!,
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          "Senha: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "******",
+                          style: TextStyle(fontSize: 20),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Senha: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "******",
-                            style: TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "isAdmin: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        (usuario.isAdmin == 1)
+                            ? Text(
+                                "é admin",
+                                style: TextStyle(fontSize: 20),
+                              )
+                            : Text(
+                                "não é admin",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:  [
-                          Text(
-                            "isAdmin: ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          (usuario.isAdmin == true) ? Text(
-
-                            "é admin",
-                            style: TextStyle(fontSize: 20),
-                          ):Text(
-
-                            "não é admin",
-                            style: TextStyle(fontSize: 20),
-                          )
-
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
+                  ),
+                ],
+              );
+            },
           ),
-          const Text("Tab 2"),
-        ]),
-      ),
-    );
+        ));
   }
 }

@@ -20,7 +20,7 @@ class _TelaClienteState extends State<TelaCliente> {
   void initState() {
     super.initState();
     usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    usuarioProvider.listarClientes();
+    usuarioProvider.listarUsuarios(isAdmin: 0);
   }
 
   @override
@@ -36,7 +36,7 @@ class _TelaClienteState extends State<TelaCliente> {
               showSearch(
                 context: context,
                 delegate:
-                SearchUserDelegate(usuarios: usuarioProvider.usuarios),
+                    SearchUserDelegate(usuarios: usuarioProvider.usuarios),
               );
             },
           ),
@@ -47,39 +47,39 @@ class _TelaClienteState extends State<TelaCliente> {
           Expanded(
             child: Consumer<UsuarioProvider>(
               builder: (BuildContext context, value, Widget? child) {
-                final usuarios = value.usuarios;
+                final clientes = value.usuarios;
                 return ListView.builder(
-                  itemCount: usuarios.length,
+                  itemCount: clientes.length,
                   itemBuilder: (context, index) {
-                    if (usuarios.isNotEmpty == true) {
-                      final usuario = usuarios[index];
+                    if (clientes.isNotEmpty == true) {
+                      final cliente = clientes[index];
                       return Card(
                         child: ListTile(
-                          leading: usuario.avatar == ""
+                          leading: cliente.avatar == ""
                               ? const Icon(
-                            Icons.account_circle,
-                            color: Colors.blue,
-                            size: 50,
-                          )
+                                  Icons.account_circle,
+                                  color: Colors.blue,
+                                  size: 50,
+                                )
                               : SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                usuario.avatar,
-                              ),
-                            ),
-                          ),
-                          title: Text(usuario.nome!),
-                          subtitle: Text(usuario.email!),
+                                  width: 50,
+                                  height: 50,
+                                  child: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      cliente.avatar,
+                                    ),
+                                  ),
+                                ),
+                          title: Text(cliente.nome!),
+                          subtitle: Text(cliente.email!),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     DetailsUserDialog(
-                                      usuario: usuario,
-                                    ),
+                                  usuario: cliente,
+                                ),
                                 fullscreenDialog: true,
                               ),
                             );
