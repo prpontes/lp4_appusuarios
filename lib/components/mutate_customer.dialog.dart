@@ -1,6 +1,7 @@
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/model/endereco.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,8 @@ String? validateMobile(String value) {
 
 class MutateCustomerDialog extends StatefulWidget {
   final Usuario? usuario;
+
+
   const MutateCustomerDialog({Key? key, this.usuario}) : super(key: key);
 
   @override
@@ -34,6 +37,7 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
   final _cpfController = TextEditingController(text: "");
   final _loginController = TextEditingController(text: "");
   final _telefoneController = TextEditingController(text: "");
+
 
   late final UsuarioProvider _usuarioProvider;
   @override

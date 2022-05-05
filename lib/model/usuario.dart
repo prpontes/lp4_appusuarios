@@ -9,6 +9,7 @@ class Usuario {
   String avatar;
   String? telefone;
   int isAdmin;
+  int? idendereco;
 
   Usuario({
     this.id,
@@ -20,6 +21,7 @@ class Usuario {
     this.avatar = "",
     this.telefone,
     this.isAdmin = 0,
+    this.idendereco,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,11 +35,12 @@ class Usuario {
       "avatar": avatar,
       "telefone": telefone,
       "isAdmin": isAdmin,
+      "idendereco": idendereco,
     };
   }
 
   @override
   String toString() {
-    return 'Usuario{id: $id, cpf: $cpf, nome: $nome, email: $email, login: $login, senha: $senha, avatar: $avatar,telefone: $telefone,isAdmin: $isAdmin}';
+    return 'Usuario{id: $id, cpf: $cpf, nome: $nome, email: $email, login: $login, senha: $senha, avatar: $avatar,telefone: $telefone,isAdmin: $isAdmin, idendereco :$idendereco}';
   }
 }

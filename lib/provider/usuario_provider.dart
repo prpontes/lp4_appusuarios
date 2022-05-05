@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:lp4_appusuarios/model/endereco.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:sqflite/sqflite.dart';
@@ -7,12 +8,15 @@ class UsuarioProvider extends ChangeNotifier {
   Database db = DatabaseSingleton.instance.db;
   String nomeTabela = "usuario";
 
+
   List<Usuario> usuarios = [];
+
 
   Future<List<Usuario>> listarUsuarios({int? isAdmin}) async {
     List lista = await db.query(nomeTabela,
         where: isAdmin == null ? null : "isAdmin=?",
         whereArgs: isAdmin == null ? null : [isAdmin]);
+
 
     usuarios = List.generate(lista.length, (index) {
       return Usuario(
