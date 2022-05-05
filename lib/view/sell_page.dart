@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/components/details_user_dialog.dart';
 import 'package:lp4_appusuarios/provider/sell_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
