@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:lp4_appusuarios/model/item_venda.dart';
 
-class ShoppingCart extends ChangeNotifier {
-  List<ItemVenda> items = [];
+class ShoppingCartProvider extends ChangeNotifier {
+  List<ItemVenda> items = [
+    ItemVenda(id: 1, price: 10.0),
+  ];
 
   void add(ItemVenda item) {
     items.add(item);

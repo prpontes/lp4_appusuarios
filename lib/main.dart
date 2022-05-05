@@ -1,7 +1,9 @@
+import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:lp4_appusuarios/provider/sell_provider.dart';
+import 'package:lp4_appusuarios/provider/shopping_cart_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:lp4_appusuarios/view/customers_page.dart';
@@ -38,6 +40,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => FornecedoresProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => ShoppingCartProvider(),
+        ),
       ],
       child: MaterialApp(
         themeMode: ThemeMode.light,
@@ -53,7 +58,7 @@ void main() async {
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
-          "/": (context) => const TelaLogin(),
+          "/": (context) => const ShoppingCartDialog(),
           "/telainicio": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(),
           "/productspage": (context) => const ProductsPage(),
