@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 // FUNÇÃO PARA VALIDAÇÃO DE NUMERO DE TELEFONE
 String? validateMobile(String value) {
   String pattern = r'(^\(?[1-9]{2}\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$)';
-  RegExp regExp = new RegExp(pattern);
-  if (value.length == 0) {
+  RegExp regExp = RegExp(pattern);
+  if (value.isEmpty) {
     return 'Por favor, insira um numero!';
   } else if (!regExp.hasMatch(value)) {
     return 'Por favor, coloque um telefone valido!';
@@ -35,7 +35,6 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
   final _loginController = TextEditingController(text: "");
   final _telefoneController = TextEditingController(text: "");
 
-
   late final UsuarioProvider _usuarioProvider;
   @override
   void initState() {
@@ -48,8 +47,7 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
       _avatarController.text = widget.usuario!.avatar;
       _cpfController.text = widget.usuario!.cpf!;
       _loginController.text = widget.usuario!.login!;
-      _telefoneController.text= widget.usuario!.telefone!;
-
+      _telefoneController.text = widget.usuario!.telefone!;
     }
   }
 
@@ -58,7 +56,7 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
     final bool isUpdate = widget.usuario != null;
     return Scaffold(
       appBar: AppBar(
-        title: Text(isUpdate ? 'Editar usuário' : 'Criar usuário'),
+        title: Text(isUpdate ? 'Editar cliente' : 'Criar cliente'),
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
@@ -71,8 +69,8 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
             usuario.avatar = _avatarController.text;
             usuario.cpf = _cpfController.text;
             usuario.login = _loginController.text;
-            usuario.telefone= _telefoneController.text;
-            usuario.isAdmin= false;
+            usuario.telefone = _telefoneController.text;
+            usuario.isAdmin = 0;
             if (isUpdate) {
               await _usuarioProvider.editarUsuario(usuario);
             } else {
@@ -193,6 +191,9 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
                   return null;
                 },
               ),
+              const SizedBox(
+                height: 10,
+              ),
               TextFormField(
                 controller: _telefoneController,
                 decoration: const InputDecoration(
@@ -203,8 +204,8 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Telefone é obrigatório';
-                  }else{
-                  return validateMobile(value);
+                  } else {
+                    return validateMobile(value);
                   }
                 },
               ),

@@ -8,7 +8,7 @@ class Usuario {
   String? senha;
   String avatar;
   String? telefone;
-  bool? isAdmin;
+  int isAdmin;
 
   Usuario({
     this.id,
@@ -19,7 +19,7 @@ class Usuario {
     this.senha,
     this.avatar = "",
     this.telefone,
-    this.isAdmin,
+    this.isAdmin = 0,
   });
 
   Map<String, dynamic> toMap() {

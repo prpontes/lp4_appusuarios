@@ -19,7 +19,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   void initState() {
     super.initState();
     usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    usuarioProvider.listarUsuarios();
+    usuarioProvider.listarUsuarios(isAdmin: 1);
   }
 
   @override
