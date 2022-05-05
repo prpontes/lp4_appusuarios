@@ -106,7 +106,36 @@ class _TelaInicioState extends State<TelaInicio> {
                       ],
                     ),
                   ),
-                )
+                ),
+                SizedBox(
+                  width: 300,
+                  height: 100,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/telacarrinho");
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.attach_money_outlined,
+                          size: 50,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "Carrinho",
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ]),
         ));
   }
