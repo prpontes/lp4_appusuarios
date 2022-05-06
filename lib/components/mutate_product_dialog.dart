@@ -44,7 +44,6 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
       appBar: AppBar(
         title: Text("${isUpdate ? 'Editar' : 'Criar'} produto"),
       ),
-      resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
