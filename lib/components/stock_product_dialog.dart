@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 class StockDialog extends StatelessWidget {
   final Product product;
   late final TextEditingController _qtdController;
+  final _formKey = GlobalKey<FormState>();
   StockDialog({Key? key, required this.product}) : super(key: key) {
     _qtdController = TextEditingController(text: product.quantity.toString());
   }
@@ -23,6 +24,7 @@ class StockDialog extends StatelessWidget {
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: EdgeInsets.all(25),
@@ -39,37 +41,61 @@ class StockDialog extends StatelessWidget {
                       focusNode: FocusNode(),
                       onPressed: () {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        _qtdController.text = _qtdController.text.isNotEmpty && double.parse(_qtdController.text) >= 1
-                            ? (double.parse(_qtdController.text) - 1).toInt().toString()
-                            : "0";
+                        try {
+                          _qtdController.text =
+                              _qtdController.text.isNotEmpty && double.tryParse(_qtdController.text) != null && double.parse(_qtdController.text) >= 1
+                                  ? (double.parse(_qtdController.text) - 1).toInt().toString()
+                                  : "0";
+                        } catch (e) {
+                          debugPrint(e.toString());
+                        }
                       },
                       icon: Icon(
                         Icons.remove_circle_outline,
                       )),
                   Expanded(
                     child: SizedBox(
-                      height: 40,
-                      child: TextField(
-                        controller: _qtdController,
-                        maxLines: 1,
-                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          border: OutlineInputBorder(),
+                      child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: _qtdController,
+                          validator: (qtd) {
+                            if (qtd!.isEmpty) {
+                              return 'Digite uma quantidade';
+                            }
+                            if (double.tryParse(qtd) == null || double.parse(qtd) < 0) {
+                              return 'Quantidade inválida';
+                            }
+                            return null;
+                          },
+                          maxLines: 1,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            border: OutlineInputBorder(),
+                          ),
                         ),
                       ),
                     ),
                   ),
                   IconButton(
-                      onPressed: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        _qtdController.text = _qtdController.text.isNotEmpty ? (double.parse(_qtdController.text) + 1).toInt().toString() : "1";
-                      },
-                      icon: Icon(
-                        Icons.add_circle_outline,
-                      )),
+                    onPressed: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      try {
+                        _qtdController.text =
+                            _qtdController.text.isNotEmpty && double.tryParse(_qtdController.text) != null && double.parse(_qtdController.text) >= 1
+                                ? (double.parse(_qtdController.text) + 1).toInt().toString()
+                                : "1";
+                      } catch (e) {
+                        debugPrint(e.toString());
+                      }
+                    },
+                    icon: Icon(
+                      Icons.add_circle_outline,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -84,21 +110,23 @@ class StockDialog extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      product.quantity = double.parse(_qtdController.text).toInt();
-                      await productProvider.updateProduct(product);
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Estoque Atualizado!"),
-                            ],
+                      if (_formKey.currentState!.validate()) {
+                        product.quantity = double.parse(_qtdController.text).toInt();
+                        await productProvider.updateProduct(product);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Estoque Atualizado!"),
+                              ],
+                            ),
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: Colors.green,
                           ),
-                          duration: const Duration(seconds: 2),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
+                        );
+                      }
                     },
                     child: Text("Salvar"),
                   )
