@@ -32,6 +32,7 @@ class _TelaInicioState extends State<TelaInicio> {
             builder: (context, value, child) {
               var shoppingCartProvider = value;
               var total = shoppingCartProvider.totalItems;
+              if (total == 0) return child!;
               return Badge(
                 child: child!,
                 value: total.toString(),

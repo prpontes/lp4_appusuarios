@@ -32,6 +32,7 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
     return Consumer<ShoppingCartProvider>(
       builder: (context, value, child) {
         var shoppingCartProvider = value;
+        var totalItems = shoppingCartProvider.totalItems;
         var items = shoppingCartProvider.items;
         return Scaffold(
           appBar: AppBar(
@@ -80,15 +81,21 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    _shoppingCartProvider.clear();
-                  },
+                  onPressed: totalItems == 0
+                      ? null
+                      : () {
+                          _shoppingCartProvider.clear();
+                        },
                   child: Text("Limpar"),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    _sellProvider.buy(items, 1);
-                  },
+                  onPressed: totalItems == 0
+                      ? null
+                      : () async {
+                          await _sellProvider.buy(items, 1);
+                          _shoppingCartProvider.clear();
+                          Navigator.of(context).pop();
+                        },
                   child: Text("Comprar"),
                 ),
               ],

@@ -86,7 +86,7 @@ class SellProvider extends ChangeNotifier {
     return item;
   }
 
-  void buy(List<ItemVenda> itens, int userId) async {
+  Future<void> buy(List<ItemVenda> itens, int userId) async {
     // create Venda and get id
     Sell venda = Sell(
       date: DateTime.now().toString(),
