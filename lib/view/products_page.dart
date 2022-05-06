@@ -18,8 +18,7 @@ class _ProductsPageState extends State<ProductsPage> {
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-    WidgetsBinding.instance!
-        .addPostFrameCallback((_) => productProvider.getProducts());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => productProvider.getProducts());
   }
 
   @override
@@ -53,72 +52,98 @@ class _ProductsPageState extends State<ProductsPage> {
         },
         child: const Icon(Icons.add),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Consumer<ProductProvider>(
-              builder: (BuildContext context, value, Widget? child) {
-                final products = value.products;
-                return ListView.builder(
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    if (products.isNotEmpty == true) {
-                      final product = products[index];
-                      return Card(
-                        child: ListTile(
-                          leading: Hero(
-                            tag: "${product.id}",
-                            child: product.image.isEmpty
-                                ? const Icon(
-                                    Icons.warning_rounded,
-                                    color: Colors.amber,
-                                    size: 50,
-                                  )
-                                : SizedBox(
-                                    width: 50,
-                                    height: 50,
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      foregroundImage: NetworkImage(
-                                        product.image,
-                                      ),
-                                    ),
-                                  ),
-                          ),
-                          title: Text(product.name),
-                          subtitle: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            physics: const BouncingScrollPhysics(),
-                            child: Text(
-                              product.description,
-                              maxLines: 1,
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Consumer<ProductProvider>(
+          builder: (BuildContext context, value, Widget? child) {
+            final products = value.products;
+            return ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                if (products.isNotEmpty) {
+                  final product = products[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8, top: 5),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => DetailsProductDialog(
+                              product: product,
                             ),
+                            fullscreenDialog: true,
                           ),
-                          trailing:
-                              Text("R\$ ${product.price.toStringAsFixed(2)}"),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    DetailsProductDialog(
-                                  product: product,
-                                ),
-                                fullscreenDialog: true,
+                        );
+                      },
+                      child: Card(
+                        elevation: 5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              leading: Hero(
+                                tag: "${product.id}",
+                                child: product.image.isEmpty
+                                    ? const Icon(
+                                        Icons.warning_rounded,
+                                        color: Colors.amber,
+                                        size: 50,
+                                      )
+                                    : SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.transparent,
+                                          foregroundImage: NetworkImage(
+                                            product.image,
+                                          ),
+                                        ),
+                                      ),
                               ),
-                            );
-                          },
+                              title: Text(
+                                product.name,
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              trailing: Text(
+                                "Estoque: ${product.quantity}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: product.quantity == 0 ? Colors.red : Colors.green,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25, top: 5, bottom: 10, right: 25),
+                              child: Text(
+                                "R\$ ${product.price.toStringAsFixed(2)}",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 30,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    } else {
-                      return const Text("nenhum produto");
-                    }
-                  },
-                );
+                      ),
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: const Text(
+                        "Nenhum Produto",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  );
+                }
               },
-            ),
-          )
-        ],
+            );
+          },
+        ),
       ),
     );
   }
