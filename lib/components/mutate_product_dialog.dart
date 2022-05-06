@@ -27,8 +27,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
   void initState() {
     super.initState();
     _productProvider = Provider.of<ProductProvider>(context, listen: false);
-    _fornecedoresProvider =
-        Provider.of<FornecedoresProvider>(context, listen: false);
+    _fornecedoresProvider = Provider.of<FornecedoresProvider>(context, listen: false);
     if (widget.product != null) {
       _nameController.text = widget.product!.name;
       _descriptionController.text = widget.product!.description;
@@ -48,8 +47,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if (_formKey.currentState!.validate() &&
-              _selectedFornecedor != null) {
+          if (_formKey.currentState!.validate()) {
             debugPrint("Formulário válido");
             Product product = isUpdate
                 ? widget.product!
@@ -58,12 +56,8 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                     fornecedor: _selectedFornecedor!,
                   );
             product.name = _nameController.text;
-            product.description = _descriptionController.text.isEmpty
-                ? ""
-                : _descriptionController.text;
-            product.price = _priceController.text.isNotEmpty
-                ? double.parse(_priceController.text)
-                : 0.0;
+            product.description = _descriptionController.text.isEmpty ? "" : _descriptionController.text;
+            product.price = _priceController.text.isNotEmpty ? double.parse(_priceController.text) : 0.0;
             product.image = _imageController.text;
             product.fornecedor = _selectedFornecedor!;
             await product.getMainColorFromImage();
@@ -85,8 +79,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
             future: _fornecedoresProvider.listarFornecedores(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<Fornecedor> fornecedores =
-                    snapshot.data as List<Fornecedor>;
+                List<Fornecedor> fornecedores = snapshot.data as List<Fornecedor>;
                 return Form(
                   key: _formKey,
                   child: Column(
@@ -142,18 +135,15 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                         height: 10,
                       ),
                       DropdownButtonFormField<int>(
-                        value: (_selectedFornecedor == null)
-                            ? null
-                            : _selectedFornecedor!.id,
+                        value: (_selectedFornecedor == null) ? null : _selectedFornecedor!.id,
                         hint: Text(
-                            fornecedores.isNotEmpty
-                                ? "Selecione o Fornecedor"
-                                : "Nenhum Fornecedor Cadastrado",
-                            style: TextStyle(color: Colors.deepPurple)),
+                          fornecedores.isNotEmpty ? "Selecione o Fornecedor" : "Nenhum Fornecedor Cadastrado",
+                          style: TextStyle(color: Colors.deepPurple),
+                        ),
                         icon: RotatedBox(
-                            quarterTurns: 1,
-                            child: Icon(Icons.chevron_right,
-                                color: Colors.deepPurple)),
+                          quarterTurns: 1,
+                          child: Icon(Icons.chevron_right, color: Colors.deepPurple),
+                        ),
                         iconSize: 24,
                         elevation: 16,
                         isExpanded: true,
@@ -172,8 +162,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                         },
                         onChanged: (idSelecionado) {
                           setState(() {
-                            _selectedFornecedor = fornecedores.firstWhere(
-                                (fornecedor) => fornecedor.id == idSelecionado);
+                            _selectedFornecedor = fornecedores.firstWhere((fornecedor) => fornecedor.id == idSelecionado);
                           });
                         },
                         items: fornecedores.map<DropdownMenuItem<int>>(
