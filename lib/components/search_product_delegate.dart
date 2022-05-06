@@ -6,8 +6,7 @@ import 'package:lp4_appusuarios/model/product.dart';
 class SearchProductDelegate extends SearchDelegate<String> {
   List<Product> products;
 
-  SearchProductDelegate({required this.products})
-      : super(searchFieldLabel: "Buscar produtos");
+  SearchProductDelegate({required this.products}) : super(searchFieldLabel: "Buscar produtos");
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -45,8 +44,7 @@ class SearchProductDelegate extends SearchDelegate<String> {
         ? products
         : products
             .where((p) =>
-                removeDiacritics(p.name.toLowerCase())
-                    .contains(removeDiacritics(query.toLowerCase())) ||
+                removeDiacritics(p.name.toLowerCase()).contains(removeDiacritics(query.toLowerCase())) ||
                 p.description.toLowerCase().contains(query.toLowerCase()))
             .toList();
 
@@ -74,7 +72,11 @@ class SearchProductDelegate extends SearchDelegate<String> {
                   ),
           ),
           title: Text(product.name),
-          subtitle: Text(product.description),
+          subtitle: Text(
+            product.description,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
           onTap: () {
             Navigator.push(
               context,
