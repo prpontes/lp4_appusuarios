@@ -1,5 +1,6 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_product_dialog.dart';
+import 'package:lp4_appusuarios/components/stock_product_dialog.dart';
 import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,7 @@ import 'package:provider/provider.dart';
 
 class DetailsProductDialog extends StatefulWidget {
   final Product product;
-  const DetailsProductDialog({Key? key, required this.product})
-      : super(key: key);
+  const DetailsProductDialog({Key? key, required this.product}) : super(key: key);
 
   @override
   State<DetailsProductDialog> createState() => _DetailsProductDialogState();
@@ -28,8 +28,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
     return Consumer<ProductProvider>(builder: (context, value, child) {
       Product product = value.products.firstWhere(
         (product) => product.id == widget.product.id,
-        orElse: () => Product(
-            name: "", id: -1, fornecedor: Fornecedor(id: -1, razaoSocial: "")),
+        orElse: () => Product(name: "", id: -1, fornecedor: Fornecedor(id: -1, razaoSocial: "")),
       );
 
       if (product.id == -1) {
@@ -138,8 +137,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                                 fontWeight: FontWeight.bold,
                                 shadows: [
                                   Shadow(
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     offset: Offset(0, 0),
                                     blurRadius: 2,
                                   )
@@ -177,33 +175,18 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                                   fontWeight: FontWeight.bold,
                                   shadows: [
                                     Shadow(
-                                      color: Theme.of(context)
-                                          .scaffoldBackgroundColor,
+                                      color: Theme.of(context).scaffoldBackgroundColor,
                                       offset: Offset(0, 0),
                                       blurRadius: 5,
                                     )
                                   ],
                                 ),
                               ),
-                              onTap: () async {
+                              onTap: () {
                                 showDialog(
                                   barrierDismissible: false,
                                   context: context,
-                                  builder: (BuildContext context) => Dialog(
-                                    backgroundColor: Colors.transparent,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.2,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.6,
-                                    ),
-                                  ),
+                                  builder: (BuildContext context) => StockDialog(product: product),
                                 );
                               },
                             ),
@@ -218,7 +201,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                                     color: Colors.black,
                                     offset: Offset(-0.2, 0.5),
                                     blurRadius: 5,
-                                  )
+                                  ),
                                 ],
                                 fontSize: 14,
                                 color: Colors.white,
@@ -236,8 +219,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                                 fontWeight: FontWeight.bold,
                                 shadows: [
                                   Shadow(
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     offset: Offset(0, 0),
                                     blurRadius: 5,
                                   )
@@ -259,23 +241,16 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                                 size: 150,
                               )
                             : Container(
-                                width: MediaQuery.of(context).size.height >=
-                                        MediaQuery.of(context).size.width
-                                    ? (MediaQuery.of(context).size.width / 2) *
-                                        0.8
-                                    : (MediaQuery.of(context).size.height / 2) *
-                                        0.8,
-                                height: MediaQuery.of(context).size.height >=
-                                        MediaQuery.of(context).size.width
-                                    ? (MediaQuery.of(context).size.width / 2) *
-                                        0.8
-                                    : (MediaQuery.of(context).size.height / 2) *
-                                        0.8,
+                                width: MediaQuery.of(context).size.height >= MediaQuery.of(context).size.width
+                                    ? (MediaQuery.of(context).size.width / 2) * 0.8
+                                    : (MediaQuery.of(context).size.height / 2) * 0.8,
+                                height: MediaQuery.of(context).size.height >= MediaQuery.of(context).size.width
+                                    ? (MediaQuery.of(context).size.width / 2) * 0.8
+                                    : (MediaQuery.of(context).size.height / 2) * 0.8,
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Theme.of(context)
-                                          .scaffoldBackgroundColor,
+                                      color: Theme.of(context).scaffoldBackgroundColor,
                                       offset: Offset(0, 0),
                                       blurRadius: 5,
                                     )
@@ -289,8 +264,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                                       context: context,
                                       builder: (context) {
                                         return Dialog(
-                                          backgroundColor: Theme.of(context)
-                                              .scaffoldBackgroundColor,
+                                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                           child: Image.network(product.image),
                                         );
                                       },
@@ -298,8 +272,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                                   },
                                   child: CircleAvatar(
                                     backgroundColor: product.mainColor,
-                                    foregroundImage:
-                                        NetworkImage(product.image),
+                                    foregroundImage: NetworkImage(product.image),
                                   ),
                                 ),
                               ),
@@ -335,9 +308,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                         child: SizedBox(
                           width: double.infinity,
                           child: Text(
-                            product.description.isEmpty
-                                ? "Não há descrição"
-                                : product.description,
+                            product.description.isEmpty ? "Não há descrição" : product.description,
                             textAlign: TextAlign.justify,
                             style: const TextStyle(
                               color: Colors.grey,
