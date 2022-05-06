@@ -36,10 +36,8 @@ class SellProvider extends ChangeNotifier {
 
   // listarItems
   Future<List<ItemVenda>> listItens(int idUsuario) async {
-    List lista = await db.query("itemVenda_view");
-    // example return: {id: 1, quantity: null, price: 0.0, idProduto: 1, idVenda: 4, date: 2022-05-05 23:52:29.088175, idUser: 1, name: bebeaaaa, description: , image: https://motorshow.com.br/wp-content/uploads/sites/2/2020/05/solo-rear-side-view_1575x1050.jpg, idFornecedor: -1}
-    debugPrint(lista.toString());
-
+    List lista = await db
+        .query("itemVenda_view", where: "idUser = ?", whereArgs: [idUsuario]);
     var itensVenda = List.generate(lista.length, (index) {
       return ItemVenda(
         id: lista[index]["id"],
@@ -76,7 +74,10 @@ class SellProvider extends ChangeNotifier {
 
   Future<ItemVenda> saveItem(ItemVenda item) async {
     debugPrint("saveItem() ${item.toString()}");
-    await db.insert(tabelaItemVenda, item.toMap());
+    var itemVendaId = await db.insert(tabelaItemVenda, item.toMap());
+    if (itemVendaId == 0) {
+      throw Exception("Failed to insert itemVenda");
+    }
     notifyListeners();
     return item;
   }
@@ -90,9 +91,13 @@ class SellProvider extends ChangeNotifier {
     int idVenda = (await saveSell(venda)).id!;
     debugPrint("idVenda: $idVenda");
     // create ItemVenda
-    for (ItemVenda item in itens) {
-      item.idVenda = idVenda;
-      await saveItem(item);
+    try {
+      for (ItemVenda item in itens) {
+        item.idVenda = idVenda;
+        await saveItem(item);
+      }
+    } catch (e) {
+      await db.delete(tabelaVenda, where: "sell.id = ?", whereArgs: [idVenda]);
     }
   }
 }
