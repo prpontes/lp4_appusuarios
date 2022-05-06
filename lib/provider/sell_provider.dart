@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/model/sell.dart';
 import 'package:lp4_appusuarios/model/item_venda.dart';
@@ -35,8 +36,7 @@ class SellProvider extends ChangeNotifier {
 
   // listarItems
   Future<List<ItemVenda>> listItens(int idUsuario) async {
-    List lista = await db.rawQuery(
-        "SELECT *, itemVenda.quantity as quantity, itemVenda.price as price FROM $tabelaItemVenda itemVenda INNER JOIN $tabelaVenda ON $tabelaItemVenda.idVenda = $tabelaVenda.id INNER JOIN product ON $tabelaItemVenda.idProduto = product.id WHERE $tabelaVenda.idUser = $idUsuario");
+    List lista = await db.query("itemVenda_view");
     // example return: {id: 1, quantity: null, price: 0.0, idProduto: 1, idVenda: 4, date: 2022-05-05 23:52:29.088175, idUser: 1, name: bebeaaaa, description: , image: https://motorshow.com.br/wp-content/uploads/sites/2/2020/05/solo-rear-side-view_1575x1050.jpg, idFornecedor: -1}
     debugPrint(lista.toString());
 
@@ -45,15 +45,10 @@ class SellProvider extends ChangeNotifier {
         id: lista[index]["id"],
         quantity: lista[index]["quantity"],
         price: lista[index]["price"],
-        idProduto: lista[index]["idProduto"],
-        idVenda: lista[index]["idVenda"],
         produto: Product(
-          id: lista[index]["idProduto"],
           name: lista[index]["name"],
           description: lista[index]["description"],
           image: lista[index]["image"],
-          price: lista[index]["price"],
-          idFornecedor: lista[index]["idFornecedor"],
         ),
       );
     });

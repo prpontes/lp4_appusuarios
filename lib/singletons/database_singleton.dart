@@ -9,6 +9,10 @@ const criarTabelasLista = [
   "CREATE TABLE itemVenda (id INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, price REAL, idProduto INTEGER, idVenda INTEGER, FOREIGN KEY(idProduto) REFERENCES product(id), FOREIGN KEY(idVenda) REFERENCES sell(id))",
   "CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, price REAL, image TEXT, quantity INTEGER, idFornecedor INTEGER, FOREIGN KEY(idFornecedor) REFERENCES fornecedor(id))",
 ];
+const criarViewLista = [
+  "CREATE VIEW IF NOT EXISTS product_view AS SELECT product.id, product.name, product.description, product.price, product.image, product.quantity, fornecedor.id as 'idFornecedor', fornecedor.razaosocial FROM product Inner JOIN fornecedor on product.idfornecedor = fornecedor.id",
+  "CREATE VIEW IF NOT EXISTS itemVenda_view AS SELECT itemVenda.id, itemVenda.quantity, itemVenda.price, product.name, venda.idUser ,product.image FROM itemVenda INNER JOIN venda ON itemVenda.idVenda = venda.id INNER JOIN product ON itemVenda.idProduto = product.id"
+];
 
 class DatabaseSingleton {
   DatabaseSingleton._privateConstructor();
@@ -32,6 +36,9 @@ class DatabaseSingleton {
       dir,
       onCreate: (db, version) async {
         for (var sql in criarTabelasLista) {
+          await db.execute(sql);
+        }
+        for (var sql in criarViewLista) {
           await db.execute(sql);
         }
         //  criar usuario admin apenas ao criar o banco
