@@ -15,10 +15,6 @@ class SellProvider extends ChangeNotifier {
 
   List<ItemVenda> itens = [];
 
-  SellProvider() {
-    debugPrint("SellProvider()");
-  }
-
   // listarVendas();
   Future<List<Sell>> listSales() async {
     List lista = await db.query(tabelaVenda);
@@ -38,6 +34,7 @@ class SellProvider extends ChangeNotifier {
   Future<List<ItemVenda>> listItens(int idUsuario) async {
     List lista = await db
         .query("itemVenda_view", where: "idUser = ?", whereArgs: [idUsuario]);
+
     var itensVenda = List.generate(lista.length, (index) {
       return ItemVenda(
         id: lista[index]["id"],
@@ -73,7 +70,6 @@ class SellProvider extends ChangeNotifier {
   }
 
   Future<ItemVenda> saveItem(ItemVenda item) async {
-    debugPrint("saveItem() ${item.toString()}");
     var itemVendaId = await db.insert(tabelaItemVenda, item.toMap());
     if (itemVendaId == 0) {
       throw Exception("Failed to insert itemVenda");
@@ -89,8 +85,6 @@ class SellProvider extends ChangeNotifier {
       idUser: userId,
     );
     int idVenda = (await saveSell(venda)).id!;
-    debugPrint("idVenda: $idVenda");
-    // create ItemVenda
     try {
       for (ItemVenda item in itens) {
         item.idVenda = idVenda;
