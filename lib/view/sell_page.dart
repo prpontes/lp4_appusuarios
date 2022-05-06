@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/sell_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
@@ -15,12 +16,15 @@ class TelaVendas extends StatefulWidget {
 class _TelaVendasState extends State<TelaVendas> {
   late SellProvider sellProvider;
 
+  late AuthProvider authProvider;
+
   @override
   void initState() {
     super.initState();
     sellProvider = Provider.of<SellProvider>(context, listen: false);
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
     sellProvider.listSales();
-    sellProvider.listItens();
+    sellProvider.listItens(authProvider.user!.id!);
   }
 
   @override

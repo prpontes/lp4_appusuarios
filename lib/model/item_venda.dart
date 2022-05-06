@@ -1,16 +1,19 @@
+import 'package:lp4_appusuarios/model/product.dart';
+import 'package:lp4_appusuarios/model/sell.dart';
+
 class ItemVenda {
   // model venda
   int? id;
   int quantity;
   double price;
-  String? produto;
-  String? usuario;
+  Product? produto;
+  Sell? venda;
   int? idProduto;
   int? idVenda;
 
   ItemVenda({
     this.id,
-    this.usuario,
+    this.venda,
     this.produto,
     this.quantity = 1,
     this.price = 0,
@@ -21,8 +24,6 @@ class ItemVenda {
   Map<String, dynamic> toMap() {
     return {
       "id": id,
-      "produto": produto,
-      "usuario": usuario,
       "quantity": quantity,
       "price": price,
       "idProduto": idProduto,
@@ -32,6 +33,6 @@ class ItemVenda {
 
   @override
   String toString() {
-    return 'itemVenda{id: $id, quantity: $quantity, idProduto: $idProduto, idVenda: $idVenda, usuario: $usuario, produto: $produto}';
+    return 'itemVenda{id: $id, quantity: $quantity, idProduto: $idProduto, idVenda: $idVenda, venda: $venda, produto: ${produto.toString()}}';
   }
 }

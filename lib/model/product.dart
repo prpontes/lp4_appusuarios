@@ -5,6 +5,7 @@ class Product {
   String image;
   double price;
   int idFornecedor;
+  int quantity;
 
   Product({
     this.id,
@@ -13,6 +14,7 @@ class Product {
     this.image = "",
     this.price = 0.0,
     this.idFornecedor = -1,
+    this.quantity = 0,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +25,7 @@ class Product {
       "image": image,
       "price": price,
       "idFornecedor": idFornecedor,
+      "quantity": quantity,
     };
   }
 }

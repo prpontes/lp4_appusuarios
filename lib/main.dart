@@ -58,7 +58,7 @@ void main() async {
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
-          "/": (context) => const ShoppingCartDialog(),
+          "/": (context) => const TelaLogin(),
           "/telainicio": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(),
           "/productspage": (context) => const ProductsPage(),

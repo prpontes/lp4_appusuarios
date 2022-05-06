@@ -3,7 +3,10 @@ import 'package:lp4_appusuarios/model/item_venda.dart';
 
 class ShoppingCartProvider extends ChangeNotifier {
   List<ItemVenda> items = [
-    ItemVenda(id: 1, price: 10.0),
+    ItemVenda(
+      price: 10.0,
+      idProduto: 1,
+    ),
   ];
 
   void add(ItemVenda item) {
@@ -17,7 +20,8 @@ class ShoppingCartProvider extends ChangeNotifier {
   }
 
   double get totalPrice {
-    return items.fold(0, (total, current) => total + current.price);
+    return items.fold(
+        0.0, (total, item) => total + (item.price * item.quantity));
   }
 
   int get totalItems {

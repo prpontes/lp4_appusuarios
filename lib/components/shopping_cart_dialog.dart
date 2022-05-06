@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
+import 'package:lp4_appusuarios/provider/sell_provider.dart';
 import 'package:lp4_appusuarios/provider/shopping_cart_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -12,11 +14,17 @@ class ShoppingCartDialog extends StatefulWidget {
 class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
   late ShoppingCartProvider _shoppingCartProvider;
 
+  late SellProvider _sellProvider;
+
+  late AuthProvider _authProvider;
+
   @override
   void initState() {
     super.initState();
     _shoppingCartProvider =
         Provider.of<ShoppingCartProvider>(context, listen: false);
+    _sellProvider = Provider.of<SellProvider>(context, listen: false);
+    _authProvider = Provider.of<AuthProvider>(context, listen: false);
   }
 
   @override
@@ -79,9 +87,9 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    _sellProvider.buy(items, 1);
                   },
-                  child: Text("Fechar"),
+                  child: Text("Comprar"),
                 ),
               ],
             ),
