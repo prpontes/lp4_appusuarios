@@ -79,52 +79,60 @@ class _ProductsPageState extends State<ProductsPage> {
                       },
                       child: Card(
                         elevation: 5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ListTile(
-                              leading: Hero(
-                                tag: "${product.id}",
-                                child: product.image.isEmpty
-                                    ? const Icon(
-                                        Icons.warning_rounded,
-                                        color: Colors.amber,
-                                        size: 50,
-                                      )
-                                    : SizedBox(
-                                        width: 50,
-                                        height: 50,
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.transparent,
-                                          foregroundImage: NetworkImage(
-                                            product.image,
+                        child: Container(
+                          padding: EdgeInsets.only(top: 5),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(color: product.mainColor, width: 3),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListTile(
+                                leading: Hero(
+                                  tag: "${product.id}",
+                                  child: product.image.isEmpty
+                                      ? const Icon(
+                                          Icons.warning_rounded,
+                                          color: Colors.amber,
+                                          size: 50,
+                                        )
+                                      : SizedBox(
+                                          width: 50,
+                                          height: 50,
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.transparent,
+                                            foregroundImage: NetworkImage(
+                                              product.image,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                              ),
-                              title: Text(
-                                product.name,
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              trailing: Text(
-                                "Estoque: ${product.quantity}",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: product.quantity == 0 ? Colors.red : Colors.green,
+                                ),
+                                title: Text(
+                                  product.name,
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                                trailing: Text(
+                                  "Estoque: ${product.quantity}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: product.quantity == 0 ? Colors.red : Colors.green,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 25, top: 5, bottom: 10, right: 25),
-                              child: Text(
-                                "R\$ ${product.price.toStringAsFixed(2)}",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 30,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 25, top: 5, bottom: 10, right: 25),
+                                child: Text(
+                                  "R\$ ${product.price.toStringAsFixed(2)}",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 30,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
