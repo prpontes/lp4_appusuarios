@@ -24,7 +24,7 @@ class Sell {
     };
   }
 
-  Sell fromMap(Map<String, dynamic> map) {
+  static Sell fromMap(Map<String, dynamic> map) {
     return Sell(
       id: map['id'],
       date: map['date'],

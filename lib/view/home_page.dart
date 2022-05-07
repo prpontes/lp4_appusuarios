@@ -1,9 +1,5 @@
-import 'package:lp4_appusuarios/components/badge.dart';
 import 'package:lp4_appusuarios/components/home_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
-import 'package:lp4_appusuarios/provider/shopping_cart_provider.dart';
-import 'package:provider/provider.dart';
 
 class TelaInicio extends StatefulWidget {
   const TelaInicio({Key? key}) : super(key: key);
@@ -17,34 +13,6 @@ class _TelaInicioState extends State<TelaInicio> {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: const HomeDrawer(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => const ShoppingCartDialog(),
-                fullscreenDialog: true,
-              ),
-            );
-          },
-          // show shopping cart icon with a badge
-          child: Consumer<ShoppingCartProvider>(
-            builder: (context, value, child) {
-              var shoppingCartProvider = value;
-              var total = shoppingCartProvider.totalItems;
-              if (total == 0) return child!;
-              return Badge(
-                child: child!,
-                value: total.toString(),
-                right: 0,
-                top: 0,
-              );
-            },
-            child: Icon(
-              Icons.shopping_cart,
-            ),
-          ),
-        ),
         appBar: AppBar(
           title: const Text("Início usuário"),
         ),
@@ -109,7 +77,8 @@ class _TelaInicioState extends State<TelaInicio> {
                       ],
                     ),
                   ),
-                ),SizedBox(
+                ),
+                SizedBox(
                   width: 300,
                   height: 60,
                   child: ElevatedButton(

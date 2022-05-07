@@ -1,6 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:lp4_appusuarios/model/fornecedor.dart';
-import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/model/sell.dart';
 import 'package:lp4_appusuarios/model/item_venda.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
@@ -13,56 +11,37 @@ class SellProvider extends ChangeNotifier {
 
   List<Sell> sales = [];
 
-  List<ItemVenda> itens = [];
+  Future<List<Sell>> listSales(int idUsuario) async {
+    List salesList = await db
+        .query(tabelaVenda, where: "idUser = ?", whereArgs: [idUsuario]);
 
-  // listarVendas();
-  Future<List<Sell>> listSales() async {
-    List lista = await db.query(tabelaVenda);
+    debugPrint("lista: ${salesList.toString()}");
 
-    sales = List.generate(lista.length, (index) {
-      return Sell(
-        id: lista[index]["id"],
-        date: lista[index]["date"],
-        idUser: lista[index]["idUser"],
-      );
-    });
+    sales = await Future.wait(List.generate(salesList.length, (index) async {
+      return Sell.fromMap(salesList[index])
+        ..items = await listItems(salesList[index]["id"]);
+    }));
+
+    debugPrint("sales: ${sales.toString()}");
     notifyListeners();
     return sales;
   }
 
-  // listarItems
-  Future<List<ItemVenda>> listItens(int idUsuario) async {
-    List lista = await db
-        .query("itemVenda_view", where: "idUser = ?", whereArgs: [idUsuario]);
-
-    var itensVenda = List.generate(lista.length, (index) {
-      return ItemVenda(
-        id: lista[index]["id"],
-        quantity: lista[index]["quantity"],
-        price: lista[index]["price"],
-        produto: Product(
-          name: lista[index]["name"],
-          description: lista[index]["description"],
-          image: lista[index]["image"],
-        ),
-      );
+  Future<List<ItemVenda>> listItems(int idVenda) async {
+    List itensList = await db
+        .query("itemVenda_view", where: "idVenda = ?", whereArgs: [idVenda]);
+    debugPrint(itensList.toString());
+    var itensVenda = List.generate(itensList.length, (index) {
+      return ItemVenda.fromMap(itensList[index]);
     });
-
-    sales = List.generate(lista.length, (index) {
-      return Sell(
-        id: lista[index]["idVenda"],
-        date: lista[index]["date"],
-        idUser: lista[index]["idUser"],
-        items: itensVenda,
-      );
-    });
-
-    notifyListeners();
-    return itens;
+    return itensVenda;
   }
 
   Future<Sell> saveSell(Sell sell) async {
     int id = await db.insert(tabelaVenda, sell.toMap());
+    if (id == 0) {
+      throw Exception("Failed to insert itemVenda");
+    }
     sell.id = id;
     sales.add(sell);
     notifyListeners();

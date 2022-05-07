@@ -2,15 +2,14 @@ import 'package:flutter/widgets.dart';
 import 'package:lp4_appusuarios/model/item_venda.dart';
 
 class ShoppingCartProvider extends ChangeNotifier {
-  List<ItemVenda> items = [
-    ItemVenda(
-      price: 10.0,
-      idProduto: 1,
-    ),
-  ];
+  List<ItemVenda> items = [];
 
   void add(ItemVenda item) {
-    items.add(item);
+    if (items.indexWhere((element) => element.id == item.id) != -1) {
+      items.firstWhere((element) => element.id == item.id).quantity++;
+    } else {
+      items.add(item);
+    }
     notifyListeners();
   }
 
@@ -26,6 +25,10 @@ class ShoppingCartProvider extends ChangeNotifier {
 
   int get totalItems {
     return items.fold(0, (total, current) => total + current.quantity);
+  }
+
+  int get totalIndividualItems {
+    return items.fold(0, (total, current) => total + 1);
   }
 
   void clear() {

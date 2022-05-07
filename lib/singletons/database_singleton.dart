@@ -11,7 +11,7 @@ const criarTabelasLista = [
 ];
 const criarViewLista = [
   "CREATE VIEW IF NOT EXISTS product_view AS SELECT product.id, product.name, product.description, product.price, product.image, product.quantity, fornecedor.id as 'idFornecedor', fornecedor.razaosocial FROM product Inner JOIN fornecedor on product.idfornecedor = fornecedor.id",
-  "CREATE VIEW IF NOT EXISTS itemVenda_view AS SELECT itemVenda.id, itemVenda.quantity, itemVenda.price, product.name, sell.idUser ,product.image FROM itemVenda INNER JOIN sell ON itemVenda.idVenda = sell.id INNER JOIN product ON itemVenda.idProduto = product.id"
+  "CREATE VIEW IF NOT EXISTS itemVenda_view AS SELECT itemVenda.id, itemVenda.quantity, itemVenda.price, product.name, product.id , sell.idUser ,product.image, sell.id as idVenda FROM itemVenda INNER JOIN sell ON itemVenda.idVenda = sell.id INNER JOIN product ON itemVenda.idProduto = product.id"
 ];
 
 class DatabaseSingleton {
@@ -30,7 +30,7 @@ class DatabaseSingleton {
     String dir = join(await getDatabasesPath(), "database.db");
 
     // delete database
-    // await deleteDatabase(dir);
+    //await deleteDatabase(dir);
 
     DatabaseSingleton.instance.db = await openDatabase(
       dir,

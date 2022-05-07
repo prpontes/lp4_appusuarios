@@ -31,6 +31,20 @@ class ItemVenda {
     };
   }
 
+  static ItemVenda fromMap(Map<String, dynamic> map) {
+    return ItemVenda(
+      id: map["id"],
+      quantity: map["quantity"],
+      price: map["price"],
+      produto: Product(
+        id: map["idProduct"],
+        name: map["name"],
+        description: map["description"] ?? "",
+        image: map["image"],
+      ),
+    );
+  }
+
   @override
   String toString() {
     return 'itemVenda{id: $id, quantity: $quantity, idProduto: $idProduto, idVenda: $idVenda, venda: $venda, produto: ${produto.toString()}}';
