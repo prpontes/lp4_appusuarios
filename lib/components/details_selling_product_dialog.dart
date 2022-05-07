@@ -1,27 +1,33 @@
-import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
-import 'package:lp4_appusuarios/components/mutate_product_dialog.dart';
 import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
 import 'package:lp4_appusuarios/components/stock_product_dialog.dart';
 import 'package:lp4_appusuarios/model/fornecedor.dart';
+import 'package:lp4_appusuarios/model/item_venda.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
+import 'package:lp4_appusuarios/provider/shopping_cart_provider.dart';
 import 'package:provider/provider.dart';
 
 class DetailsSellingProductDialog extends StatefulWidget {
   final Product product;
-  const DetailsSellingProductDialog({Key? key, required this.product}) : super(key: key);
+  const DetailsSellingProductDialog({Key? key, required this.product})
+      : super(key: key);
 
   @override
-  State<DetailsSellingProductDialog> createState() => _DetailsSellingProductDialogState();
+  State<DetailsSellingProductDialog> createState() =>
+      _DetailsSellingProductDialogState();
 }
 
-class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialog> {
+class _DetailsSellingProductDialogState
+    extends State<DetailsSellingProductDialog> {
   late ProductProvider productProvider;
+  late ShoppingCartProvider shoppingCartProvider;
   @override
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
+    shoppingCartProvider =
+        Provider.of<ShoppingCartProvider>(context, listen: false);
   }
 
   @override
@@ -30,7 +36,10 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
       builder: (context, value, child) {
         Product product = value.products.firstWhere(
           (product) => product.id == widget.product.id,
-          orElse: () => Product(name: "", id: -1, fornecedor: Fornecedor(id: -1, razaoSocial: "")),
+          orElse: () => Product(
+              name: "",
+              id: -1,
+              fornecedor: Fornecedor(id: -1, razaoSocial: "")),
         );
 
         if (product.id == -1) {
@@ -81,29 +90,39 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                                       height: 40,
                                       child: ElevatedButton(
                                         onPressed: () {
+                                          shoppingCartProvider.add(ItemVenda(
+                                            idProduto: product.id,
+                                            produto: product,
+                                            price: product.price,
+                                            quantity: 1,
+                                          ));
+                                          Navigator.pop(context);
                                           Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (BuildContext context) => ShoppingCartDialog(
-                                              ),
-                                              fullscreenDialog: true,
-                                            )
-                                          );
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ShoppingCartDialog(),
+                                                fullscreenDialog: true,
+                                              ));
                                         },
                                         style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all<Color>(Colors.white),
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.white),
                                         ),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: const [
-                                            
                                             SizedBox(
                                               width: 15,
                                             ),
                                             Text(
                                               "Adicionar ao Carrinho",
-                                              style: TextStyle(fontSize: 12, color: Colors.black),
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black),
                                             ),
                                           ],
                                         ),
@@ -134,7 +153,8 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                                         fontWeight: FontWeight.bold,
                                         shadows: [
                                           Shadow(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
                                             offset: Offset(0, 0),
                                             blurRadius: 2,
                                           )
@@ -172,7 +192,8 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                                           fontWeight: FontWeight.bold,
                                           shadows: [
                                             Shadow(
-                                              color: Theme.of(context).scaffoldBackgroundColor,
+                                              color: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
                                               offset: Offset(0, 0),
                                               blurRadius: 5,
                                             )
@@ -183,7 +204,8 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                                         showDialog(
                                           barrierDismissible: false,
                                           context: context,
-                                          builder: (BuildContext context) => StockDialog(product: product),
+                                          builder: (BuildContext context) =>
+                                              StockDialog(product: product),
                                         );
                                       },
                                     ),
@@ -216,14 +238,14 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                                         fontWeight: FontWeight.bold,
                                         shadows: [
                                           Shadow(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
                                             offset: Offset(0, 0),
                                             blurRadius: 5,
                                           )
                                         ],
                                       ),
                                     ),
-                                    
                                   ],
                                 ),
                               ),
@@ -239,16 +261,44 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                                         size: 150,
                                       )
                                     : Container(
-                                        width: MediaQuery.of(context).size.height >= MediaQuery.of(context).size.width
-                                            ? (MediaQuery.of(context).size.width / 2) * 0.8
-                                            : (MediaQuery.of(context).size.height / 2) * 0.8,
-                                        height: MediaQuery.of(context).size.height >= MediaQuery.of(context).size.width
-                                            ? (MediaQuery.of(context).size.width / 2) * 0.8
-                                            : (MediaQuery.of(context).size.height / 2) * 0.8,
+                                        width:
+                                            MediaQuery.of(context)
+                                                        .size
+                                                        .height >=
+                                                    MediaQuery.of(context)
+                                                        .size
+                                                        .width
+                                                ? (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        2) *
+                                                    0.8
+                                                : (MediaQuery.of(context)
+                                                            .size
+                                                            .height /
+                                                        2) *
+                                                    0.8,
+                                        height: MediaQuery.of(context)
+                                                    .size
+                                                    .height >=
+                                                MediaQuery.of(context)
+                                                    .size
+                                                    .width
+                                            ? (MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2) *
+                                                0.8
+                                            : (MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    2) *
+                                                0.8,
                                         decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Theme.of(context).scaffoldBackgroundColor,
+                                              color: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
                                               offset: Offset(0, 0),
                                               blurRadius: 5,
                                             )
@@ -262,15 +312,19 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                                               context: context,
                                               builder: (context) {
                                                 return Dialog(
-                                                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                                                  child: Image.network(product.image),
+                                                  backgroundColor: Theme.of(
+                                                          context)
+                                                      .scaffoldBackgroundColor,
+                                                  child: Image.network(
+                                                      product.image),
                                                 );
                                               },
                                             );
                                           },
                                           child: CircleAvatar(
                                             backgroundColor: product.mainColor,
-                                            foregroundImage: NetworkImage(product.image),
+                                            foregroundImage:
+                                                NetworkImage(product.image),
                                           ),
                                         ),
                                       ),
@@ -305,7 +359,9 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Text(
-                                    product.description.isEmpty ? "Não há descrição" : product.description,
+                                    product.description.isEmpty
+                                        ? "Não há descrição"
+                                        : product.description,
                                     textAlign: TextAlign.justify,
                                     style: const TextStyle(
                                       color: Colors.grey,
