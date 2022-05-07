@@ -72,5 +72,11 @@ class SellProvider extends ChangeNotifier {
     } catch (e) {
       await db.delete(tabelaVenda, where: "sell.id = ?", whereArgs: [idVenda]);
     }
+    // update quantity from product
+    for (ItemVenda item in itens) {
+      await db.update(
+          "product", {"quantity": item.produto!.quantity - item.quantity},
+          where: "id = ?", whereArgs: [item.idProduto]);
+    }
   }
 }

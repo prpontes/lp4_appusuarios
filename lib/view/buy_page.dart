@@ -24,8 +24,8 @@ class _BuyPageState extends State<BuyPage> {
     productProvider = Provider.of<ProductProvider>(context, listen: false);
     shoppingCartProvider =
         Provider.of<ShoppingCartProvider>(context, listen: false);
-    WidgetsBinding.instance!
-        .addPostFrameCallback((_) => productProvider.getProducts());
+    WidgetsBinding.instance!.addPostFrameCallback(
+        (_) => productProvider.getProducts(minQuantity: 1));
   }
 
   @override
@@ -139,24 +139,38 @@ class _BuyPageState extends State<BuyPage> {
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.shopping_cart),
-                                  onPressed: () {
-                                    shoppingCartProvider.add(ItemVenda(
-                                      idProduto: product.id,
-                                      produto: product,
-                                      price: product.price,
-                                      quantity: 1,
-                                    ));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ShoppingCartDialog(),
-                                          fullscreenDialog: true,
-                                        ));
-                                  },
-                                ),
+                                trailing: Consumer<ShoppingCartProvider>(
+                                    builder: (context, value, child) {
+                                  var isItemInCart =
+                                      value.hasProduct(product.id!);
+                                  return IconButton(
+                                    icon: Icon(
+                                      Icons.shopping_cart,
+                                      color: isItemInCart
+                                          ? product.mainColor
+                                          : Colors.grey,
+                                    ),
+                                    onPressed: isItemInCart
+                                        ? null
+                                        : () {
+                                            shoppingCartProvider.add(ItemVenda(
+                                              idProduto: product.id,
+                                              produto: product,
+                                              price: product.price,
+                                              quantity: 1,
+                                            ));
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ShoppingCartDialog(),
+                                                fullscreenDialog: true,
+                                              ),
+                                            );
+                                          },
+                                  );
+                                }),
                               ),
                               Padding(
                                   padding: const EdgeInsets.only(

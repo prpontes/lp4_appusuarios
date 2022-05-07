@@ -10,8 +10,9 @@ class ProductProvider extends ChangeNotifier {
 
   List<Product> products = [];
 
-  Future<List<Product>> getProducts() async {
-    List productsList = await db.query(tableName + "_view");
+  Future<List<Product>> getProducts({int minQuantity = 0}) async {
+    List productsList = await db.query(tableName + "_view",
+        where: "quantity >= ?", whereArgs: [minQuantity]);
     products = List.empty(growable: true);
     for (var product in productsList) {
       products.add(

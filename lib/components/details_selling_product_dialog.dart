@@ -85,49 +85,6 @@ class _DetailsSellingProductDialogState
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: 170,
-                                      height: 40,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          shoppingCartProvider.add(ItemVenda(
-                                            idProduto: product.id,
-                                            produto: product,
-                                            price: product.price,
-                                            quantity: 1,
-                                          ));
-                                          Navigator.pop(context);
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        ShoppingCartDialog(),
-                                                fullscreenDialog: true,
-                                              ));
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.white),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Text(
-                                              "Adicionar ao Carrinho",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
                                     const Text(
                                       "Vendido por:",
                                       style: TextStyle(
@@ -182,32 +139,22 @@ class _DetailsSellingProductDialogState
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    GestureDetector(
-                                      child: Text(
-                                        "${product.quantity}",
-                                        style: TextStyle(
-                                          fontSize: 26,
-                                          fontFamily: "Cookie",
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          shadows: [
-                                            Shadow(
-                                              color: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                              offset: Offset(0, 0),
-                                              blurRadius: 5,
-                                            )
-                                          ],
-                                        ),
+                                    Text(
+                                      "${product.quantity}",
+                                      style: TextStyle(
+                                        fontSize: 26,
+                                        fontFamily: "Cookie",
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        shadows: [
+                                          Shadow(
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            offset: Offset(0, 0),
+                                            blurRadius: 5,
+                                          )
+                                        ],
                                       ),
-                                      onTap: () {
-                                        showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              StockDialog(product: product),
-                                        );
-                                      },
                                     ),
                                     const SizedBox(
                                       height: 20,
@@ -252,17 +199,62 @@ class _DetailsSellingProductDialogState
                             ),
                             Expanded(
                               flex: 1,
-                              child: Hero(
-                                tag: "${product.id}",
-                                child: product.image == ""
-                                    ? const Icon(
-                                        Icons.warning_rounded,
-                                        color: Colors.amber,
-                                        size: 150,
-                                      )
-                                    : Container(
-                                        width:
-                                            MediaQuery.of(context)
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          shoppingCartProvider.add(ItemVenda(
+                                            idProduto: product.id,
+                                            produto: product,
+                                            price: product.price,
+                                            quantity: 1,
+                                          ));
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ShoppingCartDialog(),
+                                                fullscreenDialog: true,
+                                              ));
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.white),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Text(
+                                              "Adicionar ao Carrinho",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Hero(
+                                    tag: "${product.id}",
+                                    child: product.image == ""
+                                        ? const Icon(
+                                            Icons.warning_rounded,
+                                            color: Colors.amber,
+                                            size: 150,
+                                          )
+                                        : Container(
+                                            width: MediaQuery.of(context)
                                                         .size
                                                         .height >=
                                                     MediaQuery.of(context)
@@ -278,56 +270,59 @@ class _DetailsSellingProductDialogState
                                                             .height /
                                                         2) *
                                                     0.8,
-                                        height: MediaQuery.of(context)
-                                                    .size
-                                                    .height >=
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width
-                                            ? (MediaQuery.of(context)
+                                            height: MediaQuery.of(context)
                                                         .size
-                                                        .width /
-                                                    2) *
-                                                0.8
-                                            : (MediaQuery.of(context)
+                                                        .height >=
+                                                    MediaQuery.of(context)
                                                         .size
-                                                        .height /
-                                                    2) *
-                                                0.8,
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                              offset: Offset(0, 0),
-                                              blurRadius: 5,
-                                            )
-                                          ],
-                                          color: Colors.transparent,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return Dialog(
-                                                  backgroundColor: Theme.of(
-                                                          context)
+                                                        .width
+                                                ? (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        2) *
+                                                    0.8
+                                                : (MediaQuery.of(context)
+                                                            .size
+                                                            .height /
+                                                        2) *
+                                                    0.8,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Theme.of(context)
                                                       .scaffoldBackgroundColor,
-                                                  child: Image.network(
-                                                      product.image),
+                                                  offset: Offset(0, 0),
+                                                  blurRadius: 5,
+                                                )
+                                              ],
+                                              color: Colors.transparent,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Dialog(
+                                                      backgroundColor: Theme.of(
+                                                              context)
+                                                          .scaffoldBackgroundColor,
+                                                      child: Image.network(
+                                                          product.image),
+                                                    );
+                                                  },
                                                 );
                                               },
-                                            );
-                                          },
-                                          child: CircleAvatar(
-                                            backgroundColor: product.mainColor,
-                                            foregroundImage:
-                                                NetworkImage(product.image),
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                    product.mainColor,
+                                                foregroundImage:
+                                                    NetworkImage(product.image),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
+                                  ),
+                                ],
                               ),
                             )
                           ],

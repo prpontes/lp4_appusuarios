@@ -55,7 +55,13 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
-                        _shoppingCartProvider.increment(item);
+                        // increment if has stock
+                        var currentStock = item.quantity;
+                        if (item.produto != null &&
+                            item.produto!.quantity > 0 &&
+                            currentStock < item.produto!.quantity) {
+                          _shoppingCartProvider.increment(item);
+                        }
                       },
                     ),
                   ],
@@ -74,7 +80,7 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  "R\$${shoppingCartProvider.totalPrice}",
+                  "R\$${shoppingCartProvider.totalPrice.toStringAsFixed(2)}",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
@@ -82,6 +88,7 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
                       ? null
                       : () {
                           _shoppingCartProvider.clear();
+                          Navigator.of(context).pop();
                         },
                   child: Text("Limpar"),
                 ),
