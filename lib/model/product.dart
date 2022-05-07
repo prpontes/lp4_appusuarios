@@ -40,12 +40,19 @@ class Product {
   Future<Product> getMainColorFromImage() async {
     try {
       if (image != "") {
-        PaletteGenerator paletteGenerator =
-            await PaletteGenerator.fromImageProvider(NetworkImage(image));
-        if (paletteGenerator.dominantColor!.color.computeLuminance() > 0.5) {
-          mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color)
-              .withLightness(0.5)
-              .toColor();
+        PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(NetworkImage(image));
+        debugPrint(paletteGenerator.dominantColor!.color.computeLuminance().toString());
+        if (paletteGenerator.dominantColor!.color.computeLuminance() > 0.6) {
+          mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color).withLightness(0.6).toColor();
+        } else if (paletteGenerator.dominantColor!.color.computeLuminance() <= 0.1) {
+          if (paletteGenerator.vibrantColor != null) {
+            debugPrint("Vibrant: " + paletteGenerator.vibrantColor!.color.computeLuminance().toString());
+            mainColor = paletteGenerator.vibrantColor!.color.computeLuminance() <= 0.45
+                ? paletteGenerator.vibrantColor!.color
+                : HSLColor.fromColor(paletteGenerator.vibrantColor!.color).withLightness(0.45).toColor();
+          } else {
+            mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color).withLightness(0.2).toColor();
+          }
         } else {
           mainColor = paletteGenerator.dominantColor!.color;
         }
@@ -54,7 +61,6 @@ class Product {
       throw Exception();
     } catch (e) {
       image = "";
-      mainColor = Colors.deepPurple;
     }
     return this;
   }
