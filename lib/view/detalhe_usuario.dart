@@ -488,6 +488,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                               onChanged: (v){
                                                 setState(() {
                                                   detalheUsuarios = v;
+                                                  permissoesUsuarios = v;
                                                 });
                                                 _definirPermissoesUsuario();
                                               }
