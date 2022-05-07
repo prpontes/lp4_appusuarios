@@ -54,7 +54,64 @@ class _TelaInicioState extends State<TelaInicio> {
               children: [
                 SizedBox(
                   width: 300,
-                  height: 100,
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/telacompras");
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blueAccent),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.shopping_bag_outlined,
+                          size: 50,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "Compras",
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 300,
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/productspage");
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.yellow),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.label_outlined,
+                          size: 50,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "Produtos",
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),SizedBox(
+                  width: 300,
+                  height: 60,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, "/telafornecedor");
@@ -83,7 +140,7 @@ class _TelaInicioState extends State<TelaInicio> {
                 ),
                 SizedBox(
                   width: 300,
-                  height: 100,
+                  height: 60,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, "/telacliente");
@@ -112,7 +169,7 @@ class _TelaInicioState extends State<TelaInicio> {
                 ),
                 SizedBox(
                   width: 300,
-                  height: 100,
+                  height: 60,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, "/telausuario");
@@ -133,35 +190,6 @@ class _TelaInicioState extends State<TelaInicio> {
                         ),
                         Text(
                           "Usuários",
-                          style: TextStyle(fontSize: 30),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 300,
-                  height: 100,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/telacarrinho");
-                    },
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.attach_money_outlined,
-                          size: 50,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "Carrinho",
                           style: TextStyle(fontSize: 30),
                         ),
                       ],
