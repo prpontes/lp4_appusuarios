@@ -130,6 +130,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  palette_generator:
+    dependency: "direct main"
+    description:
+      name: palette_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.3"
   path:
     dependency: "direct main"
     description:
@@ -169,7 +176,7 @@ packages:
       name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.1+1"
   stack_trace:
     dependency: transitive
     description:

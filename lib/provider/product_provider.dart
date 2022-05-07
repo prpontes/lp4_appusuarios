@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:sqflite/sqflite.dart';
@@ -10,18 +11,24 @@ class ProductProvider extends ChangeNotifier {
   List<Product> products = [];
 
   Future<List<Product>> getProducts() async {
-    List productsList = await db.query(tableName);
-
-    products = List.generate(productsList.length, (index) {
-      return Product(
-        id: productsList[index]["id"],
-        name: productsList[index]["name"],
-        description: productsList[index]["description"],
-        price: productsList[index]["price"],
-        image: productsList[index]["image"],
-        idFornecedor: productsList[index]["idFornecedor"],
+    List productsList = await db.query(tableName + "_view");
+    products = List.empty(growable: true);
+    for (var product in productsList) {
+      products.add(
+        await Product(
+          id: product["id"],
+          name: product["name"],
+          description: product["description"],
+          price: product["price"],
+          image: product["image"],
+          quantity: product["quantity"],
+          fornecedor: Fornecedor(
+            razaoSocial: product["razaoSocial"],
+            id: product["idFornecedor"],
+          ),
+        ).getMainColorFromImage(),
       );
-    });
+    }
 
     notifyListeners();
     return products;
@@ -29,17 +36,21 @@ class ProductProvider extends ChangeNotifier {
 
   Future<Product?> getProduct(int id) async {
     List resultado =
-        await db.query(tableName, where: "id = ?", whereArgs: [id]);
+        await db.query(tableName + "_view", where: "id = ?", whereArgs: [id]);
 
     if (resultado.isNotEmpty) {
-      return Product(
+      return await Product(
         id: resultado[0]["id"],
         name: resultado[0]["name"],
         description: resultado[0]["description"],
         price: resultado[0]["price"],
         image: resultado[0]["image"],
-        idFornecedor: resultado[0]["idFornecedor"],
-      );
+        quantity: resultado[0]["quantity"],
+        fornecedor: Fornecedor(
+          id: resultado[0]["idFornecedor"],
+          razaoSocial: resultado[0]["razaosocial"],
+        ),
+      ).getMainColorFromImage();
     } else {
       return null;
     }
