@@ -3,6 +3,7 @@ import 'package:lp4_appusuarios/model/permissoes.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/provider_permissoes.dart';
+import 'package:lp4_appusuarios/provider/provider_usuario.dart';
 import 'package:provider/provider.dart';
 
 class TelaDetalheUsuario extends StatefulWidget {
@@ -16,12 +17,15 @@ class TelaDetalheUsuario extends StatefulWidget {
 class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
 
   Usuario? usuario;
+  Permissoes? permissoesUsuarioAutenticado;
   Permissoes permissoes = Permissoes();
   bool listarUsuarios = true;
   bool pesquisarUsuarios = true;
   bool adicionarUsuarios = true;
   bool deletarUsuarios = true;
   bool editarUsuarios = true;
+  bool detalheUsuarios = true;
+  bool permissoesUsuarios = true;
   bool listarClientes = true;
   bool pesquisarClientes = true;
   bool adicionarClientes = true;
@@ -52,6 +56,8 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
       'adicionar' : adicionarUsuarios,
       'deletar' : deletarUsuarios,
       'editar' : editarUsuarios,
+      'detalhe' : detalheUsuarios,
+      'permissoes' : permissoesUsuarios,
     };
 
     permissoes.modClientes =
@@ -98,97 +104,106 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
     await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modProdutos').set(permissoes.modProdutos);
     await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modVendas').set(permissoes.modVendas);
 
-    Provider.of<PermissoesModel>(context, listen: false).permissoes = permissoes;
+    // Verifica se as mudanças das permissões é do usuário autenticado, se for, atualiza o provider.
+    if(Provider.of<UsuarioModel>(context, listen: false).user.cpf == usuario!.cpf) {
+      Provider
+          .of<PermissoesModel>(context, listen: false)
+          .permissoes = permissoes;
+    }
   }
 
-  Future<void> _carregarPermissoesUsuario() async {
+  Future<void> _carregarPermissoesUsuarioFirebase() async {
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
 
     await usuarios.doc(usuario!.id).collection(usuario!.cpf!).get().then(
-            (value) {
+        (value) {
           value.docs.forEach(
-                  (usr) {
-                if(usr.id == 'modClientes') {
-                  permissoes.modClientes = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                  setState(() {
-                    adicionarClientes = usr['adicionar'];
-                    deletarClientes = usr['deletar'];
-                    editarClientes = usr['editar'];
-                    listarClientes = usr['listar'];
-                    pesquisarClientes = usr['pesquisar'];
-                  });
-                }
-                if(usr.id == 'modUsuarios') {
-                  permissoes.modUsuarios = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                  setState(() {
-                    adicionarUsuarios = usr['adicionar'];
-                    deletarUsuarios = usr['deletar'];
-                    editarUsuarios = usr['editar'];
-                    listarUsuarios = usr['listar'];
-                    pesquisarUsuarios = usr['pesquisar'];
-                  });
-                }
-                if(usr.id == 'modFornecedores') {
-                  permissoes.modFornecedores = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                  setState(() {
-                    adicionarFornecedores = usr['adicionar'];
-                    deletarFornecedores = usr['deletar'];
-                    editarFornecedores = usr['editar'];
-                    listarFornecedores = usr['listar'];
-                    pesquisarFornecedores = usr['pesquisar'];
-                  });
-                }
-                if(usr.id == 'modProdutos') {
-                  permissoes.modProdutos = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                  setState(() {
-                    adicionarProdutos = usr['adicionar'];
-                    deletarProdutos = usr['deletar'];
-                    editarProdutos = usr['editar'];
-                    listarProdutos = usr['listar'];
-                    pesquisarProdutos = usr['pesquisar'];
-                  });
-                }
-                if(usr.id == 'modVendas') {
-                  permissoes.modVendas = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                  setState(() {
-                    adicionarVendas = usr['adicionar'];
-                    deletarVendas = usr['deletar'];
-                    editarVendas = usr['editar'];
-                    listarVendas = usr['listar'];
-                    pesquisarVendas = usr['pesquisar'];
-                  });
-                }
+            (usr) {
+              if(usr.id == 'modClientes') {
+                permissoes.modClientes = {
+                  'adicionar' : usr['adicionar'],
+                  'deletar' : usr['deletar'],
+                  'editar' : usr['editar'],
+                  'listar' : usr['listar'],
+                  'pesquisar' : usr['pesquisar'],
+                };
+                setState(() {
+                  adicionarClientes = usr['adicionar'];
+                  deletarClientes = usr['deletar'];
+                  editarClientes = usr['editar'];
+                  listarClientes = usr['listar'];
+                  pesquisarClientes = usr['pesquisar'];
+                });
               }
+              if(usr.id == 'modUsuarios') {
+                permissoes.modUsuarios = {
+                  'adicionar' : usr['adicionar'],
+                  'deletar' : usr['deletar'],
+                  'editar' : usr['editar'],
+                  'listar' : usr['listar'],
+                  'pesquisar' : usr['pesquisar'],
+                  'detalhe' : usr['detalhe'],
+                  'permissoes' : usr['permissoes'],
+                };
+                setState(() {
+                  adicionarUsuarios = usr['adicionar'];
+                  deletarUsuarios = usr['deletar'];
+                  editarUsuarios = usr['editar'];
+                  listarUsuarios = usr['listar'];
+                  pesquisarUsuarios = usr['pesquisar'];
+                  detalheUsuarios = usr['detalhe'];
+                  permissoesUsuarios = usr['permissoes'];
+                });
+              }
+              if(usr.id == 'modFornecedores') {
+                permissoes.modFornecedores = {
+                  'adicionar' : usr['adicionar'],
+                  'deletar' : usr['deletar'],
+                  'editar' : usr['editar'],
+                  'listar' : usr['listar'],
+                  'pesquisar' : usr['pesquisar'],
+                };
+                setState(() {
+                  adicionarFornecedores = usr['adicionar'];
+                  deletarFornecedores = usr['deletar'];
+                  editarFornecedores = usr['editar'];
+                  listarFornecedores = usr['listar'];
+                  pesquisarFornecedores = usr['pesquisar'];
+                });
+              }
+              if(usr.id == 'modProdutos') {
+                permissoes.modProdutos = {
+                  'adicionar' : usr['adicionar'],
+                  'deletar' : usr['deletar'],
+                  'editar' : usr['editar'],
+                  'listar' : usr['listar'],
+                  'pesquisar' : usr['pesquisar'],
+                };
+                setState(() {
+                  adicionarProdutos = usr['adicionar'];
+                  deletarProdutos = usr['deletar'];
+                  editarProdutos = usr['editar'];
+                  listarProdutos = usr['listar'];
+                  pesquisarProdutos = usr['pesquisar'];
+                });
+              }
+              if(usr.id == 'modVendas') {
+                permissoes.modVendas = {
+                  'adicionar' : usr['adicionar'],
+                  'deletar' : usr['deletar'],
+                  'editar' : usr['editar'],
+                  'listar' : usr['listar'],
+                  'pesquisar' : usr['pesquisar'],
+                };
+                setState(() {
+                  adicionarVendas = usr['adicionar'];
+                  deletarVendas = usr['deletar'];
+                  editarVendas = usr['editar'];
+                  listarVendas = usr['listar'];
+                  pesquisarVendas = usr['pesquisar'];
+                });
+              }
+            }
           );
         }
     );
@@ -196,16 +211,14 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     usuario = ModalRoute.of(context)!.settings.arguments as Usuario;
-    _carregarPermissoesUsuario();
+    _carregarPermissoesUsuarioFirebase();
+    permissoesUsuarioAutenticado = Provider.of<PermissoesModel>(context, listen: false).permissoes;
   }
 
   @override
   Widget build(BuildContext context) {
-    //permissoes = Provider.of<PermissoesModel>(context, listen: false).getPermissoes(usuario!);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
@@ -289,6 +302,17 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                     ],
                   ),
                 ),
+                (permissoesUsuarioAutenticado!.modUsuarios['permissoes'] == false)
+                ?
+                 const Center(child:
+                   Text("Aviso: Você não tem permissão para acessar o módulo de permissões!",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 18
+                    ),
+                   )
+                  )
+                :
                 Container(
                   child: SingleChildScrollView(
                     child: Column(
@@ -318,7 +342,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       const SizedBox(
-                                        width: 100,
+                                        width: 110,
                                         child: Text("Listar",
                                           style: TextStyle(
                                               fontSize: 20
@@ -337,6 +361,8 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                                   adicionarUsuarios = v;
                                                   deletarUsuarios = v;
                                                   editarUsuarios = v;
+                                                  detalheUsuarios = v;
+                                                  permissoesUsuarios = v;
                                                 });
                                                 _definirPermissoesUsuario();
                                               }
@@ -349,7 +375,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       const SizedBox(
-                                        width: 100,
+                                        width: 110,
                                         child: Text("Pesquisar",
                                           style: TextStyle(
                                               fontSize: 20
@@ -376,7 +402,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       const SizedBox(
-                                        width: 100,
+                                        width: 110,
                                         child: Text("Adicionar",
                                           style: TextStyle(
                                               fontSize: 20
@@ -403,7 +429,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       const SizedBox(
-                                        width: 100,
+                                        width: 110,
                                           child: Text("Deletar",
                                             style: TextStyle(
                                                 fontSize: 20
@@ -425,7 +451,7 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       const SizedBox(
-                                          width: 100,
+                                          width: 110,
                                           child: Text("Editar",
                                             style: TextStyle(
                                                 fontSize: 20
@@ -440,6 +466,61 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
                                             });
                                             _definirPermissoesUsuario();
                                           }
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 110,
+                                        child: Text("Detalhe",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: detalheUsuarios,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  detalheUsuarios = v;
+                                                  permissoesUsuarios = v;
+                                                });
+                                                _definirPermissoesUsuario();
+                                              }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 110,
+                                        child: Text("Permissões",
+                                          style: TextStyle(
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Switch(
+                                              value: permissoesUsuarios,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  permissoesUsuarios = v;
+                                                });
+                                                _definirPermissoesUsuario();
+                                              }
+                                          ),
+                                        ],
                                       )
                                     ],
                                   ),
