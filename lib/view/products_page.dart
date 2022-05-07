@@ -111,7 +111,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 ),
                                 title: Text(
                                   product.name,
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
                                 trailing: Text(
                                   "Estoque: ${product.quantity}",
@@ -127,7 +127,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                   "R\$ ${product.price.toStringAsFixed(2)}",
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 30,
+                                    fontSize: 25,
                                   ),
                                 ),
                               ),
