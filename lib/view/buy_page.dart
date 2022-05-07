@@ -98,7 +98,9 @@ class _BuyPageState extends State<BuyPage> {
                             ),
                             fullscreenDialog: true,
                           ),
-                        );
+                        ).then((_) {
+                          productProvider.getProducts(minQuantity: 1);
+                        });
                       },
                       child: Card(
                         elevation: 5,
@@ -167,7 +169,10 @@ class _BuyPageState extends State<BuyPage> {
                                                         ShoppingCartDialog(),
                                                 fullscreenDialog: true,
                                               ),
-                                            );
+                                            ).then((_) {
+                                              productProvider.getProducts(
+                                                  minQuantity: 1);
+                                            });
                                           },
                                   );
                                 }),
