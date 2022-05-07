@@ -99,6 +99,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
         'editar' : true,
         'listar' : true,
         'pesquisar' : true,
+        'detalhe' : true,
+        'permissoes' : true,
       });
       value.collection(u.cpf!).doc("modFornecedores").set({
         'adicionar' : true,

@@ -3,6 +3,7 @@ import 'package:lp4_appusuarios/model/permissoes.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/provider_permissoes.dart';
+import 'package:lp4_appusuarios/provider/provider_usuario.dart';
 import 'package:provider/provider.dart';
 
 class TelaDetalheUsuario extends StatefulWidget {
@@ -22,6 +23,8 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
   bool adicionarUsuarios = true;
   bool deletarUsuarios = true;
   bool editarUsuarios = true;
+  bool detalheUsuarios = true;
+  bool permissoesUsuarios = true;
   bool listarClientes = true;
   bool pesquisarClientes = true;
   bool adicionarClientes = true;
@@ -52,6 +55,8 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
       'adicionar' : adicionarUsuarios,
       'deletar' : deletarUsuarios,
       'editar' : editarUsuarios,
+      'detalhe' : detalheUsuarios,
+      'permissoes' : permissoesUsuarios,
     };
 
     permissoes.modClientes =
@@ -98,7 +103,12 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
     await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modProdutos').set(permissoes.modProdutos);
     await usuarios.doc(usuario!.id).collection(usuario!.cpf!).doc('modVendas').set(permissoes.modVendas);
 
-    Provider.of<PermissoesModel>(context, listen: false).permissoes = permissoes;
+    // Verifica se as mudanças das permissões é do usuário autenticado, se for, atualiza o provider.
+    if(Provider.of<UsuarioModel>(context, listen: false).user.cpf == usuario!.cpf) {
+      Provider
+          .of<PermissoesModel>(context, listen: false)
+          .permissoes = permissoes;
+    }
   }
 
   Future<void> _carregarPermissoesUsuario() async {
@@ -196,7 +206,6 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     usuario = ModalRoute.of(context)!.settings.arguments as Usuario;
     _carregarPermissoesUsuario();
@@ -204,8 +213,6 @@ class _TelaDetalheUsuarioState extends State<TelaDetalheUsuario> {
 
   @override
   Widget build(BuildContext context) {
-    //permissoes = Provider.of<PermissoesModel>(context, listen: false).getPermissoes(usuario!);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
