@@ -73,13 +73,22 @@ class _HomeDrawerState extends State<HomeDrawer> {
                 children: [
                   ListTile(
                     onTap: () {
+                      Navigator.pushNamed(context, "/telacompras");
+                    },
+                    leading: const Icon(
+                      Icons.shopping_bag_outlined,
+                      color: Colors.blue,
+                    ),
+                    title: const Text("Compras"),
+                  ),ListTile(
+                    onTap: () {
                       Navigator.pushNamed(context, "/productspage");
                     },
                     leading: const Icon(
-                      Icons.shopping_cart,
+                      Icons.label_outlined,
                       color: Colors.blue,
                     ),
-                    title: const Text("Carrinho"),
+                    title: const Text("Produtos"),
                   ),
                   ListTile(
                     onTap: () {
