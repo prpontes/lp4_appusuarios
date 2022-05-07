@@ -336,19 +336,28 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                     return Card(
                       child: ListTile(
                         onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            "/detalheusuario",
-                            arguments: Usuario(
-                              id: usuarios[index].id,
-                              cpf: usuarios[index].cpf,
-                              nome: usuarios[index].nome,
-                              email: usuarios[index].email,
-                              login: usuarios[index].login,
-                              senha: usuarios[index].senha,
-                              avatar: usuarios[index].avatar
-                            )
-                          );
+                          if(permissoes.modUsuarios['detalhe'] == false){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text("Você não tem permissão para detalhes do usuário!")
+                              )
+                            );
+                          }else {
+                            Navigator.pushNamed(
+                                context,
+                                "/detalheusuario",
+                                arguments: Usuario(
+                                    id: usuarios[index].id,
+                                    cpf: usuarios[index].cpf,
+                                    nome: usuarios[index].nome,
+                                    email: usuarios[index].email,
+                                    login: usuarios[index].login,
+                                    senha: usuarios[index].senha,
+                                    avatar: usuarios[index].avatar
+                                )
+                            );
+                          }
                         },
                         leading: usuarios[index].avatar == ""
                             ? const Icon(

@@ -47,6 +47,8 @@ class _LoginPageState extends State<LoginPage> {
                     'editar' : usr['editar'],
                     'listar' : usr['listar'],
                     'pesquisar' : usr['pesquisar'],
+                    'detalhe' : usr['detalhe'],
+                    'permissoes' : usr['permissoes'],
                   };
                 }
                 if(usr.id == 'modFornecedores') {
