@@ -109,12 +109,20 @@ class _BuyPageState extends State<BuyPage> {
                   builder: (context, value, child) {
                     var isItemInCart = value.hasProduct(product.id!);
                     return IconButton(
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: isItemInCart ? product.mainColor : Colors.grey,
-                      ),
+                      icon: Icon(isItemInCart
+                          ? Icons.shopping_cart_rounded
+                          : Icons.add_shopping_cart),
+                      color: isItemInCart ? Colors.grey[300] : Colors.grey,
                       onPressed: isItemInCart
-                          ? null
+                          ? () {
+                              // show snackbar with product already in cart
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("Produto já está no carrinho!"),
+                                  duration: const Duration(seconds: 1),
+                                ),
+                              );
+                            }
                           : () {
                               shoppingCartProvider.add(ItemVenda(
                                 idProduto: product.id,

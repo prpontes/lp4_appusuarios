@@ -11,20 +11,24 @@ import 'package:provider/provider.dart';
 
 class DetailsSellingProductDialog extends StatefulWidget {
   final Product product;
-  const DetailsSellingProductDialog({Key? key, required this.product}) : super(key: key);
+  const DetailsSellingProductDialog({Key? key, required this.product})
+      : super(key: key);
 
   @override
-  State<DetailsSellingProductDialog> createState() => _DetailsSellingProductDialogState();
+  State<DetailsSellingProductDialog> createState() =>
+      _DetailsSellingProductDialogState();
 }
 
-class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialog> {
+class _DetailsSellingProductDialogState
+    extends State<DetailsSellingProductDialog> {
   late ProductProvider productProvider;
   late ShoppingCartProvider shoppingCartProvider;
   @override
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-    shoppingCartProvider = Provider.of<ShoppingCartProvider>(context, listen: false);
+    shoppingCartProvider =
+        Provider.of<ShoppingCartProvider>(context, listen: false);
   }
 
   @override
@@ -33,7 +37,10 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
       builder: (context, value, child) {
         Product product = value.products.firstWhere(
           (product) => product.id == widget.product.id,
-          orElse: () => Product(name: "", id: -1, fornecedor: Fornecedor(id: -1, razaoSocial: "")),
+          orElse: () => Product(
+              name: "",
+              id: -1,
+              fornecedor: Fornecedor(id: -1, razaoSocial: "")),
         );
 
         if (product.id == -1) {
@@ -50,6 +57,48 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
             ),
             title: Text(product.name),
             elevation: 0,
+            actions: [
+              Consumer<ShoppingCartProvider>(builder: (context, value, child) {
+                var isItemInCart = value.hasProduct(product.id!);
+                return IconButton(
+                  tooltip: "Adicionar ao carrinho",
+                  icon: Icon(isItemInCart
+                      ? Icons.shopping_cart_rounded
+                      : Icons.add_shopping_cart),
+                  // color primaryColor,
+                  color: isItemInCart ? Colors.white38 : Colors.white,
+                  onPressed: isItemInCart
+                      ? () {
+                          // show snackbar with product already in cart
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Produto já está no carrinho!"),
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
+                        }
+                      : () {
+                          shoppingCartProvider.add(
+                            ItemVenda(
+                              idProduto: product.id,
+                              produto: product,
+                              price: product.price,
+                              quantity: 1,
+                            ),
+                          );
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ShoppingCartDialog(),
+                              fullscreenDialog: true,
+                            ),
+                          );
+                        },
+                );
+              }),
+            ],
           ),
           body: LayoutBuilder(
             builder: (context, constraints) => SingleChildScrollView(
@@ -68,47 +117,7 @@ class _DetailsSellingProductDialogState extends State<DetailsSellingProductDialo
                         product: product,
                         enableStockTap: false,
                         stockLabel: "Qtd disponível: ",
-                        rightDetails: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  shoppingCartProvider.add(
-                                    ItemVenda(
-                                      idProduto: product.id,
-                                      produto: product,
-                                      price: product.price,
-                                      quantity: 1,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) => ShoppingCartDialog(),
-                                        fullscreenDialog: true,
-                                      ));
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(
-                                      "Adicionar ao Carrinho",
-                                      style: TextStyle(fontSize: 12, color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                        rightDetails: [],
                       ),
                       Expanded(child: ProductDescription(product: product)),
                     ],
