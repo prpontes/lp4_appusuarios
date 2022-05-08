@@ -82,7 +82,10 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ProductInfo(product: product),
+                      ProductInfo(
+                        product: product,
+                        enableStockTap: true,
+                      ),
                       Expanded(child: ProductDescription(product: product)),
                     ],
                   ),
