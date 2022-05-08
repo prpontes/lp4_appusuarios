@@ -10,6 +10,7 @@ class SellProvider extends ChangeNotifier {
   String tabelaItemVenda = "itemVenda";
 
   List<Sell> sales = [];
+  List<ItemVenda> itensVenda = [];
 
   Future<List<Sell>> listSales(int idUsuario) async {
     List salesList = await db

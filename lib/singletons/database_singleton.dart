@@ -30,7 +30,7 @@ class DatabaseSingleton {
     String dir = join(await getDatabasesPath(), "database.db");
 
     // delete database
-    //await deleteDatabase(dir);
+    // await deleteDatabase(dir);
 
     DatabaseSingleton.instance.db = await openDatabase(
       dir,
@@ -52,6 +52,31 @@ class DatabaseSingleton {
           "telefone": "(00)0000-0000",
           "isAdmin": 1
         });
+        // Dados para testes
+
+        // await db.insert("sell", {"date": "08/05/2022", "idUser": 1});
+        // await db.insert("fornecedor", {
+        //   "razaoSocial": "Firma de Testes",
+        //   "cnpj": "21392785006",
+        //   "email": "teste@teste.com.br",
+        //   "telefone": "40028922",
+        //   "imagem": "Imagem de Empresa"
+        // });
+        // await db.insert("product", {
+        //   "name": "Sapato",
+        //   "description": "Calçado da Nike",
+        //   "price": 150.0,
+        //   "image": "Imagem de Sapato",
+        //   "quantity": 50,
+        //   "idFornecedor": 1
+        // });
+        // await db.insert("itemVenda", {
+        //   "quantity": 50,
+        //   "price": 150.0,
+        //   "idProduto": 1,
+        //   "idVenda": 1,
+        // });
+
         debugPrint("Database created");
       },
       version: 1,
