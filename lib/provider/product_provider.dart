@@ -4,13 +4,17 @@ import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:sqflite/sqflite.dart';
 
+enum ProductsState { loading, complete }
+
 class ProductProvider extends ChangeNotifier {
   Database db = DatabaseSingleton.instance.db;
   String tableName = "product";
 
   List<Product> products = [];
+  ProductsState productsState = ProductsState.loading;
 
   Future<List<Product>> getProducts({int minQuantity = 0}) async {
+    productsState = ProductsState.loading;
     List productsList = await db.query(tableName + "_view",
         where: "quantity >= ?", whereArgs: [minQuantity]);
     products = List.empty(growable: true);
@@ -30,8 +34,8 @@ class ProductProvider extends ChangeNotifier {
         ).getMainColorFromImage(),
       );
     }
-
     notifyListeners();
+    productsState = ProductsState.complete;
     return products;
   }
 
@@ -84,8 +88,10 @@ class ProductProvider extends ChangeNotifier {
   Future<bool> deleteProduct(Product product) async {
     int result =
         await db.delete(tableName, where: "id = ?", whereArgs: [product.id]);
-    if (result > 0) {
+    if (result != 0) {
       await getProducts();
+      products.remove(product);
+      notifyListeners();
       return true;
     } else {
       debugPrint("Não foi possível deletar o produto");

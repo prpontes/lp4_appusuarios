@@ -66,9 +66,7 @@ class _BuyPageState extends State<BuyPage> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: SearchProductDelegate(
-                  products: productProvider.products,
-                ),
+                delegate: SearchProductDelegate(),
               );
             },
           ),

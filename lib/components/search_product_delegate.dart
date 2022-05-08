@@ -1,12 +1,11 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/components/details_product_dialog.dart';
-import 'package:lp4_appusuarios/model/product.dart';
+import 'package:lp4_appusuarios/provider/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class SearchProductDelegate extends SearchDelegate<String> {
-  List<Product> products;
-
-  SearchProductDelegate({required this.products}) : super(searchFieldLabel: "Buscar produtos");
+  SearchProductDelegate() : super(searchFieldLabel: "Buscar produtos");
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -40,11 +39,15 @@ class SearchProductDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final productsProvider =
+        Provider.of<ProductProvider>(context, listen: true);
+    final products = productsProvider.products;
     final listProducts = query.isEmpty
         ? products
         : products
             .where((p) =>
-                removeDiacritics(p.name.toLowerCase()).contains(removeDiacritics(query.toLowerCase())) ||
+                removeDiacritics(p.name.toLowerCase())
+                    .contains(removeDiacritics(query.toLowerCase())) ||
                 p.description.toLowerCase().contains(query.toLowerCase()))
             .toList();
 
