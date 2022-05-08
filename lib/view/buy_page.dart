@@ -3,7 +3,6 @@ import 'package:lp4_appusuarios/components/badge.dart';
 import 'package:lp4_appusuarios/components/product/product_card.dart';
 import 'package:lp4_appusuarios/components/search_product_delegate.dart';
 import 'package:lp4_appusuarios/model/item_venda.dart';
-import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:lp4_appusuarios/provider/shopping_cart_provider.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +23,10 @@ class _BuyPageState extends State<BuyPage> {
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-    shoppingCartProvider = Provider.of<ShoppingCartProvider>(context, listen: false);
-    WidgetsBinding.instance!.addPostFrameCallback((_) => productProvider.getProducts(minQuantity: 1));
+    shoppingCartProvider =
+        Provider.of<ShoppingCartProvider>(context, listen: false);
+    WidgetsBinding.instance!.addPostFrameCallback(
+        (_) => productProvider.getProducts(minQuantity: 1));
   }
 
   @override
@@ -92,7 +93,8 @@ class _BuyPageState extends State<BuyPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => DetailsSellingProductDialog(
+                      builder: (BuildContext context) =>
+                          DetailsSellingProductDialog(
                         product: product,
                       ),
                       fullscreenDialog: true,
@@ -123,7 +125,8 @@ class _BuyPageState extends State<BuyPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => ShoppingCartDialog(),
+                                  builder: (BuildContext context) =>
+                                      ShoppingCartDialog(),
                                   fullscreenDialog: true,
                                 ),
                               ).then(
