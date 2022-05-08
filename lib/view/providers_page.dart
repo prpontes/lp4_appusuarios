@@ -34,8 +34,7 @@ class _TelaFornecedorState extends State<TelaFornecedor> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: SearchProviderDelegate(
-                    fornecedores: fornecedorProvider.fornecedores),
+                delegate: SearchProviderDelegate(),
               );
             },
           ),
