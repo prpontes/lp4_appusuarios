@@ -2,7 +2,6 @@ import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:provider/provider.dart';
-import '../model/fornecedor.dart';
 import 'details_provider_dialog.dart';
 
 class SearchProviderDelegate extends SearchDelegate<String> {

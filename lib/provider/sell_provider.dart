@@ -15,14 +15,11 @@ class SellProvider extends ChangeNotifier {
     List salesList = await db
         .query(tabelaVenda, where: "idUser = ?", whereArgs: [idUsuario]);
 
-    debugPrint("lista: ${salesList.toString()}");
-
     sales = await Future.wait(List.generate(salesList.length, (index) async {
       return Sell.fromMap(salesList[index])
         ..items = await listItems(salesList[index]["id"]);
     }));
 
-    debugPrint("sales: ${sales.toString()}");
     notifyListeners();
     return sales;
   }
@@ -30,7 +27,6 @@ class SellProvider extends ChangeNotifier {
   Future<List<ItemVenda>> listItems(int idVenda) async {
     List itensList = await db
         .query("itemVenda_view", where: "idVenda = ?", whereArgs: [idVenda]);
-    debugPrint(itensList.toString());
     var itensVenda = List.generate(itensList.length, (index) {
       return ItemVenda.fromMap(itensList[index]);
     });

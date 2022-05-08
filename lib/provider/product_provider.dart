@@ -62,7 +62,6 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<bool> createProduct(Product product) async {
-    debugPrint(product.toMap().toString());
     int id = await db.insert(tableName, product.toMap());
     if (id != 0) {
       product.id = id;
@@ -80,7 +79,6 @@ class ProductProvider extends ChangeNotifier {
       await getProducts();
       return true;
     } else {
-      debugPrint("Não foi possível atualizar o produto");
       return false;
     }
   }
@@ -94,7 +92,6 @@ class ProductProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } else {
-      debugPrint("Não foi possível deletar o produto");
       return false;
     }
   }

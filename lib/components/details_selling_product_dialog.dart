@@ -1,5 +1,4 @@
 import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
-import 'package:lp4_appusuarios/components/stock_product_dialog.dart';
 import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:lp4_appusuarios/model/item_venda.dart';
 import 'package:lp4_appusuarios/model/product.dart';

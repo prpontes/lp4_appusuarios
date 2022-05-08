@@ -10,11 +10,6 @@ class FornecedoresProvider extends ChangeNotifier {
 
   List<Fornecedor> fornecedores = [];
 
-  FornecedoresProvider() {
-    debugPrint("FornecedoresProvider()");
-    // listarFornecedores();
-  }
-
   Future<List<Fornecedor>> listarFornecedores() async {
     List lista = await db.query(nomeTabela);
 
@@ -59,7 +54,6 @@ class FornecedoresProvider extends ChangeNotifier {
   Future<int> editarFornecedor(Fornecedor fornecedor) async {
     int id = await db.update(nomeTabela, fornecedor.toMap(),
         where: "id = ?", whereArgs: [fornecedor.id]);
-    debugPrint(id.toString());
     notifyListeners();
     return id;
   }

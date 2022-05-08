@@ -63,7 +63,6 @@ class UsuarioProvider extends ChangeNotifier {
   Future<int> editarUsuario(Usuario usuario) async {
     int id = await db.update(nomeTabela, usuario.toMap(),
         where: "id = ?", whereArgs: [usuario.id]);
-    debugPrint(id.toString());
     notifyListeners();
     return id;
   }

@@ -1,7 +1,6 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/components/details_user_dialog.dart';
-import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 

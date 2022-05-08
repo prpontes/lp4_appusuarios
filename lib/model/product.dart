@@ -40,18 +40,26 @@ class Product {
   Future<Product> getMainColorFromImage() async {
     try {
       if (image != "") {
-        PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(NetworkImage(image));
-        debugPrint(paletteGenerator.dominantColor!.color.computeLuminance().toString());
+        PaletteGenerator paletteGenerator =
+            await PaletteGenerator.fromImageProvider(NetworkImage(image));
         if (paletteGenerator.dominantColor!.color.computeLuminance() > 0.6) {
-          mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color).withLightness(0.6).toColor();
-        } else if (paletteGenerator.dominantColor!.color.computeLuminance() <= 0.1) {
+          mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color)
+              .withLightness(0.6)
+              .toColor();
+        } else if (paletteGenerator.dominantColor!.color.computeLuminance() <=
+            0.1) {
           if (paletteGenerator.vibrantColor != null) {
-            debugPrint("Vibrant: " + paletteGenerator.vibrantColor!.color.computeLuminance().toString());
-            mainColor = paletteGenerator.vibrantColor!.color.computeLuminance() <= 0.45
-                ? paletteGenerator.vibrantColor!.color
-                : HSLColor.fromColor(paletteGenerator.vibrantColor!.color).withLightness(0.45).toColor();
+            mainColor =
+                paletteGenerator.vibrantColor!.color.computeLuminance() <= 0.45
+                    ? paletteGenerator.vibrantColor!.color
+                    : HSLColor.fromColor(paletteGenerator.vibrantColor!.color)
+                        .withLightness(0.45)
+                        .toColor();
           } else {
-            mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color).withLightness(0.2).toColor();
+            mainColor =
+                HSLColor.fromColor(paletteGenerator.dominantColor!.color)
+                    .withLightness(0.2)
+                    .toColor();
           }
         } else {
           mainColor = paletteGenerator.dominantColor!.color;
