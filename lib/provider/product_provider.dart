@@ -15,7 +15,8 @@ class ProductProvider extends ChangeNotifier {
 
   Future<List<Product>> getProducts({int minQuantity = 0}) async {
     productsState = ProductsState.loading;
-    List productsList = await db.query(tableName + "_view", where: "quantity >= ?", whereArgs: [minQuantity]);
+    List productsList = await db.query(tableName + "_view",
+        where: "quantity >= ?", whereArgs: [minQuantity]);
     products = List.empty(growable: true);
     for (var product in productsList) {
       products.add(
@@ -39,7 +40,8 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<Product?> getProduct(int id) async {
-    List resultado = await db.query(tableName + "_view", where: "id = ?", whereArgs: [id]);
+    List resultado =
+        await db.query(tableName + "_view", where: "id = ?", whereArgs: [id]);
 
     if (resultado.isNotEmpty) {
       return await Product(
@@ -72,7 +74,8 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<bool> updateProduct(Product product) async {
-    int result = await db.update(tableName, product.toMap(), where: "id = ?", whereArgs: [product.id]);
+    int result = await db.update(tableName, product.toMap(),
+        where: "id = ?", whereArgs: [product.id]);
     if (result > 0) {
       await getProducts();
       return true;
@@ -83,9 +86,12 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<bool> deleteProduct(Product product) async {
-    int result = await db.delete(tableName, where: "id = ?", whereArgs: [product.id]);
-    if (result > 0) {
+    int result =
+        await db.delete(tableName, where: "id = ?", whereArgs: [product.id]);
+    if (result != 0) {
       await getProducts();
+      products.remove(product);
+      notifyListeners();
       return true;
     } else {
       debugPrint("Não foi possível deletar o produto");

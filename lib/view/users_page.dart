@@ -34,8 +34,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate:
-                    SearchUserDelegate(usuarios: usuarioProvider.usuarios),
+                delegate: SearchUserDelegate(),
               );
             },
           ),

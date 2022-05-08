@@ -62,12 +62,12 @@ class _BuyPageState extends State<BuyPage> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search),
-            onPressed: () => showSearch(
-              context: context,
-              delegate: SearchProductDelegate(
-                products: productProvider.products,
-              ),
-            ),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: SearchProductDelegate(),
+              );
+            },
           ),
         ],
       ),

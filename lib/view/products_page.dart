@@ -19,7 +19,8 @@ class _ProductsPageState extends State<ProductsPage> {
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-    WidgetsBinding.instance!.addPostFrameCallback((_) => productProvider.getProducts());
+    WidgetsBinding.instance!
+        .addPostFrameCallback((_) => productProvider.getProducts());
   }
 
   @override
@@ -30,12 +31,12 @@ class _ProductsPageState extends State<ProductsPage> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search),
-            onPressed: () => showSearch(
-              context: context,
-              delegate: SearchProductDelegate(
-                products: productProvider.products,
-              ),
-            ),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: SearchProductDelegate(),
+              );
+            },
           ),
         ],
       ),
