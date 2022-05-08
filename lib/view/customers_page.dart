@@ -35,8 +35,7 @@ class _TelaClienteState extends State<TelaCliente> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate:
-                    SearchUserDelegate(usuarios: usuarioProvider.usuarios),
+                delegate: SearchUserDelegate(),
               );
             },
           ),

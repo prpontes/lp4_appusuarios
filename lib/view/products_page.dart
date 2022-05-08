@@ -18,7 +18,8 @@ class _ProductsPageState extends State<ProductsPage> {
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-    WidgetsBinding.instance!.addPostFrameCallback((_) => productProvider.getProducts());
+    WidgetsBinding.instance!
+        .addPostFrameCallback((_) => productProvider.getProducts());
   }
 
   @override
@@ -32,9 +33,7 @@ class _ProductsPageState extends State<ProductsPage> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: SearchProductDelegate(
-                  products: productProvider.products,
-                ),
+                delegate: SearchProductDelegate(),
               );
             },
           ),
@@ -70,7 +69,8 @@ class _ProductsPageState extends State<ProductsPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) => DetailsProductDialog(
+                            builder: (BuildContext context) =>
+                                DetailsProductDialog(
                               product: product,
                             ),
                             fullscreenDialog: true,
@@ -83,7 +83,8 @@ class _ProductsPageState extends State<ProductsPage> {
                           padding: EdgeInsets.only(top: 5),
                           decoration: BoxDecoration(
                             border: Border(
-                              top: BorderSide(color: product.mainColor, width: 3),
+                              top: BorderSide(
+                                  color: product.mainColor, width: 3),
                             ),
                           ),
                           child: Column(
@@ -111,18 +112,23 @@ class _ProductsPageState extends State<ProductsPage> {
                                 ),
                                 title: Text(
                                   product.name,
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 trailing: Text(
                                   "Estoque: ${product.quantity}",
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: product.quantity == 0 ? Colors.red : Colors.green,
+                                    color: product.quantity == 0
+                                        ? Colors.red
+                                        : Colors.green,
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 25, top: 5, bottom: 10, right: 25),
+                                padding: const EdgeInsets.only(
+                                    left: 25, top: 5, bottom: 10, right: 25),
                                 child: Text(
                                   "R\$ ${product.price.toStringAsFixed(2)}",
                                   style: TextStyle(
