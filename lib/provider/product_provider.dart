@@ -4,15 +4,18 @@ import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:sqflite/sqflite.dart';
 
+enum ProductsState { loading, complete }
+
 class ProductProvider extends ChangeNotifier {
   Database db = DatabaseSingleton.instance.db;
   String tableName = "product";
 
   List<Product> products = [];
+  ProductsState productsState = ProductsState.loading;
 
   Future<List<Product>> getProducts({int minQuantity = 0}) async {
-    List productsList = await db.query(tableName + "_view",
-        where: "quantity >= ?", whereArgs: [minQuantity]);
+    productsState = ProductsState.loading;
+    List productsList = await db.query(tableName + "_view", where: "quantity >= ?", whereArgs: [minQuantity]);
     products = List.empty(growable: true);
     for (var product in productsList) {
       products.add(
@@ -30,14 +33,13 @@ class ProductProvider extends ChangeNotifier {
         ).getMainColorFromImage(),
       );
     }
-
     notifyListeners();
+    productsState = ProductsState.complete;
     return products;
   }
 
   Future<Product?> getProduct(int id) async {
-    List resultado =
-        await db.query(tableName + "_view", where: "id = ?", whereArgs: [id]);
+    List resultado = await db.query(tableName + "_view", where: "id = ?", whereArgs: [id]);
 
     if (resultado.isNotEmpty) {
       return await Product(
@@ -70,8 +72,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<bool> updateProduct(Product product) async {
-    int result = await db.update(tableName, product.toMap(),
-        where: "id = ?", whereArgs: [product.id]);
+    int result = await db.update(tableName, product.toMap(), where: "id = ?", whereArgs: [product.id]);
     if (result > 0) {
       await getProducts();
       return true;
@@ -82,8 +83,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<bool> deleteProduct(Product product) async {
-    int result =
-        await db.delete(tableName, where: "id = ?", whereArgs: [product.id]);
+    int result = await db.delete(tableName, where: "id = ?", whereArgs: [product.id]);
     if (result > 0) {
       await getProducts();
       return true;
