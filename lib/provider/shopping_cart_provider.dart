@@ -6,7 +6,7 @@ class ShoppingCartProvider extends ChangeNotifier {
 
   void add(ItemVenda item) {
     if (hasProduct(item.produto!.id!)) {
-      items.firstWhere((element) => element.id == item.id).quantity++;
+      increment(items.firstWhere((i) => i.produto!.id == item.produto!.id));
     } else {
       items.add(item);
     }
@@ -52,8 +52,10 @@ class ShoppingCartProvider extends ChangeNotifier {
   }
 
   void increment(ItemVenda item) {
-    item.quantity++;
-    notifyListeners();
+    if (item.quantity < item.produto!.quantity) {
+      item.quantity++;
+      notifyListeners();
+    }
   }
 
   void decrement(ItemVenda item) {
