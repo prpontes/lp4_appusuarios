@@ -1,9 +1,8 @@
+import 'package:lp4_appusuarios/provider/provider_permissoes.dart';
 import 'package:lp4_appusuarios/view/tela_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../model/usuario.dart';
-import '../provider/provider_usuario.dart';
+import '../model/permissoes.dart';
 
 class TelaInicio extends StatefulWidget {
   const TelaInicio({Key? key}) : super(key: key);
@@ -14,8 +13,11 @@ class TelaInicio extends StatefulWidget {
 
 class _TelaInicioState extends State<TelaInicio> {
 
+  late Permissoes permissoes;
+
   @override
   Widget build(BuildContext context) {
+    permissoes = Provider.of<PermissoesModel>(context, listen: true).permissoes;
 
     return Scaffold(
         drawer: const Menu(),
@@ -88,7 +90,16 @@ class _TelaInicioState extends State<TelaInicio> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, "/telausuario");
+                    if(permissoes.modUsuarios['listar'] == true){
+                      Navigator.pushNamed(context, "/telausuario");
+                    }else{
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text("Você não tem permissão para acessar esse módulo!")
+                        )
+                      );
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(

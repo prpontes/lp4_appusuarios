@@ -70,8 +70,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     print(user!.email);
   }
 
-  _addUsuarioFirestore(Usuario u) async
-  {
+  _addUsuarioFirestore(Usuario u) async {
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
 
     await usuarios.add(
@@ -158,6 +157,16 @@ class _TelaUsuarioState extends State<TelaUsuario> {
 
   _editarUsuarioFirestore(String id, String cpf, String nome, String email, String login,
       String senha, String avatar) async {
+
+    var editUsuario = Usuario(
+      id: id,
+      cpf: cpf,
+      nome: nome,
+      email: email,
+      login: login,
+      senha: senha,
+      avatar: avatar,
+    );
     
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
     // atualiza e-mail e senha do serviço de autenticação. 
@@ -177,6 +186,10 @@ class _TelaUsuarioState extends State<TelaUsuario> {
       }
     );
     await _listarUsuariosFirestore();
+
+    if (usuarioAutenticado!.id! == id) {
+      Provider.of<UsuarioModel>(context, listen: false).user = editUsuario;
+    }
   }
 
   _deletarUsuarioFirestore(String id) async {
