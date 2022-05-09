@@ -118,9 +118,11 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                           if (value!.isEmpty) {
                             return 'Preço é obrigatório';
                           }
-                          if (double.tryParse(value) == null) {
+                          if (double.tryParse(value) == null ||
+                              double.parse(value) <= 0) {
                             return 'Preço inválido';
                           }
+
                           return null;
                         },
                       ),
