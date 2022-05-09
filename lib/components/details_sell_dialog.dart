@@ -34,6 +34,7 @@ class _DetalheVendasState extends State<DetalheVendas> {
                   itemCount: itensVendas.length,
                   itemBuilder: (context, index) {
                     if (itensVendas.isNotEmpty == true) {
+                      
                       final item = itensVendas[index];
                       return Container(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 0),

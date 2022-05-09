@@ -42,7 +42,7 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
       _razaoSocialController.text = widget.fornecedor!.razaoSocial!;
       _cnpjController.text = widget.fornecedor!.cnpj!;
       _emailController.text = widget.fornecedor!.email!;
-      _telefoneController.text = widget.fornecedor!.email!;
+      _telefoneController.text = widget.fornecedor!.telefone!;
       _imagemController.text = widget.fornecedor!.imagem;
     }
   }
@@ -166,12 +166,6 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
                   hintText: "Imagem",
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Imagem é obrigatório';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(
                 height: 10,
