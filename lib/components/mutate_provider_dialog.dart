@@ -1,9 +1,20 @@
-import 'package:cpf_cnpj_validator/cpf_validator.dart';
+import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:provider/provider.dart';
 import '../provider/fornecedores_provider.dart';
+
+String? validateMobile(String value) {
+  String pattern = r'(^\(?[1-9]{2}\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$)';
+  RegExp regExp = RegExp(pattern);
+  if (value.isEmpty) {
+    return 'Por favor, insira um numero!';
+  } else if (!regExp.hasMatch(value)) {
+    return 'Por favor, coloque um telefone valido!';
+  }
+  return null;
+}
 
 class MutateProviderDialog extends StatefulWidget {
   final Fornecedor? fornecedor;
@@ -47,7 +58,8 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            Fornecedor fornecedor = isUpdate ? widget.fornecedor! : Fornecedor();
+            Fornecedor fornecedor =
+                isUpdate ? widget.fornecedor! : Fornecedor();
             fornecedor.razaoSocial = _razaoSocialController.text;
             fornecedor.cnpj = _cnpjController.text;
             fornecedor.email = _emailController.text;
@@ -99,7 +111,7 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
                   if (value!.isEmpty) {
                     return 'CNPJ é obrigatório';
                   }
-                  if (CPFValidator.isValid(value) == false) {
+                  if (CNPJValidator.isValid(value, false) == false) {
                     return "CNPJ digitado inválido!";
                   }
                   return null;
@@ -140,12 +152,14 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
                   if (value!.isEmpty) {
                     return 'Telefone é obrigatório';
                   }
-                  return null;
+                  return validateMobile(value);
+                  ;
                 },
               ),
               const SizedBox(
                 height: 10,
-              ),TextFormField(
+              ),
+              TextFormField(
                 controller: _imagemController,
                 decoration: const InputDecoration(
                   labelText: 'Imagem',
@@ -162,7 +176,6 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
               const SizedBox(
                 height: 10,
               ),
-              
             ],
           ),
         ),
