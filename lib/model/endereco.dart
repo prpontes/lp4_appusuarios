@@ -7,7 +7,8 @@ class Endereco {
   String? complemento;
   String? referencia;
   String? cep;
-
+  String? cidade;
+  int? idcliente;
 
   Endereco({
     this.id,
@@ -16,7 +17,9 @@ class Endereco {
     this.numero,
     this.complemento,
     this.referencia,
-    this.cep
+    this.cep,
+    this.cidade,
+    this.idcliente,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +31,8 @@ class Endereco {
       "complemento": complemento,
       "numero": numero,
       "referencia": referencia,
+      "idcliente": idcliente,
+      "cidade": cidade,
 
 
     };
@@ -35,6 +40,6 @@ class Endereco {
 
   @override
   String toString() {
-    return 'Endereco{id: $id, rua: $rua, bairro: $bairro, cep: $cep, complemento: $complemento, numero: $numero,referencia: $referencia}';
+    return 'Endereco{id: $id, rua: $rua, bairro: $bairro, cep: $cep, cidade : $cidade, complemento: $complemento, numero: $numero,referencia: $referencia, idcliente: $idcliente}';
   }
 }

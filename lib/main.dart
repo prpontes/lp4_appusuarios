@@ -5,6 +5,7 @@ import 'package:lp4_appusuarios/provider/sell_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:lp4_appusuarios/view/customers_page.dart';
+import 'package:lp4_appusuarios/view/home_customer_page.dart';
 import 'package:lp4_appusuarios/view/home_page.dart';
 import 'package:lp4_appusuarios/view/login_page.dart';
 import 'package:lp4_appusuarios/view/products_page.dart';

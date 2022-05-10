@@ -1,3 +1,5 @@
+import 'package:lp4_appusuarios/model/endereco.dart';
+
 class Usuario {
   // model usuário
   int? id;
@@ -9,7 +11,7 @@ class Usuario {
   String avatar;
   String? telefone;
   int isAdmin;
-  int? idendereco;
+  Endereco? endereco;
 
   Usuario({
     this.id,
@@ -21,7 +23,7 @@ class Usuario {
     this.avatar = "",
     this.telefone,
     this.isAdmin = 0,
-    this.idendereco,
+    this.endereco,
   });
 
   Map<String, dynamic> toMap() {
@@ -35,12 +37,13 @@ class Usuario {
       "avatar": avatar,
       "telefone": telefone,
       "isAdmin": isAdmin,
-      "idendereco": idendereco,
+
     };
   }
 
+
   @override
   String toString() {
-    return 'Usuario{id: $id, cpf: $cpf, nome: $nome, email: $email, login: $login, senha: $senha, avatar: $avatar,telefone: $telefone,isAdmin: $isAdmin, idendereco :$idendereco}';
+    return 'Usuario{id: $id, cpf: $cpf, nome: $nome, email: $email, login: $login, senha: $senha, avatar: $avatar,telefone: $telefone,isAdmin: $isAdmin}';
   }
 }
