@@ -22,6 +22,7 @@ class _TelaHomeClienteState extends State<TelaHomeCliente> {
     WidgetsBinding.instance!
         .addPostFrameCallback((_) => productProvider.getProducts());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +40,8 @@ class _TelaHomeClienteState extends State<TelaHomeCliente> {
               },
             ),
           ],
-
         ),
+<<<<<<< HEAD
        );
   }
 
@@ -81,5 +82,11 @@ class _TelaHomeClienteState extends State<TelaHomeCliente> {
         );
       },
     );
+=======
+        body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: []),
+        ));
+>>>>>>> 732e795f2a3a1685e39e8b300dc0d1aa4007b7fd
   }
 }
