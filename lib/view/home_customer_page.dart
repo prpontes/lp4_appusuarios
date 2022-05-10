@@ -21,6 +21,7 @@ class _TelaHomeClienteState extends State<TelaHomeCliente> {
     WidgetsBinding.instance!
         .addPostFrameCallback((_) => productProvider.getProducts());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,19 +34,15 @@ class _TelaHomeClienteState extends State<TelaHomeCliente> {
               onPressed: () {
                 showSearch(
                   context: context,
-                  delegate: SearchProductDelegate(products: productProvider.products),
+                  delegate: SearchProductDelegate(),
                 );
               },
             ),
           ],
-
         ),
         body: Center(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-
-              ]),
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: []),
         ));
   }
 }
