@@ -1,5 +1,3 @@
-import 'package:lp4_appusuarios/model/endereco.dart';
-
 class Usuario {
   // model usuário
   int? id;
@@ -11,7 +9,6 @@ class Usuario {
   String avatar;
   String? telefone;
   int isAdmin;
-  Endereco? endereco;
 
   Usuario({
     this.id,
@@ -23,7 +20,6 @@ class Usuario {
     this.avatar = "",
     this.telefone,
     this.isAdmin = 0,
-    this.endereco,
   });
 
   Map<String, dynamic> toMap() {
@@ -37,10 +33,8 @@ class Usuario {
       "avatar": avatar,
       "telefone": telefone,
       "isAdmin": isAdmin,
-
     };
   }
-
 
   @override
   String toString() {

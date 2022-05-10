@@ -1,4 +1,5 @@
 import 'package:lp4_appusuarios/components/details_user_dialog.dart';
+
 import 'package:lp4_appusuarios/components/search_user_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
@@ -37,6 +38,13 @@ class _TelaClienteState extends State<TelaCliente> {
                 context: context,
                 delegate: SearchUserDelegate(),
               );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.location_on),
+            onPressed: () {
+              Navigator.pushNamed(context, "/telaendereco");
+
             },
           ),
         ],

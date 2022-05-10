@@ -1,34 +1,36 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
+import 'package:lp4_appusuarios/components/mutate_address_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_customer.dialog.dart';
 import 'package:lp4_appusuarios/model/endereco.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
+import 'package:lp4_appusuarios/provider/endereco_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
-class DetailsCustomerDialog extends StatefulWidget {
-  final Usuario usuario;
-  const DetailsCustomerDialog({Key? key, required this.usuario}) : super(key: key);
+class DetailsAddressDialog extends StatefulWidget {
+  final Endereco endereco;
+  const DetailsAddressDialog({Key? key, required this.endereco}) : super(key: key);
 
   @override
-  State<DetailsCustomerDialog> createState() => _DetailsCustomerDialogState();
+  State<DetailsAddressDialog> createState() => _DetailsAddressDialogState();
 }
 
-class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
-  late UsuarioProvider usuarioProvider;
+class _DetailsAddressDialogState extends State<DetailsAddressDialog> {
+  late EnderecoProvider enderecoProvider;
 
   late AuthProvider authProvider;
   @override
   void initState() {
     super.initState();
-    usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    authProvider = Provider.of<AuthProvider>(context, listen: false);
+    enderecoProvider = Provider.of<EnderecoProvider>(context, listen: false);
+
   }
 
   @override
   Widget build(BuildContext context) {
-    final Usuario user = widget.usuario;
+    final Endereco end = widget.endereco;
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -37,7 +39,7 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
               Navigator.pop(context);
             },
           ),
-          title: const Text("Detalhe cliente"),
+          title: const Text("Detalhe endereço"),
           actions: [
             IconButton(
               icon: const Icon(Icons.edit),
@@ -45,8 +47,8 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => MutateCustomerDialog(
-                      usuario: user,
+                    builder: (BuildContext context) => MutateAddressDialog(
+                      endereco: end,
                     ),
                     fullscreenDialog: true,
                   ),
@@ -60,30 +62,22 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
                   barrierDismissible: false,
                   context: context,
                   builder: (BuildContext context) => const DeleteDialog(
-                    title: "Excluir cliente",
-                    description: "Tem certeza que deseja excluir o usuário?",
+                    title: "Excluir endereço",
+                    description: "Tem certeza que deseja excluir o endereço?",
                   ),
                 );
                 if (!confirm) return;
-                if (user.login == authProvider.user?.login) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content:
-                      Text("Você não pode excluir seu próprio usuário"),
-                    ),
-                  );
-                  return;
-                }
+
                 Navigator.pop(context);
-                await usuarioProvider.deletarUsuario(user);
+                await enderecoProvider.deletarEndereco(end);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   action: SnackBarAction(
                     label: 'Desfazer',
                     onPressed: () async {
-                      await usuarioProvider.inserirUsuario(user);
+                      await enderecoProvider.inserirEndereco(end);
                     },
                   ),
-                  content: const Text('Cliente deletado com sucesso!'),
+                  content: const Text('Endereço deletado com sucesso!'),
                 ));
               },
               icon: const Icon(Icons.delete),
@@ -92,26 +86,26 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 10),
-          child: Consumer<UsuarioProvider>(
+          child: Consumer<EnderecoProvider>(
             builder: (context, value, child) {
-              Usuario usuario = value.usuarios.firstWhere(
-                    (usuario) => usuario.id == widget.usuario.id,
-                orElse: () => Usuario(
+              Endereco endereco = value.endereco.firstWhere(
+                    (endereco) => endereco.id == widget.endereco.id,
+                orElse: () => Endereco(
                   id: null,
-                  login: "",
-                  senha: "",
-                  nome: "",
-                  email: "",
-                  avatar: "",
-                  cpf: "",
-                  isAdmin: 0,
-                  telefone: "",
+                  rua: "",
+                  bairro: "",
+                  cep: "",
+                  complemento: "",
+                  numero: "",
+                  referencia: "",
+                  idcliente: "",
+                  cidade: "",
 
 
                 ),
               );
 
-              if (usuario.id == null) {
+              if (endereco.id == null) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
@@ -120,122 +114,109 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  usuario.avatar == ""
-                      ? const Icon(
-                    Icons.account_circle,
-                    color: Colors.blue,
-                    size: 150,
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Cidade: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          end.cidade!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Rua: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          end.rua!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "CEP: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          end.cep!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Numero: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          end.numero!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Bairro: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          end.bairro!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Complemento: ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          end.complemento!,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
                   )
-                      : CircleAvatar(
-                      backgroundImage: NetworkImage(usuario.avatar),
-                      radius: 70),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Nome: ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usuario.nome!,
-                          style: const TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Cpf: ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usuario.cpf!,
-                          style: const TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "E-mail: ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usuario.email!,
-                          style: const TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Login: ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usuario.login!,
-                          style: const TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Senha: ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "******",
-                          style: TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "isAdmin: ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        (usuario.isAdmin == 1)
-                            ? Text(
-                          "é admin",
-                          style: TextStyle(fontSize: 20),
-                        )
-                            : Text(
-                          "não é admin",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ),
 
 
                 ],

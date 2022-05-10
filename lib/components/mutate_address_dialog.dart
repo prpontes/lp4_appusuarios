@@ -1,9 +1,7 @@
-import 'package:cpf_cnpj_validator/cpf_validator.dart';
-import 'package:email_validator/email_validator.dart';
+
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/endereco.dart';
-import 'package:lp4_appusuarios/model/usuario.dart';
-import 'package:lp4_appusuarios/provider/usuario_provider.dart';
+
 import 'package:provider/provider.dart';
 
 import '../provider/endereco_provider.dart';
@@ -39,6 +37,8 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
   final _cepController = TextEditingController(text: "");
   final _complementoController = TextEditingController(text: "");
   final _referenciaController = TextEditingController(text: "");
+  final _cidadeController = TextEditingController(text: "");
+  final _cpfController = TextEditingController(text: "");
 
   late final EnderecoProvider _enderecoProvider;
   @override
@@ -52,7 +52,8 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
       _complementoController.text = widget.endereco!.complemento!;
       _cepController.text = widget.endereco!.cep!;
       _referenciaController.text = widget.endereco!.referencia!;
-
+    _cidadeController.text= widget.endereco!.referencia!;
+    _cpfController.text= widget.endereco!.idcliente!;
     }
   }
 
@@ -74,7 +75,8 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
             endereco.complemento = _complementoController.text;
             endereco.referencia = _referenciaController.text;
             endereco.numero = _numeroController.text;
-
+            endereco.cidade= _cidadeController.text;
+            endereco.idcliente= _cpfController.text;
             if (isUpdate) {
               await _enderecoProvider.editarEndereco(endereco);
             } else {
@@ -184,8 +186,24 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
                   },
 
               ),
+
               const SizedBox(
                 height: 10,
+              ),
+              TextFormField(
+                controller: _cidadeController,
+                autofillHints: const [AutofillHints.addressCity],
+                decoration: const InputDecoration(
+                  labelText: 'Cidade',
+                  hintText: "Cidade",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Cidade é obrigatório';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 controller: _complementoController,
@@ -197,6 +215,23 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Complemento é obrigatório';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: _cpfController,
+                decoration: const InputDecoration(
+                  labelText: 'CPF DO CLIENTE',
+                  hintText: "CPF DO CLIENTE",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'CPF é obrigatório';
                   }
                   return null;
                 },

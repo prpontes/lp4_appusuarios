@@ -8,7 +8,7 @@ class Endereco {
   String? referencia;
   String? cep;
   String? cidade;
-  int? idcliente;
+  String? idcliente;
 
   Endereco({
     this.id,
@@ -33,6 +33,7 @@ class Endereco {
       "referencia": referencia,
       "idcliente": idcliente,
       "cidade": cidade,
+
 
 
     };

@@ -3,6 +3,8 @@ import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'mutate_address_dialog.dart';
+
 class HomeCustomerDrawer extends StatefulWidget {
   const HomeCustomerDrawer({Key? key}) : super(key: key);
 
@@ -83,24 +85,22 @@ class _HomeCustomerDrawerState extends State<HomeCustomerDrawer> {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.pushNamed(context, "/telavendas");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => const MutateAddressDialog(),
+                          fullscreenDialog: true,
+                        ),
+                      );
+
                     },
                     leading: const Icon(
-                      Icons.monetization_on,
+                      Icons.location_on,
                       color: Colors.blue,
                     ),
-                    title: const Text("Vendas"),
+                    title: const Text("Endereço"),
                   ),
-                  ListTile(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/telausuario");
-                    },
-                    leading: const Icon(
-                      Icons.person,
-                      color: Colors.blue,
-                    ),
-                    title: const Text("Usuários"),
-                  ),
+
                   ListTile(
                     onTap: () {},
                     leading: const Icon(

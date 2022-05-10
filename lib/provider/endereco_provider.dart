@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:lp4_appusuarios/model/endereco.dart';
-import 'package:lp4_appusuarios/model/usuario.dart';
+
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -12,10 +12,10 @@ class EnderecoProvider extends ChangeNotifier {
   List<Endereco> endereco = [];
 
 
-  Future<List<Endereco>> listarEndereco({int? idendereco}) async {
+  Future<List<Endereco>> listarEndereco( {String? cpf}) async {
     List lista = await db.query(nomeTabela,
-        where: idendereco== null ? null : "id=?",
-        whereArgs: idendereco == null ? null : [idendereco]);
+        where:cpf== null ? null : "idcliente=?",
+        whereArgs: cpf == null ? null : [cpf]);
 
 
     endereco = List.generate(lista.length, (index) {
@@ -27,13 +27,33 @@ class EnderecoProvider extends ChangeNotifier {
         complemento: lista[index]["complemento"],
         cep: lista[index]["cep"],
         referencia: lista[index]["referencia"],
+        cidade: lista[index]["cidade"],
 
       );
     });
     notifyListeners();
     return endereco;
   }
+  Future<List<Endereco>> listarTodosEndereco( ) async {
+    List lista = await db.query(nomeTabela);
 
+
+    endereco = List.generate(lista.length, (index) {
+      return Endereco(
+        id: lista[index]["id"],
+        rua: lista[index]["rua"],
+        bairro: lista[index]["bairro"],
+        numero: lista[index]["numero"],
+        complemento: lista[index]["complemento"],
+        cep: lista[index]["cep"],
+        referencia: lista[index]["referencia"],
+        cidade: lista[index]["cidade"],
+
+      );
+    });
+    notifyListeners();
+    return endereco;
+  }
 
 
   Future<int> inserirEndereco(Endereco enderecos) async {
