@@ -1,3 +1,4 @@
+import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,8 @@ import 'mutate_provider_dialog.dart';
 
 class DetailsProviderDialog extends StatefulWidget {
   final Fornecedor fornecedor;
-  const DetailsProviderDialog({Key? key, required this.fornecedor}) : super(key: key);
+  const DetailsProviderDialog({Key? key, required this.fornecedor})
+      : super(key: key);
 
   @override
   State<DetailsProviderDialog> createState() => _DetailsProviderDialogState();
@@ -21,7 +23,8 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
   @override
   void initState() {
     super.initState();
-    fornecedorProvider = Provider.of<FornecedoresProvider>(context, listen: false);
+    fornecedorProvider =
+        Provider.of<FornecedoresProvider>(context, listen: false);
     authProvider = Provider.of<AuthProvider>(context, listen: false);
   }
 
@@ -73,7 +76,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                   ),
                 );
                 if (!confirm) return;
-                
+
                 Navigator.pop(context);
 
                 await fornecedorProvider.deletarFornecedor(provider);
@@ -155,7 +158,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            fornecedor.cnpj!,
+                            CNPJValidator.format(fornecedor.cnpj!),
                             style: const TextStyle(fontSize: 20),
                           )
                         ],
