@@ -30,7 +30,6 @@ class _TelaVendasState extends State<TelaVendas> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Vendas"), actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.print))
         ]),
         body: Column(
           mainAxisSize: MainAxisSize.max,
@@ -108,7 +107,7 @@ class _TelaVendasState extends State<TelaVendas> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              DetalheVendas(),
+                                              DetalheVendas(sell: sell),
                                           fullscreenDialog: true,
                                         ),
                                       );

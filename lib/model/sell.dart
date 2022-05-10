@@ -2,17 +2,20 @@
 
 import 'package:lp4_appusuarios/model/item_venda.dart';
 
+
 class Sell {
   // model venda
   int? id;
   String? date;
   int? idUser;
+  String? username;
   List<ItemVenda> items;
 
   Sell({
     this.id,
     this.date,
     this.idUser,
+    this.username,
     this.items = const [],
   });
 
@@ -26,9 +29,10 @@ class Sell {
 
   static Sell fromMap(Map<String, dynamic> map) {
     return Sell(
-      id: map['id'],
+      id: map['idVenda'],
       date: map['date'],
       idUser: map['idUser'],
+      username: map['nome']
     );
   }
 

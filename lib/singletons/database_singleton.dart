@@ -11,7 +11,8 @@ const criarTabelasLista = [
 ];
 const criarViewLista = [
   "CREATE VIEW IF NOT EXISTS product_view AS SELECT product.id, product.name, product.description, product.price, product.image, product.quantity, fornecedor.id as 'idFornecedor', fornecedor.razaosocial FROM product Inner JOIN fornecedor on product.idfornecedor = fornecedor.id",
-  "CREATE VIEW IF NOT EXISTS itemVenda_view AS SELECT itemVenda.id, itemVenda.quantity, itemVenda.price, product.name, product.id , sell.idUser ,product.image, sell.id as idVenda FROM itemVenda INNER JOIN sell ON itemVenda.idVenda = sell.id INNER JOIN product ON itemVenda.idProduto = product.id"
+  "CREATE VIEW IF NOT EXISTS itemVenda_view AS SELECT itemVenda.id, itemVenda.quantity, itemVenda.price, product.name, product.id , sell.idUser, usuario.nome ,product.image, sell.id as idVenda FROM itemVenda INNER JOIN sell ON itemVenda.idVenda = sell.id INNER JOIN product ON itemVenda.idProduto = product.id INNER JOIN usuario ON usuario.id = sell.idUser",
+  "CREATE VIEW IF NOT EXISTS sell_view AS SELECT sell.idUser, usuario.nome, sell.date, sell.id as idVenda FROM sell INNER JOIN usuario ON usuario.id = sell.idUser"
 ];
 
 class DatabaseSingleton {
@@ -30,7 +31,7 @@ class DatabaseSingleton {
     String dir = join(await getDatabasesPath(), "database.db");
 
     // delete database
-    // await deleteDatabase(dir);
+    //await deleteDatabase(dir);
 
     DatabaseSingleton.instance.db = await openDatabase(
       dir,
@@ -54,28 +55,28 @@ class DatabaseSingleton {
         });
         // Dados para testes
 
-        // await db.insert("sell", {"date": "08/05/2022", "idUser": 1});
-        // await db.insert("fornecedor", {
-        //   "razaoSocial": "Firma de Testes",
-        //   "cnpj": "21392785006",
-        //   "email": "teste@teste.com.br",
-        //   "telefone": "40028922",
-        //   "imagem": "Imagem de Empresa"
-        // });
-        // await db.insert("product", {
-        //   "name": "Sapato",
-        //   "description": "Calçado da Nike",
-        //   "price": 150.0,
-        //   "image": "Imagem de Sapato",
-        //   "quantity": 50,
-        //   "idFornecedor": 1
-        // });
-        // await db.insert("itemVenda", {
-        //   "quantity": 50,
-        //   "price": 150.0,
-        //   "idProduto": 1,
-        //   "idVenda": 1,
-        // });
+        await db.insert("sell", {"date": "08/05/2022", "idUser": 1});
+        await db.insert("fornecedor", {
+          "razaoSocial": "Firma de Testes",
+          "cnpj": "21392785006",
+          "email": "teste@teste.com.br",
+          "telefone": "40028922",
+          "imagem": "Imagem de Empresa"
+        });
+        await db.insert("product", {
+          "name": "Sapato",
+          "description": "Calçado da Nike",
+          "price": 150.0,
+          "image": "Imagem de Sapato",
+          "quantity": 50,
+          "idFornecedor": 1
+        });
+        await db.insert("itemVenda", {
+          "quantity": 50,
+          "price": 150.0,
+          "idProduto": 1,
+          "idVenda": 1,
+        });
 
         debugPrint("Database created");
       },
