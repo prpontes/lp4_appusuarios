@@ -30,13 +30,8 @@ class DatabaseSingleton {
   static Future<DatabaseSingleton> startDatabase() async {
     String dir = join(await getDatabasesPath(), "database.db");
 
-<<<<<<< HEAD
     // delete database
-    //await deleteDatabase(dir);
-=======
-     // delete database
-     // await deleteDatabase(dir);
->>>>>>> 3ca51bbc283662f70f3a98e9f3619b338fa362f8
+    await deleteDatabase(dir);
 
     DatabaseSingleton.instance.db = await openDatabase(
       dir,
