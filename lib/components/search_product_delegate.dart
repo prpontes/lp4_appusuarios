@@ -1,13 +1,11 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/components/details_product_dialog.dart';
-import 'package:lp4_appusuarios/model/product.dart';
+import 'package:lp4_appusuarios/provider/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class SearchProductDelegate extends SearchDelegate<String> {
-  List<Product> products;
-
-  SearchProductDelegate({required this.products})
-      : super(searchFieldLabel: "Buscar produtos");
+  SearchProductDelegate() : super(searchFieldLabel: "Buscar produtos");
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -41,6 +39,9 @@ class SearchProductDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final productsProvider =
+        Provider.of<ProductProvider>(context, listen: true);
+    final products = productsProvider.products;
     final listProducts = query.isEmpty
         ? products
         : products
@@ -60,7 +61,7 @@ class SearchProductDelegate extends SearchDelegate<String> {
             child: product.image == ""
                 ? const Icon(
                     Icons.warning_rounded,
-                    color: Colors.blue,
+                    color: Colors.amber,
                     size: 50,
                   )
                 : SizedBox(
@@ -74,7 +75,11 @@ class SearchProductDelegate extends SearchDelegate<String> {
                   ),
           ),
           title: Text(product.name),
-          subtitle: Text(product.description),
+          subtitle: Text(
+            product.description,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
           onTap: () {
             Navigator.push(
               context,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/components/details_product_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_product_dialog.dart';
+import 'package:lp4_appusuarios/components/product/product_card.dart';
 import 'package:lp4_appusuarios/components/search_product_delegate.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
@@ -33,92 +34,74 @@ class _ProductsPageState extends State<ProductsPage> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: SearchProductDelegate(
-                  products: productProvider.products,
-                ),
+                delegate: SearchProductDelegate(),
               );
             },
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const MutateProductDialog(),
-              fullscreenDialog: true,
-            ),
-          );
-        },
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => const MutateProductDialog(),
+            fullscreenDialog: true,
+          ),
+        ),
         child: const Icon(Icons.add),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Consumer<ProductProvider>(
-              builder: (BuildContext context, value, Widget? child) {
-                final products = value.products;
-                return ListView.builder(
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    if (products.isNotEmpty == true) {
-                      final product = products[index];
-                      return Card(
-                        child: ListTile(
-                          leading: product.image.isEmpty
-                              ? const Icon(
-                                  Icons.warning_rounded,
-                                  color: Colors.blue,
-                                  size: 50,
-                                )
-                              : SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Hero(
-                                    tag: "${product.id}",
-                                    child: CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                        product.image,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                          title: Text(product.name),
-                          subtitle: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            physics: const BouncingScrollPhysics(),
-                            child: Text(
-                              product.description,
-                              maxLines: 1,
-                            ),
-                          ),
-                          trailing:
-                              Text("R\$ ${product.price.toStringAsFixed(2)}"),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    DetailsProductDialog(
-                                  product: product,
-                                ),
-                                fullscreenDialog: true,
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      return const Text("nenhum produto");
-                    }
-                  },
-                );
-              },
-            ),
-          )
-        ],
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: body(),
       ),
+    );
+  }
+
+  Widget body() {
+    return Consumer<ProductProvider>(
+      builder: (BuildContext context, value, Widget? child) {
+        if (value.productsState == ProductsState.complete) {
+          final products = value.products;
+          if (products.isNotEmpty) {
+            return ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) => ProductCard(
+                showBottomLabel: true,
+                product: products[index],
+                topRightBuilder: (product) => Text(
+                  "Estoque: ${product.quantity}",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: product.quantity == 0 ? Colors.red : Colors.green,
+                  ),
+                ),
+                onTap: (context, product) => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DetailsProductDialog(
+                      product: product,
+                    ),
+                    fullscreenDialog: true,
+                  ),
+                ),
+              ),
+            );
+          }
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: const Text(
+                "Nenhum Produto",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

@@ -1,13 +1,11 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/components/details_user_dialog.dart';
-import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/provider/usuario_provider.dart';
+import 'package:provider/provider.dart';
 
 class SearchUserDelegate extends SearchDelegate<String> {
-  List<Usuario> usuarios;
-
-  SearchUserDelegate({required this.usuarios})
-      : super(searchFieldLabel: "Buscar usuários");
+  SearchUserDelegate() : super(searchFieldLabel: "Buscar usuários");
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -41,6 +39,8 @@ class SearchUserDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final usuarioProvider = Provider.of<UsuarioProvider>(context);
+    final usuarios = usuarioProvider.usuarios;
     final listaUsuarios = query.isEmpty
         ? usuarios
         : usuarios

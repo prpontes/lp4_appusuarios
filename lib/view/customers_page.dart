@@ -21,7 +21,6 @@ class _TelaClienteState extends State<TelaCliente> {
     super.initState();
     usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
     usuarioProvider.listarUsuarios(isAdmin: 0);
-
   }
 
   @override
@@ -36,8 +35,7 @@ class _TelaClienteState extends State<TelaCliente> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate:
-                    SearchUserDelegate(usuarios: usuarioProvider.usuarios),
+                delegate: SearchUserDelegate(),
               );
             },
           ),
