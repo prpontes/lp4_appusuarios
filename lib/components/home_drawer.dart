@@ -80,7 +80,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       color: Colors.blue,
                     ),
                     title: const Text("Compras"),
-                  ),ListTile(
+                  ),
+                  ListTile(
                     onTap: () {
                       Navigator.pushNamed(context, "/productspage");
                     },
@@ -115,7 +116,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       Navigator.pushNamed(context, "/telaendereco");
                     },
                     leading: const Icon(
-                      Icons.add_business_outlined,
+                      Icons.location_on,
                       color: Colors.blue,
                     ),
                     title: const Text("Endereço"),
