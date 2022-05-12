@@ -10,7 +10,6 @@ import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:lp4_appusuarios/view/address_page.dart';
 import 'package:lp4_appusuarios/view/buy_page.dart';
 import 'package:lp4_appusuarios/view/customers_page.dart';
-import 'package:lp4_appusuarios/view/home_customer_page.dart';
 import 'package:lp4_appusuarios/view/home_page.dart';
 import 'package:lp4_appusuarios/view/login_page.dart';
 import 'package:lp4_appusuarios/view/products_page.dart';
@@ -74,7 +73,6 @@ void main() async {
           "/telacliente": (context) => const TelaCliente(),
           "/telacarrinho": (context) => const ShoppingCartDialog(),
           "/telacompras": (context) => const BuyPage(),
-          "/telahomecliente": (context) => const TelaHomeCliente(),
           "/telaendereco": (context) => const TelaEndereco(),
         },
       ),
