@@ -4,6 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 const criarTabelasLista = [
   "CREATE TABLE usuario (id INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, nome TEXT, email TEXT, login TEXT, senha TEXT, avatar TEXT,telefone TEXT, isAdmin INTEGER)",
+  "CREATE TABLE endereco(id INTEGER PRIMARY KEY AUTOINCREMENT,rua TEXT, bairro TEXT, cep TEXT, numero TEXT,referencia TEXT, cidade TEXT, complemento TEXT, idcliente INTEGER, FOREIGN KEY (idcliente) REFERENCES usuario(cpf))",
   "CREATE TABLE fornecedor (id INTEGER PRIMARY KEY AUTOINCREMENT, razaoSocial TEXT, cnpj TEXT, email TEXT, telefone TEXT, imagem TEXT)",
   "CREATE TABLE sell (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, idUser INTEGER, FOREIGN KEY (idUser) REFERENCES usuario(id))",
   "CREATE TABLE itemVenda (id INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, price REAL, idProduto INTEGER, idVenda INTEGER, FOREIGN KEY(idProduto) REFERENCES product(id), FOREIGN KEY(idVenda) REFERENCES sell(id))",
@@ -11,6 +12,7 @@ const criarTabelasLista = [
 ];
 const criarViewLista = [
   "CREATE VIEW IF NOT EXISTS product_view AS SELECT product.id, product.name, product.description, product.price, product.image, product.quantity, fornecedor.id as 'idFornecedor', fornecedor.razaosocial FROM product Inner JOIN fornecedor on product.idfornecedor = fornecedor.id",
+  // "CREATE VIEW IF NOT EXISTS usuarioEndereco_view AS SELECT usuario.id, usuario.nome, usuario.email, usuario.telefone, usuario.senha, usuario.cpf, usuario.login, usuario.isAdmin, usuario.avatar, endereco.rua, endereco.bairro, endereco.numero, endereco.cep, endereco.cidade, endereco.complemento, endereco.referencia, endereco.idcliente INNER JOIN endereco ON endereco.idcliente = usuario.id"
   "CREATE VIEW IF NOT EXISTS itemVenda_view AS SELECT itemVenda.id, itemVenda.quantity, itemVenda.price, product.name, product.id , sell.idUser, usuario.nome ,product.image, sell.id as idVenda FROM itemVenda INNER JOIN sell ON itemVenda.idVenda = sell.id INNER JOIN product ON itemVenda.idProduto = product.id INNER JOIN usuario ON usuario.id = sell.idUser",
   "CREATE VIEW IF NOT EXISTS sell_view AS SELECT sell.idUser, usuario.nome, sell.date, sell.id as idVenda FROM sell INNER JOIN usuario ON usuario.id = sell.idUser"
 ];
@@ -43,6 +45,7 @@ class DatabaseSingleton {
           await db.execute(sql);
         }
         //  criar usuario admin apenas ao criar o banco
+
         await db.insert("usuario", {
           "cpf": "12345678910",
           "nome": "Admin",
@@ -51,7 +54,8 @@ class DatabaseSingleton {
           "senha": "123456",
           "avatar": "",
           "telefone": "(00)0000-0000",
-          "isAdmin": 1
+          "isAdmin": 1,
+
         });
         // Dados para testes
 

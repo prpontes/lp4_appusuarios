@@ -36,7 +36,7 @@ class _TelaLoginState extends State<TelaLogin> {
       senha,
     );
 
-    if (usuario != null) {
+    if (usuario != null && usuario.isAdmin ==1) {
       authProvider.login(usuario);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -51,6 +51,21 @@ class _TelaLoginState extends State<TelaLogin> {
         ),
       );
       await Navigator.pushReplacementNamed(context, "/telainicio");
+    } if (usuario != null && usuario.isAdmin ==0) {
+      authProvider.login(usuario);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Seja bem vindo ${usuario.nome}!"),
+            ],
+          ),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
+      await Navigator.pushReplacementNamed(context, "/homecliente");
     } else {
       showDialog(
         context: context,
