@@ -80,7 +80,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       color: Colors.blue,
                     ),
                     title: const Text("Compras"),
-                  ),ListTile(
+                  ),
+                  ListTile(
                     onTap: () {
                       Navigator.pushNamed(context, "/productspage");
                     },
@@ -131,7 +132,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     title: const Text("Usuários"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/telaconfig");
+                    },
                     leading: const Icon(
                       Icons.settings,
                       color: Colors.blue,

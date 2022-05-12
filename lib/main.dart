@@ -1,3 +1,4 @@
+import 'package:lp4_appusuarios/components/product/config.dart';
 import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
@@ -7,6 +8,7 @@ import 'package:lp4_appusuarios/provider/shopping_cart_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:lp4_appusuarios/view/buy_page.dart';
+import 'package:lp4_appusuarios/view/config_page.dart';
 import 'package:lp4_appusuarios/view/customers_page.dart';
 import 'package:lp4_appusuarios/view/home_page.dart';
 import 'package:lp4_appusuarios/view/login_page.dart';
@@ -22,40 +24,45 @@ void main() async {
 
   // Inicializa o singleton do banco de dados
   await DatabaseSingleton.startDatabase();
+  //DarkThame
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => UsuarioProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => AuthProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ProductProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => SellProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => FornecedoresProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ShoppingCartProvider(),
-        ),
-      ],
-      child: MaterialApp(
-        themeMode: ThemeMode.light,
+  ThemeChanger themeChanger = ThemeChanger();
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ThemeChanger>(create: (_) => themeChanger),
+      ChangeNotifierProvider(
+        create: (_) => UsuarioProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => AuthProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => ProductProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => SellProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => FornecedoresProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => ShoppingCartProvider(),
+      ),
+    ],
+    child: Builder(builder: (context) {
+      var isDark = Provider.of<ThemeChanger>(context, listen: true).isDark;
+      return MaterialApp(
         theme: ThemeData(
+          brightness: Brightness.light,
           primarySwatch: Colors.deepPurple,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+          accentColor: Colors.purple[200],
         ),
-        darkTheme: ThemeData.dark().copyWith(
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: Colors.deepPurple, secondary: Colors.deepPurpleAccent),
-        ),
+        darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            primarySwatch: Colors.blueGrey,
+            accentColor: Colors.purpleAccent,
+            appBarTheme: AppBarTheme(backgroundColor: Colors.deepPurple)),
+        themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
@@ -68,8 +75,9 @@ void main() async {
           "/telacliente": (context) => const TelaCliente(),
           "/telacarrinho": (context) => const ShoppingCartDialog(),
           "/telacompras": (context) => const BuyPage(),
+          "/telaconfig": (context) => const config_page(),
         },
-      ),
-    ),
-  );
+      );
+    }),
+  ));
 }
