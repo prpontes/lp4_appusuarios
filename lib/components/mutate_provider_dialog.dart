@@ -153,7 +153,6 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
                     return 'Telefone é obrigatório';
                   }
                   return validateMobile(value);
-                  ;
                 },
               ),
               const SizedBox(

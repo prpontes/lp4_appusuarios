@@ -1,6 +1,5 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_customer.dialog.dart';
-import 'package:lp4_appusuarios/model/endereco.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
@@ -9,7 +8,8 @@ import 'package:provider/provider.dart';
 
 class DetailsCustomerDialog extends StatefulWidget {
   final Usuario usuario;
-  const DetailsCustomerDialog({Key? key, required this.usuario}) : super(key: key);
+  const DetailsCustomerDialog({Key? key, required this.usuario})
+      : super(key: key);
 
   @override
   State<DetailsCustomerDialog> createState() => _DetailsCustomerDialogState();
@@ -69,7 +69,7 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content:
-                      Text("Você não pode excluir seu próprio usuário"),
+                          Text("Você não pode excluir seu próprio usuário"),
                     ),
                   );
                   return;
@@ -95,7 +95,7 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
           child: Consumer<UsuarioProvider>(
             builder: (context, value, child) {
               Usuario usuario = value.usuarios.firstWhere(
-                    (usuario) => usuario.id == widget.usuario.id,
+                (usuario) => usuario.id == widget.usuario.id,
                 orElse: () => Usuario(
                   id: null,
                   login: "",
@@ -106,8 +106,6 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
                   cpf: "",
                   isAdmin: 0,
                   telefone: "",
-
-
                 ),
               );
 
@@ -122,13 +120,13 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
                 children: [
                   usuario.avatar == ""
                       ? const Icon(
-                    Icons.account_circle,
-                    color: Colors.blue,
-                    size: 150,
-                  )
+                          Icons.account_circle,
+                          color: Colors.blue,
+                          size: 150,
+                        )
                       : CircleAvatar(
-                      backgroundImage: NetworkImage(usuario.avatar),
-                      radius: 70),
+                          backgroundImage: NetworkImage(usuario.avatar),
+                          radius: 70),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Row(
@@ -226,18 +224,16 @@ class _DetailsCustomerDialogState extends State<DetailsCustomerDialog> {
                         ),
                         (usuario.isAdmin == 1)
                             ? Text(
-                          "é admin",
-                          style: TextStyle(fontSize: 20),
-                        )
+                                "é admin",
+                                style: TextStyle(fontSize: 20),
+                              )
                             : Text(
-                          "não é admin",
-                          style: TextStyle(fontSize: 20),
-                        ),
+                                "não é admin",
+                                style: TextStyle(fontSize: 20),
+                              ),
                       ],
                     ),
                   ),
-
-
                 ],
               );
             },
