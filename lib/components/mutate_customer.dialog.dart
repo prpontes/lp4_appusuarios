@@ -1,7 +1,9 @@
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+
 import 'package:lp4_appusuarios/model/usuario.dart';
+
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,13 +18,22 @@ String? validateMobile(String value) {
   }
   return null;
 }
+// função para validar cep
+
 
 class MutateCustomerDialog extends StatefulWidget {
   final Usuario? usuario;
+
+
+
   const MutateCustomerDialog({Key? key, this.usuario}) : super(key: key);
+
 
   @override
   State<MutateCustomerDialog> createState() => _MutateCustomerDialogState();
+
+
+
 }
 
 class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
@@ -35,12 +46,18 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
   final _loginController = TextEditingController(text: "");
   final _telefoneController = TextEditingController(text: "");
 
+
+
+
+
   late final UsuarioProvider _usuarioProvider;
+
   @override
   void initState() {
     super.initState();
     _usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    if (widget.usuario != null) {
+
+    if (widget.usuario != null  ) {
       _nomeController.text = widget.usuario!.nome!;
       _emailController.text = widget.usuario!.email!;
       _senhaController.text = widget.usuario!.senha!;
@@ -48,15 +65,21 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
       _cpfController.text = widget.usuario!.cpf!;
       _loginController.text = widget.usuario!.login!;
       _telefoneController.text = widget.usuario!.telefone!;
+
+
+
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool isUpdate = widget.usuario != null;
+    final bool isUpdate = widget.usuario != null  ;
+
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(isUpdate ? 'Editar cliente' : 'Criar cliente'),
+        title: Text(isUpdate ? 'Editar cliente' : 'Criar cliente' ),
+
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
@@ -71,8 +94,12 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
             usuario.login = _loginController.text;
             usuario.telefone = _telefoneController.text;
             usuario.isAdmin = 0;
+
+
+
             if (isUpdate) {
               await _usuarioProvider.editarUsuario(usuario);
+
             } else {
               await _usuarioProvider.inserirUsuario(usuario);
             }
@@ -82,7 +109,7 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
         // icon approve
         child: const Icon(Icons.check),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
@@ -209,6 +236,8 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
                   }
                 },
               ),
+
+
             ],
           ),
         ),
