@@ -36,7 +36,7 @@ class _TelaLoginState extends State<TelaLogin> {
       senha,
     );
 
-    if (usuario != null && usuario.isAdmin ==1) {
+    if (usuario != null && usuario.isAdmin == 1) {
       authProvider.login(usuario);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -51,7 +51,8 @@ class _TelaLoginState extends State<TelaLogin> {
         ),
       );
       await Navigator.pushReplacementNamed(context, "/telainicio");
-    } if (usuario != null && usuario.isAdmin ==0) {
+    }
+    if (usuario != null && usuario.isAdmin == 0) {
       authProvider.login(usuario);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

@@ -142,7 +142,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     title: const Text("Usuários"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/telaconfig");
+                    },
                     leading: const Icon(
                       Icons.settings,
                       color: Colors.blue,

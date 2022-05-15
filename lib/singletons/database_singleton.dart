@@ -55,7 +55,6 @@ class DatabaseSingleton {
           "avatar": "",
           "telefone": "(00)0000-0000",
           "isAdmin": 1,
-
         });
         // Dados para testes
 
