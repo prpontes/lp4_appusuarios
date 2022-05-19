@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:lp4_appusuarios/model/usuario.dart';
@@ -53,6 +54,19 @@ class UsuarioProvider extends ChangeNotifier {
     } else {
       return null;
     }
+  }
+
+  addUsuarioFirestore(Usuario u) async {
+    CollectionReference usuarios =
+        FirebaseFirestore.instance.collection('usuarios');
+    await usuarios.add({
+      'avatar': u.avatar,
+      'cpf': u.cpf,
+      'email': u.email,
+      'login': u.login,
+      'nome': u.nome,
+      'senha': u.senha,
+    });
   }
 
   Future<int> inserirUsuario(Usuario usuario) async {

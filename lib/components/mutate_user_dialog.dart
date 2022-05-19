@@ -74,7 +74,8 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
             if (isUpdate) {
               await _usuarioProvider.editarUsuario(usuario);
             } else {
-              await _usuarioProvider.inserirUsuario(usuario);
+              await _usuarioProvider.addUsuarioFirestore(usuario);
+              //await _usuarioProvider.inserirUsuario(usuario);
             }
             Navigator.of(context).pop();
           }

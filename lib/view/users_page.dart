@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lp4_appusuarios/components/details_user_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_user_dialog.dart';
 import 'package:lp4_appusuarios/components/search_user_delegate.dart';
@@ -14,6 +16,7 @@ class TelaUsuario extends StatefulWidget {
 
 class _TelaUsuarioState extends State<TelaUsuario> {
   late UsuarioProvider usuarioProvider;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
