@@ -1,13 +1,15 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_customer.dialog.dart';
+import 'package:lp4_appusuarios/components/mutate_user_dialog.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
 class DetailsUserDialog extends StatefulWidget {
-  final Usuario usuario;
+  final UsuarioFirebase usuario;
   const DetailsUserDialog({Key? key, required this.usuario}) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final Usuario user = widget.usuario;
+    final UsuarioFirebase user = widget.usuario;
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -36,7 +38,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
               Navigator.pop(context);
             },
           ),
-          title: const Text("Detalhe cliente"),
+          title: const Text("Detalhe usuario"),
           actions: [
             IconButton(
               icon: const Icon(Icons.edit),
@@ -44,7 +46,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => MutateCustomerDialog(
+                    builder: (BuildContext context) => MutateUserDialog(
                       usuario: user,
                     ),
                     fullscreenDialog: true,
@@ -74,12 +76,12 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                   return;
                 }
                 Navigator.pop(context);
-                await usuarioProvider.deletarUsuario(user);
+                await usuarioProvider.deletarUsuarioFirebase(user);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   action: SnackBarAction(
                     label: 'Desfazer',
                     onPressed: () async {
-                      await usuarioProvider.inserirUsuario(user);
+                      await usuarioProvider.addUsuarioFirestore(user);
                     },
                   ),
                   content: const Text('Usuário deletado com sucesso!'),
@@ -93,9 +95,9 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
           padding: const EdgeInsets.only(top: 10),
           child: Consumer<UsuarioProvider>(
             builder: (context, value, child) {
-              Usuario usuario = value.usuarios.firstWhere(
+              UsuarioFirebase usuario = value.usuariosfirebase.firstWhere(
                 (usuario) => usuario.id == widget.usuario.id,
-                orElse: () => Usuario(
+                orElse: () => UsuarioFirebase(
                   id: null,
                   login: "",
                   senha: "",
@@ -209,28 +211,28 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "isAdmin: ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        (usuario.isAdmin == 1)
-                            ? Text(
-                                "é admin",
-                                style: TextStyle(fontSize: 20),
-                              )
-                            : Text(
-                                "não é admin",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 10),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Text(
+                  //         "isAdmin: ",
+                  //         style: TextStyle(
+                  //             fontSize: 20, fontWeight: FontWeight.bold),
+                  //       ),
+                  //       (usuario.isAdmin == 1)
+                  //           ? Text(
+                  //               "é admin",
+                  //               style: TextStyle(fontSize: 20),
+                  //             )
+                  //           : Text(
+                  //               "não é admin",
+                  //               style: TextStyle(fontSize: 20),
+                  //             ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               );
             },

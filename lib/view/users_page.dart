@@ -22,7 +22,8 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   void initState() {
     super.initState();
     usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    usuarioProvider.listarUsuarios(isAdmin: 1);
+    //usuarioProvider.listarUsuarios(isAdmin: 1);
+    usuarioProvider.listarUsuarioFirestore();
   }
 
   @override
@@ -48,15 +49,15 @@ class _TelaUsuarioState extends State<TelaUsuario> {
           Expanded(
             child: Consumer<UsuarioProvider>(
               builder: (BuildContext context, value, Widget? child) {
-                final usuarios = value.usuarios;
+                final usuarios = value.usuariosfirebase;
                 return ListView.builder(
                   itemCount: usuarios.length,
                   itemBuilder: (context, index) {
                     if (usuarios.isNotEmpty == true) {
-                      final usuario = usuarios[index];
+                      final usuariofirebase = usuarios[index];
                       return Card(
                         child: ListTile(
-                          leading: usuario.avatar == ""
+                          leading: usuariofirebase.avatar == ""
                               ? const Icon(
                                   Icons.account_circle,
                                   color: Colors.blue,
@@ -67,19 +68,19 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                                   height: 50,
                                   child: CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                      usuario.avatar,
+                                      usuariofirebase.avatar,
                                     ),
                                   ),
                                 ),
-                          title: Text(usuario.nome!),
-                          subtitle: Text(usuario.email!),
+                          title: Text(usuariofirebase.nome!),
+                          subtitle: Text(usuariofirebase.email!),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     DetailsUserDialog(
-                                  usuario: usuario,
+                                     usuario: usuariofirebase,
                                 ),
                                 fullscreenDialog: true,
                               ),

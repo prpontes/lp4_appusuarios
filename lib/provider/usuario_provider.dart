@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -10,6 +11,7 @@ class UsuarioProvider extends ChangeNotifier {
   String nomeTabela = "usuario";
 
   List<Usuario> usuarios = [];
+  List<UsuarioFirebase> usuariosfirebase = [];
   //usuarioEndereco_view
 
   Future<List<Usuario>> listarUsuarios({int? isAdmin}) async {
@@ -56,7 +58,7 @@ class UsuarioProvider extends ChangeNotifier {
     }
   }
 
-  addUsuarioFirestore(Usuario u) async {
+  addUsuarioFirestore(UsuarioFirebase u) async {
     CollectionReference usuarios =
         FirebaseFirestore.instance.collection('usuarios');
     await usuarios.add({
@@ -67,6 +69,66 @@ class UsuarioProvider extends ChangeNotifier {
       'nome': u.nome,
       'senha': u.senha,
     });
+  }
+  listarUsuarioFirestore() async{
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+     if(this.usuariosfirebase.isNotEmpty)
+       this.usuariosfirebase.clear();
+
+     await usuarios.orderBy('nome').get().then(
+             (value) {
+               value.docs.forEach((usr) {
+                 this.usuariosfirebase.add(
+                   UsuarioFirebase(
+                     id: usr.id,
+                     cpf: usr["cpf"],
+                     nome: usr["nome"],
+                     email: usr["email"],
+                     login: usr["login"],
+                     senha: usr["senha"],
+                     avatar: usr["avatar"],
+                     //telefone: usr["telefone"],
+                     //isAdmin: usr["isAdmin"],
+                   )
+                 );
+               });
+             }
+     );
+    notifyListeners();
+    //return usuariosfirebase;
+  }
+
+  editarUsuarioFirestore(UsuarioFirebase u) async{
+    // var editUsuario = UsuarioFirebase(
+    //   id:id,
+    //   cpf: cpf,
+    //   nome: nome,
+    //   email: email,
+    //   login: login,
+    //   senha: senha,
+    //   avatar: avatar,
+    // );
+
+    CollectionReference usuarios= FirebaseFirestore.instance.collection('usuarios');
+    await usuarios.doc(u.id).update(
+      {
+
+          "cpf": u.cpf,
+          "nome": u.nome,
+          "email": u.email,
+          "login": u.login,
+          "senha": u.senha,
+          "avatar": u.avatar,
+      }
+    );
+    await listarUsuarioFirestore();
+  }
+
+  deletarUsuarioFirebase(UsuarioFirebase u) async{
+    CollectionReference usuarios= FirebaseFirestore.instance.collection('usuarios');
+  await usuarios.doc(u.id).delete();
+  await listarUsuarioFirestore();
+
   }
 
   Future<int> inserirUsuario(Usuario usuario) async {

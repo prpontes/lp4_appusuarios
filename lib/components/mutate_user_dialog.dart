@@ -2,6 +2,7 @@ import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ String? validateMobile(String value) {
 }
 
 class MutateUserDialog extends StatefulWidget {
-  final Usuario? usuario;
+  final UsuarioFirebase? usuario;
   const MutateUserDialog({Key? key, this.usuario}) : super(key: key);
 
   @override
@@ -47,7 +48,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
       _avatarController.text = widget.usuario!.avatar;
       _cpfController.text = widget.usuario!.cpf!;
       _loginController.text = widget.usuario!.login!;
-      _telefoneController.text = widget.usuario!.telefone!;
+      //_telefoneController.text = widget.usuario!.telefone!;
     }
   }
 
@@ -62,17 +63,18 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            Usuario usuario = isUpdate ? widget.usuario! : Usuario();
+            UsuarioFirebase usuario = isUpdate ? widget.usuario! : UsuarioFirebase();
+            usuario.id = widget.usuario!.id;
             usuario.nome = _nomeController.text;
             usuario.email = _emailController.text;
             usuario.senha = _senhaController.text;
             usuario.avatar = _avatarController.text;
             usuario.cpf = _cpfController.text;
             usuario.login = _loginController.text;
-            usuario.telefone = _telefoneController.text;
-            usuario.isAdmin = 1;
+            //usuario.telefone = _telefoneController.text;
+           // usuario.isAdmin = 1;
             if (isUpdate) {
-              await _usuarioProvider.editarUsuario(usuario);
+              await _usuarioProvider.editarUsuarioFirestore(usuario);
             } else {
               await _usuarioProvider.addUsuarioFirestore(usuario);
               //await _usuarioProvider.inserirUsuario(usuario);
@@ -195,21 +197,21 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
               const SizedBox(
                 height: 10,
               ),
-              TextFormField(
-                controller: _telefoneController,
-                decoration: const InputDecoration(
-                  labelText: 'telefone',
-                  hintText: "Telefone",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Telefone é obrigatório';
-                  }
-
-                  return null;
-                },
-              ),
+              // TextFormField(
+              //   controller: _telefoneController,
+              //   decoration: const InputDecoration(
+              //     labelText: 'telefone',
+              //     hintText: "Telefone",
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   validator: (value) {
+              //     if (value!.isEmpty) {
+              //       return 'Telefone é obrigatório';
+              //     }
+              //
+              //     return null;
+              //   },
+              // ),
             ],
           ),
         ),
