@@ -1,26 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lp4_appusuarios/model/fornecedor.dart';
-import 'package:lp4_appusuarios/singletons/database_singleton.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 
 class FornecedoresProvider extends ChangeNotifier {
-  Database db = DatabaseSingleton.instance.db;
+  FirebaseFirestore db = FirebaseFirestore.instance;
   String nomeTabela = "fornecedor";
 
   List<Fornecedor> fornecedores = [];
 
   Future<List<Fornecedor>> listarFornecedores() async {
-    List lista = await db.query(nomeTabela);
+    var query = (await db.collection(nomeTabela).get()).docs;
 
-    fornecedores = List.generate(lista.length, (index) {
+    fornecedores = List.generate(query.length, (index) {
       return Fornecedor(
-          id: lista[index]["id"],
-          cnpj: lista[index]["cnpj"],
-          razaoSocial: lista[index]["razaoSocial"],
-          email: lista[index]["email"],
-          telefone: lista[index]["telefone"],
-          imagem: lista[index]["imagem"]);
+          id: query[index].id,
+          cnpj: query[index]["cnpj"],
+          razaoSocial: query[index]["razaoSocial"],
+          email: query[index]["email"],
+          telefone: query[index]["telefone"],
+          imagem: query[index]["imagem"]);
     });
     notifyListeners();
     return fornecedores;
@@ -43,26 +42,39 @@ class FornecedoresProvider extends ChangeNotifier {
   //   }
   // }
 
-  Future<int> inserirFornecedor(Fornecedor fornecedor) async {
-    int id = await db.insert(nomeTabela, fornecedor.toMap());
-    fornecedor.id = id;
-    fornecedores.add(fornecedor);
-    notifyListeners();
-    return id;
+  Future<String?> inserirFornecedor(Fornecedor fornecedor) async {
+
+    try{
+      DocumentReference<Map<String, dynamic>> document = await db.collection(nomeTabela).add(fornecedor.toMap());
+      fornecedor.id = document.id;
+      fornecedores.add(fornecedor);
+      notifyListeners();
+      return fornecedor.id;
+    }catch (e){
+      return null;
+    }
   }
 
-  Future<int> editarFornecedor(Fornecedor fornecedor) async {
-    int id = await db.update(nomeTabela, fornecedor.toMap(),
-        where: "id = ?", whereArgs: [fornecedor.id]);
-    notifyListeners();
-    return id;
+  Future<bool> editarFornecedor(Fornecedor fornecedor) async {
+    try {
+      await db.collection(nomeTabela).doc(fornecedor.id!).update(fornecedor.toMap());
+      await listarFornecedores();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future<int> deletarFornecedor(Fornecedor fornecedor) async {
-    int id = await db
-        .delete(nomeTabela, where: "id = ?", whereArgs: [fornecedor.id]);
-    fornecedores.remove(fornecedor);
-    notifyListeners();
-    return id;
+  Future<bool> deletarFornecedor(Fornecedor fornecedor) async {
+
+    try {
+      await db.collection(nomeTabela).doc(fornecedor.id).delete();
+      await listarFornecedores();
+      fornecedores.remove(fornecedor);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

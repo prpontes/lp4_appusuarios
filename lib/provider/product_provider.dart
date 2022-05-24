@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:lp4_appusuarios/model/product.dart';
@@ -7,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 enum ProductsState { loading, complete }
 
 class ProductProvider extends ChangeNotifier {
-  Database db = DatabaseSingleton.instance.db;
+  FirebaseFirestore db = FirebaseFirestore.instance;
   String tableName = "product";
 
   List<Product> products = [];
@@ -15,83 +17,84 @@ class ProductProvider extends ChangeNotifier {
 
   Future<List<Product>> getProducts({int minQuantity = 0}) async {
     productsState = ProductsState.loading;
-    List productsList = await db.query(tableName + "_view",
-        where: "quantity >= ?", whereArgs: [minQuantity]);
+
+    var query = await db.collection(tableName).get();
     products = List.empty(growable: true);
-    for (var product in productsList) {
-      products.add(
+    for (var doc in query.docs) { 
+      if (doc["quantity"] >= minQuantity){
+        var documentFornecedor = await db.collection("fornecedor").doc(doc["idFornecedor"]).get();
+        products.add(
         await Product(
-          id: product["id"],
-          name: product["name"],
-          description: product["description"],
-          price: product["price"],
-          image: product["image"],
-          quantity: product["quantity"],
+          id: doc.id,
+          name: doc["name"],
+          description: doc["description"],
+          price: doc["price"],
+          image: doc["image"],
+          quantity: doc["quantity"],
           fornecedor: Fornecedor(
-            razaoSocial: product["razaoSocial"],
-            id: product["idFornecedor"],
+            razaoSocial: documentFornecedor["razaoSocial"],
+            id: documentFornecedor.id,
           ),
         ).getMainColorFromImage(),
       );
+      }
     }
     notifyListeners();
     productsState = ProductsState.complete;
     return products;
   }
 
-  Future<Product?> getProduct(int id) async {
-    List resultado =
-        await db.query(tableName + "_view", where: "id = ?", whereArgs: [id]);
-
-    if (resultado.isNotEmpty) {
+  Future<Product?> getProduct(Product product) async {
+    try {
+      var documentProduct = await db.collection(tableName).doc(product.id).get();
+      var documentFornecedor = await db.collection("fornecedor").doc(product.fornecedor.id).get();
       return await Product(
-        id: resultado[0]["id"],
-        name: resultado[0]["name"],
-        description: resultado[0]["description"],
-        price: resultado[0]["price"],
-        image: resultado[0]["image"],
-        quantity: resultado[0]["quantity"],
+        id: documentProduct.id,
+        name: documentProduct["name"],
+        description: documentProduct["description"],
+        price: documentProduct["price"],
+        image: documentProduct["image"],
+        quantity: documentProduct["quantity"],
         fornecedor: Fornecedor(
-          id: resultado[0]["idFornecedor"],
-          razaoSocial: resultado[0]["razaosocial"],
+          id: documentFornecedor.id,
+          razaoSocial: documentFornecedor["razaosocial"],
         ),
       ).getMainColorFromImage();
-    } else {
+    } catch (e) {
       return null;
     }
   }
 
   Future<bool> createProduct(Product product) async {
-    int id = await db.insert(tableName, product.toMap());
-    if (id != 0) {
-      product.id = id;
+    try{
+      DocumentReference<Map<String, dynamic>> document = await db.collection(tableName).add(product.toMap());
+      product.id = document.id;
       products.add(product);
       notifyListeners();
       return true;
+    }catch (e){
+      return false;
     }
-    return false;
   }
 
   Future<bool> updateProduct(Product product) async {
-    int result = await db.update(tableName, product.toMap(),
-        where: "id = ?", whereArgs: [product.id]);
-    if (result > 0) {
+    try {
+      await db.collection(tableName).doc(product.id!).update(product.toMap());
       await getProducts();
       return true;
-    } else {
+    } catch (e) {
       return false;
     }
   }
 
   Future<bool> deleteProduct(Product product) async {
-    int result =
-        await db.delete(tableName, where: "id = ?", whereArgs: [product.id]);
-    if (result != 0) {
+    try {
+      await db.collection(tableName).doc(product.id).delete();
       await getProducts();
       products.remove(product);
       notifyListeners();
       return true;
-    } else {
+    } catch (e) {
       return false;
     }
   }

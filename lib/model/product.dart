@@ -3,7 +3,7 @@ import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class Product {
-  int? id;
+  String? id;
   String name;
   String description;
   String image;
@@ -27,7 +27,6 @@ class Product {
 
   Map<String, dynamic> toMap() {
     return {
-      "id": id,
       "name": name,
       "description": description,
       "image": image,
