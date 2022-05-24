@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   if (!value.isLoggedIn) {
                     return const CircularProgressIndicator();
                   }
-                  Usuario usuarioAutenticado = value.user!;
+                  UsuarioFirebase usuarioAutenticado = value.user!;
                   return ListTile(
                     leading: usuarioAutenticado.avatar == ""
                         ? const Icon(

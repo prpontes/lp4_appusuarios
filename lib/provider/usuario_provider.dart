@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import 'package:lp4_appusuarios/singletons/database_singleton.dart';
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class UsuarioProvider extends ChangeNotifier {
@@ -69,6 +72,7 @@ class UsuarioProvider extends ChangeNotifier {
       'nome': u.nome,
       'senha': u.senha,
     });
+    listarUsuarioFirestore();
   }
   listarUsuarioFirestore() async{
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
@@ -129,6 +133,21 @@ class UsuarioProvider extends ChangeNotifier {
   await usuarios.doc(u.id).delete();
   await listarUsuarioFirestore();
 
+  }
+
+  addAuthUsuario(email, password) async{
+    try{
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+    }on FirebaseAuthException catch(e){
+      var print='';
+      if(e.code == 'weak-password'){
+        print= "A senha é muito fraca!";
+
+      }else if(e.code == 'email-already-in-use'){
+        print= 'A conta já existe para esse email';
+      }
+
+    }
   }
 
   Future<int> inserirUsuario(Usuario usuario) async {

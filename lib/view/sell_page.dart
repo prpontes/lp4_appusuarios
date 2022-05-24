@@ -23,7 +23,7 @@ class _TelaVendasState extends State<TelaVendas> {
     super.initState();
     sellProvider = Provider.of<SellProvider>(context, listen: false);
     authProvider = Provider.of<AuthProvider>(context, listen: false);
-    sellProvider.listSales(authProvider.user!.id!);
+   // sellProvider.listSales(authProvider.user!.id!);
   }
 
   @override
