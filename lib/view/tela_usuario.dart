@@ -72,8 +72,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
     print(user!.email);
   }
 
-  _addUsuarioFirestore(Usuario u) async
-  {
+  _addUsuarioFirestore(Usuario u) async {
     CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
 
     await usuarios.add(

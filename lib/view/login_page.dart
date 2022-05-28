@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   Permissoes permissoes = Permissoes();
 
   carregarPermissoesUsuarioAutenticado(Usuario user) async {
-    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+    CollectionReference usuarios = await FirebaseFirestore.instance.collection('usuarios');
 
     await usuarios.doc(user.id).collection(user.cpf!).get().then(
             (value) {
@@ -200,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
           );
 
         Provider.of<UsuarioModel>(context, listen: false).user = usuarioLogado;
-        carregarPermissoesUsuarioAutenticado(usuarioLogado);
+        await carregarPermissoesUsuarioAutenticado(usuarioLogado);
         return Navigator.pushReplacementNamed(
           context,
           "/telainicio",
