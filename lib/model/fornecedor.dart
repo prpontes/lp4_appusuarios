@@ -1,6 +1,6 @@
 class Fornecedor {
   // model fornecedor
-  int? id;
+  String? id;
   String? cnpj;
   String? razaoSocial;
   String? email;
@@ -18,7 +18,6 @@ class Fornecedor {
 
   Map<String, dynamic> toMap() {
     return {
-      "id": id,
       "cnpj": cnpj,
       "razaoSocial": razaoSocial,
       "email": email,

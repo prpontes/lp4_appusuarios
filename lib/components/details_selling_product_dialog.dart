@@ -39,8 +39,8 @@ class _DetailsSellingProductDialogState
           (product) => product.id == widget.product.id,
           orElse: () => Product(
               name: "",
-              id: -1,
-              fornecedor: Fornecedor(id: -1, razaoSocial: "")),
+              id: "",
+              fornecedor: Fornecedor(id: "", razaoSocial: "")),
         );
 
         if (product.id == -1) {

@@ -40,6 +40,8 @@ dependencies:
   cpf_cnpj_validator: 2.0.0
   email_validator: 2.0.1
   diacritic: ^0.1.3
+  cloud_firestore:
+  firebase_core:
 
 dev_dependencies:
   flutter_test:

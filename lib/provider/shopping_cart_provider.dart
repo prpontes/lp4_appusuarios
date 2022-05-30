@@ -18,14 +18,14 @@ class ShoppingCartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int getQuantity(int id) {
+  int getQuantity(String id) {
     if (hasProduct(id)) {
-      return items.firstWhere((element) => element.id == id).quantity;
+      return items.firstWhere((element) => element.produto?.id == id).quantity;
     }
     return 0;
   }
 
-  bool hasProduct(int productId) {
+  bool hasProduct(String productId) {
     return items.indexWhere((item) => item.produto?.id == productId) != -1;
   }
 
