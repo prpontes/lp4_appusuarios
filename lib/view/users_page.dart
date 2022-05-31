@@ -80,7 +80,7 @@ class _TelaUsuarioState extends State<TelaUsuario> {
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     DetailsUserDialog(
-                                     usuario: usuariofirebase,
+                                  usuarioFirebase: usuariofirebase,
                                 ),
                                 fullscreenDialog: true,
                               ),
