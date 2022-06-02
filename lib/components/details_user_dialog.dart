@@ -99,48 +99,48 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
       'editar': editarVendas,
     };
 
-    CollectionReference usuario =
-        FirebaseFirestore.instance.collection('usuarioFirebase');
+    CollectionReference usuarios =
+        FirebaseFirestore.instance.collection('usuarios');
 
-    await usuario
+    await usuarios
         .doc(usuarioFirebase!.id)
         .collection(usuarioFirebase!.cpf!)
         .doc('modClientes')
         .set(permissoes.modClientes);
-    await usuario
+    await usuarios
         .doc(usuarioFirebase!.id)
         .collection(usuarioFirebase!.cpf!)
         .doc('modUsuarios')
         .set(permissoes.modUsuarios);
-    await usuario
+    await usuarios
         .doc(usuarioFirebase!.id)
         .collection(usuarioFirebase!.cpf!)
         .doc('modFornecedores')
         .set(permissoes.modFornecedores);
-    await usuario
+    await usuarios
         .doc(usuarioFirebase!.id)
         .collection(usuarioFirebase!.cpf!)
         .doc('modProdutos')
         .set(permissoes.modProdutos);
-    await usuario
+    await usuarios
         .doc(usuarioFirebase!.id)
         .collection(usuarioFirebase!.cpf!)
         .doc('modVendas')
         .set(permissoes.modVendas);
 
     // Verifica se as mudanças das permissões é do usuário autenticado, se for, atualiza o provider.
-    // if (Provider.of<UsuarioModel>(context, listen: false).user.cpf ==
-    //     usuarioFirebase!.cpf) {
-    //   Provider.of<PermissoesModel>(context, listen: false).permissoes =
-    //       permissoes;
-    // }
+    if (Provider.of<AuthProvider>(context, listen: false).user!.cpf ==
+        usuarioFirebase!.cpf) {
+      Provider.of<PermissoesModel>(context, listen: false).permissoes =
+          permissoes;
+    }
   }
 
   Future<void> _carregarPermissoesUsuarioFirebase() async {
-    CollectionReference usuario =
-        FirebaseFirestore.instance.collection('usuarioFirebase');
+    CollectionReference usuarios =
+        FirebaseFirestore.instance.collection('usuarios');
 
-    await usuario
+    await usuarios
         .doc(usuarioFirebase!.id)
         .collection(usuarioFirebase!.cpf!)
         .get()
@@ -239,9 +239,10 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
     super.didChangeDependencies();
     //usuarioFirebase =
     //ModalRoute.of(context)!.settings.arguments as UsuarioFirebase;
+    usuarioFirebase = widget.usuarioFirebase;
     _carregarPermissoesUsuarioFirebase();
-    //permissoesUsuarioAutenticado =
-    //    Provider.of<PermissoesModel>(context, listen: false).permissoes;
+    permissoesUsuarioAutenticado =
+        Provider.of<PermissoesModel>(context, listen: false).permissoes;
   }
 
   @override

@@ -7,6 +7,9 @@ import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../model/permissoes.dart';
+import '../provider/permissoes.dart';
+
 class TelaLogin extends StatefulWidget {
   const TelaLogin({Key? key}) : super(key: key);
 
@@ -20,6 +23,127 @@ class _TelaLoginState extends State<TelaLogin> {
   TextEditingController controllerSenha = TextEditingController(text: "123456");
   TextEditingController controllerRecuperarSenha = TextEditingController();
   late UsuarioProvider usuarioProvider;
+
+  Permissoes permissoes = Permissoes();
+
+  /*carregarPermissoesUsuarioAutenticado(UsuarioFirebase user) async {
+    CollectionReference usuarios =
+        await FirebaseFirestore.instance.collection('usuarios');
+
+    await usuarios.doc(user.id).collection(user.cpf!).get().then((value) {
+      value.docs.forEach((usr) {
+        if (usr.id == 'modClientes') {
+          permissoes.modClientes = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+        if (usr.id == 'modUsuarios') {
+          permissoes.modUsuarios = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+            'detalhe': usr['detalhe'],
+            'permissoes': usr['permissoes'],
+          };
+        }
+        if (usr.id == 'modFornecedores') {
+          permissoes.modFornecedores = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+        if (usr.id == 'modProdutos') {
+          permissoes.modProdutos = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+        if (usr.id == 'modVendas') {
+          permissoes.modVendas = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+      });
+    });
+    Provider.of<PermissoesModel>(context, listen: false).permissoes =
+        permissoes;
+  }
+  */
+
+  carregarPermissoesUsuarioAutenticado(UsuarioFirebase user) async {
+    CollectionReference usuarios =
+        await FirebaseFirestore.instance.collection('usuarios');
+
+    await usuarios.doc(user.id).collection(user.cpf!).get().then((value) {
+      value.docs.forEach((usr) {
+        if (usr.id == 'modClientes') {
+          permissoes.modClientes = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+        if (usr.id == 'modUsuarios') {
+          permissoes.modUsuarios = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+            'detalhe': usr['detalhe'],
+            'permissoes': usr['permissoes'],
+          };
+        }
+        if (usr.id == 'modFornecedores') {
+          permissoes.modFornecedores = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+        if (usr.id == 'modProdutos') {
+          permissoes.modProdutos = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+        if (usr.id == 'modVendas') {
+          permissoes.modVendas = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+      });
+    });
+    Provider.of<PermissoesModel>(context, listen: false).permissoes =
+        permissoes;
+  }
 
   late AuthProvider authProvider;
 
@@ -171,6 +295,7 @@ class _TelaLoginState extends State<TelaLogin> {
           });
         });
         Provider.of<AuthProvider>(context, listen: false).login(usuario);
+        await carregarPermissoesUsuarioAutenticado(usuario);
         return Navigator.pushReplacementNamed(context, "/telainicio");
       } on FirebaseAuthException catch (e) {
         var msg_erro = "";

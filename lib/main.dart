@@ -1,6 +1,7 @@
 import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/endereco_provider.dart';
+import 'package:lp4_appusuarios/provider/permissoes.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:lp4_appusuarios/provider/sell_provider.dart';
@@ -53,6 +54,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => ShoppingCartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PermissoesModel(),
         ),
       ],
       child: MaterialApp(
