@@ -242,7 +242,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
     usuarioFirebase = widget.usuarioFirebase;
     _carregarPermissoesUsuarioFirebase();
     permissoesUsuarioAutenticado =
-        Provider.of<PermissoesModel>(context, listen: false).permissoes;
+        Provider.of<PermissoesModel>(context, listen: true).permissoes;
   }
 
   @override
@@ -254,6 +254,8 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
 
   @override
   Widget build(BuildContext context) {
+    permissoes =
+        Provider.of<PermissoesModel>(context, listen: false).permissoes;
     final UsuarioFirebase user = widget.usuarioFirebase;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -276,55 +278,60 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
             ]),
             title: const Text("Detalhe usuarioFirebase"),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => MutateUserDialog(
-                        usuario: user,
-                      ),
-                      fullscreenDialog: true,
-                    ),
-                  );
-                },
-              ),
-              IconButton(
-                onPressed: () async {
-                  // show alert dialog
-                  final bool confirm = await showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (BuildContext context) => const DeleteDialog(
-                      title: "Excluir usuário",
-                      description: "Tem certeza que deseja excluir o usuário?",
-                    ),
-                  );
-                  if (!confirm) return;
-                  if (user.login == authProvider.user?.login) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content:
-                            Text("Você não pode excluir seu próprio usuário"),
-                      ),
-                    );
-                    return;
-                  }
-                  Navigator.pop(context);
-                  await usuarioProvider.deletarUsuarioFirebase(user);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    action: SnackBarAction(
-                      label: 'Desfazer',
+              (permissoesUsuarioAutenticado!.modUsuarios['editar'] == true)
+                  ? IconButton(
+                      icon: const Icon(Icons.edit),
                       onPressed: () async {
-                        await usuarioProvider.addUsuarioFirestore(user);
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => MutateUserDialog(
+                              usuario: user,
+                            ),
+                            fullscreenDialog: true,
+                          ),
+                        );
                       },
-                    ),
-                    content: const Text('Usuário deletado com sucesso!'),
-                  ));
-                },
-                icon: const Icon(Icons.delete),
-              ),
+                    )
+                  : Text(""),
+              (permissoesUsuarioAutenticado!.modUsuarios['deletar'] == true)
+                  ? IconButton(
+                      onPressed: () async {
+                        // show alert dialog
+                        final bool confirm = await showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) => const DeleteDialog(
+                            title: "Excluir usuário",
+                            description:
+                                "Tem certeza que deseja excluir o usuário?",
+                          ),
+                        );
+                        if (!confirm) return;
+                        if (user.login == authProvider.user?.login) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  "Você não pode excluir seu próprio usuário"),
+                            ),
+                          );
+                          return;
+                        }
+                        Navigator.pop(context);
+                        await usuarioProvider.deletarUsuarioFirebase(user);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          action: SnackBarAction(
+                            label: 'Desfazer',
+                            onPressed: () async {
+                              await usuarioProvider.addUsuarioFirestore(user);
+                            },
+                          ),
+                          content: const Text('Usuário deletado com sucesso!'),
+                        ));
+                      },
+                      icon: const Icon(Icons.delete),
+                    )
+                  : Text("")
             ],
           ),
           body: TabBarView(children: [
