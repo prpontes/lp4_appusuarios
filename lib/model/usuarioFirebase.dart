@@ -1,16 +1,15 @@
-class Usuario {
+class UsuarioFirebase {
   // model usuário
-  int? id;
+  String? id;
   String? cpf;
   String? nome;
   String? email;
   String? login;
   String? senha;
   String avatar;
-  String? telefone;
-  int isAdmin;
 
-  Usuario({
+
+  UsuarioFirebase({
     this.id,
     this.cpf,
     this.nome,
@@ -18,8 +17,7 @@ class Usuario {
     this.login,
     this.senha,
     this.avatar = "",
-    this.telefone,
-    this.isAdmin = 0,
+
   });
 
   Map<String, dynamic> toMap() {
@@ -31,13 +29,12 @@ class Usuario {
       "login": login,
       "senha": senha,
       "avatar": avatar,
-      "telefone": telefone,
-      "isAdmin": isAdmin,
+
     };
   }
 
   @override
   String toString() {
-    return 'Usuario{id: $id, cpf: $cpf, nome: $nome, email: $email, login: $login, senha: $senha, avatar: $avatar,telefone: $telefone,isAdmin: $isAdmin}';
+    return 'UsuarioFirebase{id: $id, cpf: $cpf, nome: $nome, email: $email, login: $login, senha: $senha, avatar: $avatar}';
   }
 }

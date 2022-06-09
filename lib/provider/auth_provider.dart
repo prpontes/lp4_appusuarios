@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import '../model/usuario.dart';
 
 class AuthProvider extends ChangeNotifier {
-  Usuario? _user;
+  UsuarioFirebase? _user;
 
-  Usuario? get user => isLoggedIn ? _user! : null;
+  UsuarioFirebase? get user => isLoggedIn ? _user! : null;
 
   bool get isLoggedIn => _user != null;
 
-  login(Usuario user) {
+  login(UsuarioFirebase user) {
     _user = user;
     notifyListeners();
   }

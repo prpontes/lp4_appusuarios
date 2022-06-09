@@ -14,11 +14,11 @@ class SellProvider extends ChangeNotifier {
 
   Future<List<Sell>> listSales(int idUsuario) async {
     List salesList = await db
-        .query(tabelaVenda, where: "idUser = ?", whereArgs: [idUsuario]);
+        .query("sell_view", where: "idUser = ?", whereArgs: [idUsuario]);
 
     sales = await Future.wait(List.generate(salesList.length, (index) async {
       return Sell.fromMap(salesList[index])
-        ..items = await listItems(salesList[index]["id"]);
+        ..items = await listItems(salesList[index]["idVenda"]);
     }));
 
     notifyListeners();

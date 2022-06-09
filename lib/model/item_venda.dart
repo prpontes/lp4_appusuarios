@@ -39,6 +39,7 @@ class ItemVenda {
       produto: Product(
         id: map["idProduct"],
         name: map["name"],
+        price: map["price"],
         description: map["description"] ?? "",
         image: map["image"],
       ),

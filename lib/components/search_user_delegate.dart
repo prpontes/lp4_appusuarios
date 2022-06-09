@@ -40,10 +40,10 @@ class SearchUserDelegate extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     final usuarioProvider = Provider.of<UsuarioProvider>(context);
-    final usuarios = usuarioProvider.usuarios;
-    final listaUsuarios = query.isEmpty
-        ? usuarios
-        : usuarios
+    final usuariosFirebase = usuarioProvider.usuarios;
+    final listarUsuarioFirestore = query.isEmpty
+        ? usuariosFirebase
+        : usuariosFirebase
             .where(
               (p) =>
                   removeDiacritics(p.nome!.toLowerCase())
@@ -55,9 +55,9 @@ class SearchUserDelegate extends SearchDelegate<String> {
             .toList();
 
     return ListView.builder(
-      itemCount: listaUsuarios.length,
+      itemCount: listarUsuarioFirestore.length,
       itemBuilder: (context, index) {
-        final usuario = listaUsuarios[index];
+        final usuario = listarUsuarioFirestore[index];
         return ListTile(
           leading: usuario.avatar == ""
               ? const Icon(
@@ -77,15 +77,15 @@ class SearchUserDelegate extends SearchDelegate<String> {
           title: Text(usuario.nome!),
           subtitle: Text(usuario.email!),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => DetailsUserDialog(
-                  usuario: usuario,
-                ),
-                fullscreenDialog: true,
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (BuildContext context) => DetailsUserDialog(
+            //       usuario: usuario,
+            //     ),
+            //     fullscreenDialog: true,
+            //   ),
+            // );
           },
         );
       },

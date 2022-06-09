@@ -23,14 +23,13 @@ class _TelaVendasState extends State<TelaVendas> {
     super.initState();
     sellProvider = Provider.of<SellProvider>(context, listen: false);
     authProvider = Provider.of<AuthProvider>(context, listen: false);
-    sellProvider.listSales(authProvider.user!.id!);
+   // sellProvider.listSales(authProvider.user!.id!);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Vendas"), actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.print))
         ]),
         body: Column(
           mainAxisSize: MainAxisSize.max,
@@ -108,7 +107,7 @@ class _TelaVendasState extends State<TelaVendas> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              DetalheVendas(),
+                                              DetalheVendas(sell: sell),
                                           fullscreenDialog: true,
                                         ),
                                       );

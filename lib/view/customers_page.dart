@@ -1,4 +1,5 @@
 import 'package:lp4_appusuarios/components/details_user_dialog.dart';
+
 import 'package:lp4_appusuarios/components/search_user_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
@@ -39,6 +40,13 @@ class _TelaClienteState extends State<TelaCliente> {
               );
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.location_on),
+            onPressed: () {
+              Navigator.pushNamed(context, "/telaendereco");
+
+            },
+          ),
         ],
       ),
       body: Column(
@@ -72,16 +80,16 @@ class _TelaClienteState extends State<TelaCliente> {
                           title: Text(cliente.nome!),
                           subtitle: Text(cliente.email!),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    DetailsUserDialog(
-                                  usuario: cliente,
-                                ),
-                                fullscreenDialog: true,
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (BuildContext context) =>
+                            //         DetailsUserDialog(
+                            //       usuario: cliente,
+                            //     ),
+                            //     fullscreenDialog: true,
+                            //   ),
+                            // );
                           },
                         ),
                       );
