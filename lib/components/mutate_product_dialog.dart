@@ -140,7 +140,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                       const SizedBox(
                         height: 10,
                       ),
-                      DropdownButtonFormField<int>(
+                      DropdownButtonFormField<String>(
                         value: (_selectedFornecedor == null)
                             ? null
                             : _selectedFornecedor!.id,
@@ -177,9 +177,9 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                                 (fornecedor) => fornecedor.id == idSelecionado);
                           });
                         },
-                        items: fornecedores.map<DropdownMenuItem<int>>(
+                        items: fornecedores.map<DropdownMenuItem<String>>(
                           (fornecedor) {
-                            return DropdownMenuItem<int>(
+                            return DropdownMenuItem<String>(
                               value: fornecedor.id,
                               child: Text(
                                 fornecedor.razaoSocial!,

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/endereco.dart';
 
@@ -6,8 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/endereco_provider.dart';
 
-String?  ValidaCep(String cep)
-{
+String? ValidaCep(String cep) {
   String pattern = r'[0-9]{5}-[0-9]{3}';
   RegExp regExp = RegExp(pattern);
   if (cep.isEmpty) {
@@ -15,7 +13,6 @@ String?  ValidaCep(String cep)
   } else if (!regExp.hasMatch(cep)) {
     return 'Por favor, coloque um CEP valido!';
   }
-
 }
 
 class MutateAddressDialog extends StatefulWidget {
@@ -52,8 +49,8 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
       _complementoController.text = widget.endereco!.complemento!;
       _cepController.text = widget.endereco!.cep!;
       _referenciaController.text = widget.endereco!.referencia!;
-    _cidadeController.text= widget.endereco!.referencia!;
-    _cpfController.text= widget.endereco!.idcliente!;
+      _cidadeController.text = widget.endereco!.referencia!;
+      _cpfController.text = widget.endereco!.idcliente!;
     }
   }
 
@@ -75,8 +72,8 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
             endereco.complemento = _complementoController.text;
             endereco.referencia = _referenciaController.text;
             endereco.numero = _numeroController.text;
-            endereco.cidade= _cidadeController.text;
-            endereco.idcliente= _cpfController.text;
+            endereco.cidade = _cidadeController.text;
+            endereco.idcliente = _cpfController.text;
             if (isUpdate) {
               await _enderecoProvider.editarEndereco(endereco);
             } else {
@@ -139,7 +136,6 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
                   hintText: "Número",
                   border: OutlineInputBorder(),
                 ),
-
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Número é obrigatório';
@@ -158,15 +154,13 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
                   hintText: "Referência",
                   border: OutlineInputBorder(),
                 ),
-                  validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Referência é obrigatória';
-                      }
-                      return null;
-                    },
-
-                ),
-
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Referência é obrigatória';
+                  }
+                  return null;
+                },
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -177,16 +171,14 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
                   hintText: "CEP",
                   border: OutlineInputBorder(),
                 ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'CEP é obrigatório';
-                    } else {
-                      return ValidaCep(value);
-                    }
-                  },
-
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'CEP é obrigatório';
+                  } else {
+                    return ValidaCep(value);
+                  }
+                },
               ),
-
               const SizedBox(
                 height: 10,
               ),
@@ -239,7 +231,6 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
               const SizedBox(
                 height: 10,
               ),
-
             ],
           ),
         ),

@@ -30,7 +30,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
       builder: (context, value, child) {
         Product product = value.products.firstWhere(
           (product) => product.id == widget.product.id,
-          orElse: () => Product(name: "", id: -1, fornecedor: Fornecedor(id: -1, razaoSocial: "")),
+          orElse: () => Product(name: "", id: "", fornecedor: Fornecedor(id: "", razaoSocial: "")),
         );
 
         if (product.id == -1) {

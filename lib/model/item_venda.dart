@@ -8,7 +8,7 @@ class ItemVenda {
   double price;
   Product? produto;
   Sell? venda;
-  int? idProduto;
+  String? idProduto;
   int? idVenda;
 
   ItemVenda({

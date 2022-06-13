@@ -11,7 +11,8 @@ import 'package:provider/provider.dart';
 
 class DetailsAddressDialog extends StatefulWidget {
   final Endereco endereco;
-  const DetailsAddressDialog({Key? key, required this.endereco}) : super(key: key);
+  const DetailsAddressDialog({Key? key, required this.endereco})
+      : super(key: key);
 
   @override
   State<DetailsAddressDialog> createState() => _DetailsAddressDialogState();
@@ -25,7 +26,6 @@ class _DetailsAddressDialogState extends State<DetailsAddressDialog> {
   void initState() {
     super.initState();
     enderecoProvider = Provider.of<EnderecoProvider>(context, listen: false);
-
   }
 
   @override
@@ -89,7 +89,7 @@ class _DetailsAddressDialogState extends State<DetailsAddressDialog> {
           child: Consumer<EnderecoProvider>(
             builder: (context, value, child) {
               Endereco endereco = value.endereco.firstWhere(
-                    (endereco) => endereco.id == widget.endereco.id,
+                (endereco) => endereco.id == widget.endereco.id,
                 orElse: () => Endereco(
                   id: null,
                   rua: "",
@@ -100,8 +100,6 @@ class _DetailsAddressDialogState extends State<DetailsAddressDialog> {
                   referencia: "",
                   idcliente: "",
                   cidade: "",
-
-
                 ),
               );
 
@@ -114,7 +112,6 @@ class _DetailsAddressDialogState extends State<DetailsAddressDialog> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Row(
@@ -217,8 +214,6 @@ class _DetailsAddressDialogState extends State<DetailsAddressDialog> {
                       ],
                     ),
                   )
-
-
                 ],
               );
             },

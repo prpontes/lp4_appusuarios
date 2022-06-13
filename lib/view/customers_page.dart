@@ -44,7 +44,6 @@ class _TelaClienteState extends State<TelaCliente> {
             icon: const Icon(Icons.location_on),
             onPressed: () {
               Navigator.pushNamed(context, "/telaendereco");
-
             },
           ),
         ],
