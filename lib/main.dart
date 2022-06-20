@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
@@ -29,6 +30,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
   runApp(
     MultiProvider(
       providers: [

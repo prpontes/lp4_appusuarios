@@ -35,6 +35,16 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -43,11 +53,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDcIAAfJILxQlehoDz28WVE3RwMKe76EYM',
-    appId: '1:392536993196:android:ba7d8c20d0371003005e09',
-    messagingSenderId: '392536993196',
-    projectId: 'lp4appusuarios',
-    databaseURL: 'https://lp4appusuarios-default-rtdb.firebaseio.com',
-    storageBucket: 'lp4appusuarios.appspot.com',
+    apiKey: 'AIzaSyCs6IBHPlkXwnKJL5oEEjGihZn8tTi8tXA',
+    appId: '1:722861968894:android:a4d4bd5e021ad1006e44af',
+    messagingSenderId: '722861968894',
+    projectId: 'lp4-projeto-jlucaso',
+    storageBucket: 'lp4-projeto-jlucaso.appspot.com',
   );
 }

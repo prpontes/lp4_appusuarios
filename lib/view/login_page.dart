@@ -6,6 +6,7 @@ import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/provider_usuario.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../model/permissoes.dart';

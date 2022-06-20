@@ -207,8 +207,6 @@ class _TelaUsuarioState extends State<TelaUsuario> {
   }
 
   Future<void> _deletarUsuario(String i) async {
-    //await bd.deletarUsuario(i);
-
     _listarUsuarios();
   }
 
