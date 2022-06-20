@@ -25,12 +25,12 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inicializa o singleton do banco de dados
-  await DatabaseSingleton.startDatabase();
   await Firebase.initializeApp(
-    name: 'lp4-123',
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Inicializa o singleton do banco de dados
+  await DatabaseSingleton.startDatabase();
 
   runApp(
     MultiProvider(
