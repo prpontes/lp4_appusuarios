@@ -23,7 +23,7 @@ class _TelaLoginState extends State<TelaLogin> {
   TextEditingController controllerSenha = TextEditingController(text: "123456");
   TextEditingController controllerRecuperarSenha = TextEditingController();
   late UsuarioProvider usuarioProvider;
-
+  bool loading = false;
   Permissoes permissoes = Permissoes();
 
   /*carregarPermissoesUsuarioAutenticado(UsuarioFirebase user) async {
@@ -223,7 +223,7 @@ class _TelaLoginState extends State<TelaLogin> {
     //   login,
     //   senha,
     // );
-
+    setState(() => loading = true);
     if (controllerUsuario.text == "" || controllerSenha == "") {
       return showDialog(
           context: context,
@@ -234,6 +234,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 TextButton(
                     onPressed: () {
                       Navigator.pop(context);
+                      setState(() => loading = false);
                     },
                     child: const Text("ok"))
               ],
@@ -298,6 +299,7 @@ class _TelaLoginState extends State<TelaLogin> {
         await carregarPermissoesUsuarioAutenticado(usuario);
         return Navigator.pushReplacementNamed(context, "/telainicio");
       } on FirebaseAuthException catch (e) {
+        setState(() => loading = false);
         var msg_erro = "";
         if (e.code == 'user-not-found') {
           msg_erro = " nenhum usuario encontradocom esse email";
@@ -365,7 +367,7 @@ class _TelaLoginState extends State<TelaLogin> {
               onPressed: () {
                 _autenticacao();
               },
-              child: const Text(
+              child: (loading == true) ? const CircularProgressIndicator(color: Colors.white,) : const Text(
                 "ENTRAR",
                 style: TextStyle(
                   fontSize: 17,
