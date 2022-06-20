@@ -1,5 +1,6 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_customer.dialog.dart';
+import 'package:lp4_appusuarios/model/endereco.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';

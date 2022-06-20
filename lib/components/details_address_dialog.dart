@@ -1,9 +1,12 @@
 import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_address_dialog.dart';
+import 'package:lp4_appusuarios/components/mutate_customer.dialog.dart';
 import 'package:lp4_appusuarios/model/endereco.dart';
+import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/endereco_provider.dart';
+import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
 class DetailsAddressDialog extends StatefulWidget {

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/endereco_provider.dart';
+import 'package:lp4_appusuarios/provider/permissoes.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:lp4_appusuarios/provider/sell_provider.dart';
@@ -19,6 +20,8 @@ import 'package:lp4_appusuarios/view/sell_page.dart';
 import 'package:lp4_appusuarios/view/users_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
 
@@ -31,6 +34,9 @@ void main() async {
 
   // Inicializa o singleton do banco de dados
   await DatabaseSingleton.startDatabase();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     MultiProvider(
@@ -55,6 +61,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => ShoppingCartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PermissoesModel(),
         ),
       ],
       child: MaterialApp(

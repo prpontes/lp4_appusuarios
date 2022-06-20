@@ -1,5 +1,9 @@
 import 'package:lp4_appusuarios/components/home_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../model/permissoes.dart';
+import '../provider/permissoes.dart';
 
 class TelaInicio extends StatefulWidget {
   const TelaInicio({Key? key}) : super(key: key);
@@ -9,8 +13,10 @@ class TelaInicio extends StatefulWidget {
 }
 
 class _TelaInicioState extends State<TelaInicio> {
+  late Permissoes permissoes;
   @override
   Widget build(BuildContext context) {
+    permissoes = Provider.of<PermissoesModel>(context, listen: true).permissoes;
     return Scaffold(
         drawer: const HomeDrawer(),
         appBar: AppBar(
@@ -141,7 +147,16 @@ class _TelaInicioState extends State<TelaInicio> {
                   height: 60,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/telausuario");
+                      if (permissoes.modUsuarios['listar'] == true) {
+                        Navigator.pushNamed(context, "/telausuario");
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(
+                              "Você não tem permissão para acessar esse módulo!"),
+                        ));
+                      }
                     },
                     style: ButtonStyle(
                       backgroundColor:

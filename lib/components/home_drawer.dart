@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../model/permissoes.dart';
+import '../provider/permissoes.dart';
 
 class HomeDrawer extends StatefulWidget {
   const HomeDrawer({Key? key}) : super(key: key);
@@ -12,14 +17,19 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   late AuthProvider authProvider;
+  late Permissoes permissoes;
   @override
   void initState() {
     super.initState();
     authProvider = Provider.of<AuthProvider>(context, listen: false);
+    logoutFirebaseAuth() async {
+      await FirebaseAuth.instance.signOut();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    permissoes = Provider.of<PermissoesModel>(context, listen: true).permissoes;
     return Drawer(
       child: SizedBox(
         // screen height
@@ -32,7 +42,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   if (!value.isLoggedIn) {
                     return const CircularProgressIndicator();
                   }
-                  Usuario usuarioAutenticado = value.user!;
+                  UsuarioFirebase usuarioAutenticado = value.user!;
                   return ListTile(
                     leading: usuarioAutenticado.avatar == ""
                         ? const Icon(
@@ -133,7 +143,17 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.pushNamed(context, "/telausuario");
+                      if (permissoes.modUsuarios['listar'] == true) {
+                        Navigator.pushNamed(context, "/telausuario");
+                      } else {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(
+                              "Você não tem permissão para acessar esse módulo!"),
+                        ));
+                      }
                     },
                     leading: const Icon(
                       Icons.person,

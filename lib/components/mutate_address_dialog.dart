@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/endereco_provider.dart';
 
-String? validaCep(String cep) {
+String? ValidaCep(String cep) {
   String pattern = r'[0-9]{5}-[0-9]{3}';
   RegExp regExp = RegExp(pattern);
   if (cep.isEmpty) {
@@ -13,7 +13,6 @@ String? validaCep(String cep) {
   } else if (!regExp.hasMatch(cep)) {
     return 'Por favor, coloque um CEP valido!';
   }
-  return null;
 }
 
 class MutateAddressDialog extends StatefulWidget {
@@ -176,7 +175,7 @@ class _MutateAddressDialogState extends State<MutateAddressDialog> {
                   if (value!.isEmpty) {
                     return 'CEP é obrigatório';
                   } else {
-                    return validaCep(value);
+                    return ValidaCep(value);
                   }
                 },
               ),

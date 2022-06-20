@@ -26,10 +26,23 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
@@ -40,20 +53,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDcIAAfJILxQlehoDz28WVE3RwMKe76EYM',
-    appId: '1:392536993196:android:ba7d8c20d0371003005e09',
-    messagingSenderId: '392536993196',
-    projectId: 'lp4appusuarios',
-    storageBucket: 'lp4appusuarios.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDmyYU7LglLAr15BiogKEjaOrQPrh4Gacw',
-    appId: '1:392536993196:ios:b2b0ff695cdf8387005e09',
-    messagingSenderId: '392536993196',
-    projectId: 'lp4appusuarios',
-    storageBucket: 'lp4appusuarios.appspot.com',
-    iosClientId: '392536993196-k0e5ufglj7tlq2q650atj1il8gm4riqi.apps.googleusercontent.com',
-    iosBundleId: '4',
+    apiKey: 'AIzaSyDkLHKFoXBVcadqmLrfNASD9ol0Ce6gP2k',
+    appId: '1:722131157678:android:8f1c17097f6b33fcf0233f',
+    messagingSenderId: '722131157678',
+    projectId: 'lp4appusuarios-6ad51',
+    storageBucket: 'lp4appusuarios-6ad51.appspot.com',
   );
 }

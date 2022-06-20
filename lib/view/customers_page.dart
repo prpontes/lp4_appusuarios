@@ -44,7 +44,6 @@ class _TelaClienteState extends State<TelaCliente> {
             icon: const Icon(Icons.location_on),
             onPressed: () {
               Navigator.pushNamed(context, "/telaendereco");
-
             },
           ),
         ],
@@ -80,16 +79,16 @@ class _TelaClienteState extends State<TelaCliente> {
                           title: Text(cliente.nome!),
                           subtitle: Text(cliente.email!),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    DetailsUserDialog(
-                                  usuario: cliente,
-                                ),
-                                fullscreenDialog: true,
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (BuildContext context) =>
+                            //         DetailsUserDialog(
+                            //       usuario: cliente,
+                            //     ),
+                            //     fullscreenDialog: true,
+                            //   ),
+                            // );
                           },
                         ),
                       );
