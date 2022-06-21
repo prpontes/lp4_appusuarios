@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../model/permissoes.dart';
-import '../provider/permissoes.dart';
+import '../provider/provider_permissoes.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({Key? key}) : super(key: key);
@@ -20,8 +20,7 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  TextEditingController controllerUsuario =
-      TextEditingController(text: "admin");
+  TextEditingController controllerUsuario = TextEditingController(text: "admin");
   TextEditingController controllerSenha = TextEditingController(text: "123456");
   TextEditingController controllerRecuperarSenha = TextEditingController();
   late UsuarioProvider usuarioProvider;
@@ -31,61 +30,57 @@ class _TelaLoginState extends State<TelaLogin> {
   carregarPermissoesUsuarioAutenticado(Usuario user) async {
     CollectionReference usuarios = await FirebaseFirestore.instance.collection('usuarios');
 
-    await usuarios.doc(user.id).collection(user.cpf!).get().then(
-            (value) {
-          value.docs.forEach(
-                  (usr) {
-                if(usr.id == 'modClientes') {
-                  permissoes.modClientes = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                }
-                if(usr.id == 'modUsuarios') {
-                  permissoes.modUsuarios = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                    'detalhe' : usr['detalhe'],
-                    'permissoes' : usr['permissoes'],
-                  };
-                }
-                if(usr.id == 'modFornecedores') {
-                  permissoes.modFornecedores = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                }
-                if(usr.id == 'modProdutos') {
-                  permissoes.modProdutos = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                }
-                if(usr.id == 'modVendas') {
-                  permissoes.modVendas = {
-                    'adicionar' : usr['adicionar'],
-                    'deletar' : usr['deletar'],
-                    'editar' : usr['editar'],
-                    'listar' : usr['listar'],
-                    'pesquisar' : usr['pesquisar'],
-                  };
-                }
-              }
-          );
+    await usuarios.doc(user.id).collection(user.cpf!).get().then((value) {
+      value.docs.forEach((usr) {
+        if (usr.id == 'modClientes') {
+          permissoes.modClientes = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
         }
-    );
+        if (usr.id == 'modUsuarios') {
+          permissoes.modUsuarios = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+            'detalhe': usr['detalhe'],
+            'permissoes': usr['permissoes'],
+          };
+        }
+        if (usr.id == 'modFornecedores') {
+          permissoes.modFornecedores = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+        if (usr.id == 'modProdutos') {
+          permissoes.modProdutos = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+        if (usr.id == 'modVendas') {
+          permissoes.modVendas = {
+            'adicionar': usr['adicionar'],
+            'deletar': usr['deletar'],
+            'editar': usr['editar'],
+            'listar': usr['listar'],
+            'pesquisar': usr['pesquisar'],
+          };
+        }
+      });
+    });
     Provider.of<PermissoesModel>(context, listen: false).permissoes = permissoes;
   }
 
@@ -99,8 +94,7 @@ class _TelaLoginState extends State<TelaLogin> {
             content: TextField(
               controller: controllerRecuperarSenha,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                  labelText: "E-mail", hintText: "Digite seu e-mail"),
+              decoration: const InputDecoration(labelText: "E-mail", hintText: "Digite seu e-mail"),
             ),
             actions: [
               TextButton(
@@ -111,8 +105,7 @@ class _TelaLoginState extends State<TelaLogin> {
               TextButton(
                   onPressed: () async {
                     try {
-                      await FirebaseAuth.instance.sendPasswordResetEmail(
-                          email: controllerRecuperarSenha.text);
+                      await FirebaseAuth.instance.sendPasswordResetEmail(email: controllerRecuperarSenha.text);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         backgroundColor: Colors.green,
                         content: SingleChildScrollView(
@@ -130,8 +123,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       if (e.code == "invalid-email") {
                         msg_erro == "Endereço de e-mail inválido!";
                       } else if (e.code == "user-not-found") {
-                        msg_erro =
-                            "Não existe um usuário correspondente para o endereço de e-mail fornecido!";
+                        msg_erro = "Não existe um usuário correspondente para o endereço de e-mail fornecido!";
                       } else {
                         msg_erro = "Digite um e-mail cadastrado!";
                       }
@@ -150,8 +142,6 @@ class _TelaLoginState extends State<TelaLogin> {
         });
   }
 
-  
-
   _autenticacao() async {
     final String login = controllerUsuario.text;
     final String senha = controllerSenha.text;
@@ -163,48 +153,36 @@ class _TelaLoginState extends State<TelaLogin> {
     setState(() => loading = true);
     if (controllerUsuario.text == "" || controllerSenha == "") {
       return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: const Text("Login e senha obrigatórios!"),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    setState(() => loading = false);
-                  },
-                  child: const Text("Ok"))
-            ],
-          );
-        }
-      );
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: const Text("Login e senha obrigatórios!"),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      setState(() => loading = false);
+                    },
+                    child: const Text("Ok"))
+              ],
+            );
+          });
     } else {
       try {
         Usuario usuarioLogado = Usuario();
-        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: controllerUsuario.text,
-            password: controllerSenha.text
-        );
+        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: controllerUsuario.text, password: controllerSenha.text);
         // Pega os dados do usuário autenticado e passa para o Provider
-        await FirebaseFirestore.instance
-          .collection('usuarios')
-          .where('email', isEqualTo: controllerUsuario.text)
-          .get()
-          .then(
-            (value) {
-              value.docs.forEach(
-                (usr) {
-                  usuarioLogado.id = usr.id;
-                  usuarioLogado.cpf = usr['cpf'];
-                  usuarioLogado.nome = usr['nome'];
-                  usuarioLogado.email = usr['email'];
-                  usuarioLogado.login = usr['login'];
-                  usuarioLogado.senha = usr['senha'];
-                  usuarioLogado.avatar = usr['avatar'];
-                }
-              );
-            }
-          );
+        await FirebaseFirestore.instance.collection('usuarios').where('email', isEqualTo: controllerUsuario.text).get().then((value) {
+          value.docs.forEach((usr) {
+            usuarioLogado.id = usr.id;
+            usuarioLogado.cpf = usr['cpf'];
+            usuarioLogado.nome = usr['nome'];
+            usuarioLogado.email = usr['email'];
+            usuarioLogado.login = usr['login'];
+            usuarioLogado.senha = usr['senha'];
+            usuarioLogado.avatar = usr['avatar'];
+          });
+        });
 
         Provider.of<UsuarioModel>(context, listen: false).user = usuarioLogado;
         await carregarPermissoesUsuarioAutenticado(usuarioLogado);
@@ -219,23 +197,23 @@ class _TelaLoginState extends State<TelaLogin> {
           msg_erro = 'Nenhum usuário encontrado com esse e-mail.';
         } else if (e.code == 'wrong-password') {
           msg_erro = 'Erro na senha para esse usuário.';
-        }else{
+        } else {
           msg_erro = 'Nenhum usuário encontrado!';
         }
         return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: Text(msg_erro),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Ok"))
-              ],
-            );
-        });
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(msg_erro),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Ok"))
+                ],
+              );
+            });
       }
     } // fim do else
   } // fim _autenticacao
@@ -273,8 +251,7 @@ class _TelaLoginState extends State<TelaLogin> {
                     color: Colors.blue,
                   ),
                   hintText: "Senha",
-                  border: OutlineInputBorder()
-              ),
+                  border: OutlineInputBorder()),
               obscureText: true,
             ),
             const SizedBox(height: 10),
@@ -282,20 +259,23 @@ class _TelaLoginState extends State<TelaLogin> {
               onPressed: () {
                 _autenticacao();
               },
-              child: (loading == true) ? const CircularProgressIndicator(color: Colors.white,) : const Text(
-                "ENTRAR",
-                style: TextStyle(
-                  fontSize: 17,
-                  decoration: TextDecoration.none,
-                ),
-              ),
+              child: (loading == true)
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : const Text(
+                      "ENTRAR",
+                      style: TextStyle(
+                        fontSize: 17,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
             ),
             TextButton(
-                onPressed: (){
+                onPressed: () {
                   _recuperarSenha();
                 },
-                child: const Text('Esqueceu sua senha')
-            )
+                child: const Text('Esqueceu sua senha'))
           ],
         ),
       ),

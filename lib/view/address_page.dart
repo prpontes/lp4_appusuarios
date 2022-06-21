@@ -53,17 +53,13 @@ class _TelaEnderecoState extends State<TelaEndereco> {
                       final endereco = enderecos[index];
                       return Card(
                         child: ListTile(
-
-
                           title: Text(endereco.rua!),
                           subtitle: Text(endereco.cidade!),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    DetailsAddressDialog(endereco: endereco
-                                    ),
+                                builder: (BuildContext context) => DetailsAddressDialog(endereco: endereco),
                                 fullscreenDialog: true,
                               ),
                             );

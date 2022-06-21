@@ -23,10 +23,8 @@ class _BuyPageState extends State<BuyPage> {
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-    shoppingCartProvider =
-        Provider.of<ShoppingCartProvider>(context, listen: false);
-    WidgetsBinding.instance!.addPostFrameCallback(
-        (_) => productProvider.getProducts(minQuantity: 1));
+    shoppingCartProvider = Provider.of<ShoppingCartProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) => productProvider.getProducts(minQuantity: 1));
   }
 
   @override
@@ -93,8 +91,7 @@ class _BuyPageState extends State<BuyPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          DetailsSellingProductDialog(
+                      builder: (BuildContext context) => DetailsSellingProductDialog(
                         product: product,
                       ),
                       fullscreenDialog: true,
@@ -109,9 +106,7 @@ class _BuyPageState extends State<BuyPage> {
                   builder: (context, value, child) {
                     var isItemInCart = value.hasProduct(product.id!);
                     return IconButton(
-                      icon: Icon(isItemInCart
-                          ? Icons.shopping_cart_rounded
-                          : Icons.add_shopping_cart),
+                      icon: Icon(isItemInCart ? Icons.shopping_cart_rounded : Icons.add_shopping_cart),
                       color: isItemInCart ? Colors.grey[300] : Colors.grey,
                       onPressed: isItemInCart
                           ? () {
@@ -133,8 +128,7 @@ class _BuyPageState extends State<BuyPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ShoppingCartDialog(),
+                                  builder: (BuildContext context) => ShoppingCartDialog(),
                                   fullscreenDialog: true,
                                 ),
                               ).then(

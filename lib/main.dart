@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
@@ -9,6 +9,7 @@ import 'package:lp4_appusuarios/provider/provider_usuario.dart';
 import 'package:lp4_appusuarios/provider/sell_provider.dart';
 import 'package:lp4_appusuarios/provider/shopping_cart_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
+import 'package:lp4_appusuarios/view/detalhe_usuario.dart';
 import 'firebase_options.dart';
 import 'package:lp4_appusuarios/provider/provider_permissoes.dart';
 import 'package:lp4_appusuarios/view/address_page.dart';
@@ -22,7 +23,6 @@ import 'package:lp4_appusuarios/view/tela_inicio.dart';
 import 'package:lp4_appusuarios/view/tela_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+  // CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
   runApp(
     MultiProvider(
       providers: [
@@ -68,13 +68,13 @@ void main() async {
         ),
         darkTheme: ThemeData.dark().copyWith(
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: Colors.deepPurple, secondary: Colors.deepPurpleAccent),
+          colorScheme: ColorScheme.fromSwatch().copyWith(primary: Colors.deepPurple, secondary: Colors.deepPurpleAccent),
         ),
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
           "/": (context) => const TelaLogin(),
+          "/detalheusuario": (context) => const TelaDetalheUsuario(),
           "/telainicio": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(),
           "/productspage": (context) => const ProductsPage(),

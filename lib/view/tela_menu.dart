@@ -37,14 +37,13 @@ class _MenuState extends State<Menu> {
                 child: Column(
                   children: [
                     ListTile(
-                        leading: usuarioAutenticado.avatar! == ""
+                        leading: usuarioAutenticado.avatar == ""
                             ? const Icon(
                                 Icons.account_circle,
                                 color: Colors.blue,
                               )
                             : CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(usuarioAutenticado.avatar!),
+                                backgroundImage: NetworkImage(usuarioAutenticado.avatar),
                                 radius: 30,
                               ),
                         title: Text(
@@ -64,24 +63,20 @@ class _MenuState extends State<Menu> {
                               Navigator.pop(context);
                             },
                           ),
-                        )
+                        )),
+                    const SizedBox(
+                      height: 10,
                     ),
-                    const SizedBox(height: 10,),
                     TextField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: "Buscar item do menu",
-                        //border: OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          onPressed: (){},
-                          icon: const Icon(Icons.search)
-                        )
-                      ),
+                          hintText: "Buscar item do menu",
+                          //border: OutlineInputBorder(),
+                          suffixIcon: IconButton(onPressed: () {}, icon: const Icon(Icons.search))),
                     )
                   ],
                 ),
-              )
-          ),
+              )),
           const Divider(color: Colors.black26),
           Container(
             height: 400,
@@ -92,56 +87,66 @@ class _MenuState extends State<Menu> {
                     onTap: () {
                       Navigator.pushReplacementNamed(context, "/telainicio");
                     },
-                    leading: const Icon(Icons.home, color: Colors.blue,),
+                    leading: const Icon(
+                      Icons.home,
+                      color: Colors.blue,
+                    ),
                     title: const Text("Início"),
                   ),
                   ListTile(
-                    onTap: () {},
-                    leading: const Icon(Icons.shopping_cart, color: Colors.blue,),
+                    onTap: () => Navigator.pushNamed(context, "/telacarrinho"),
+                    leading: const Icon(
+                      Icons.shopping_cart,
+                      color: Colors.blue,
+                    ),
                     title: const Text("Carrinho"),
                   ),
                   ListTile(
-                    onTap: () {},
-                    leading: const Icon(Icons.add, color: Colors.blue,),
+                    onTap: () => Navigator.pushNamed(context, "/productspage"),
+                    leading: const Icon(
+                      Icons.add,
+                      color: Colors.blue,
+                    ),
                     title: const Text("Produtos"),
                   ),
                   ListTile(
-                    onTap: () {},
-                    leading: const Icon(Icons.store, color: Colors.blue,),
+                    onTap: () => Navigator.pushNamed(context, "/telafornecedor"),
+                    leading: const Icon(
+                      Icons.store,
+                      color: Colors.blue,
+                    ),
                     title: const Text("Fornecedores"),
                   ),
                   ListTile(
-                    onTap: () {},
-                    leading: const Icon(Icons.apartment, color: Colors.blue,),
+                    onTap: () => Navigator.pushNamed(context, "/telacliente"),
+                    leading: const Icon(
+                      Icons.apartment,
+                      color: Colors.blue,
+                    ),
                     title: const Text("Clientes"),
                   ),
                   ListTile(
                     onTap: () {
-                      if(permissoes.modUsuarios['listar'] == true){
+                      if (permissoes.modUsuarios['listar'] == true) {
                         Navigator.pushNamed(context, "/telausuario");
-                      }else{
+                      } else {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              backgroundColor: Colors.red,
-                                content: Text("Você não tem permissão para acessar esse módulo!")
-                            )
-                        );
+                            const SnackBar(backgroundColor: Colors.red, content: Text("Você não tem permissão para acessar esse módulo!")));
                       }
                     },
-                    leading: const Icon(Icons.person, color: Colors.blue,),
+                    leading: const Icon(
+                      Icons.person,
+                      color: Colors.blue,
+                    ),
                     title: const Text("Usuários"),
                   ),
                   ListTile(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/telaapi");
-                    },
-                    leading: const Icon(Icons.api, color: Colors.blue,),
-                    title: const Text("Api"),
-                  ),
-                  ListTile(
                     onTap: () {},
-                    leading: const Icon(Icons.settings, color: Colors.blue,),
+                    leading: const Icon(
+                      Icons.settings,
+                      color: Colors.blue,
+                    ),
                     title: const Text("Configurações"),
                   ),
                 ],
@@ -154,7 +159,10 @@ class _MenuState extends State<Menu> {
               logoutFirebaseAuth;
               Navigator.pushReplacementNamed(context, "/");
             },
-            leading: const Icon(Icons.logout, color: Colors.blue,),
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.blue,
+            ),
             title: const Text("Sair"),
           ),
         ],
