@@ -26,6 +26,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
+    name: 'lp4_appusuarios',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
