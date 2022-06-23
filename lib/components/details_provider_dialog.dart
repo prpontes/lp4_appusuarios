@@ -1,5 +1,6 @@
 import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../model/fornecedor.dart';
@@ -8,8 +9,9 @@ import 'delete_provider_dialog.dart';
 import 'mutate_provider_dialog.dart';
 
 class DetailsProviderDialog extends StatefulWidget {
-  final Fornecedor fornecedor;
-  const DetailsProviderDialog({Key? key, required this.fornecedor})
+  final FornecedorFirebase fornecedorFirebase;
+  const DetailsProviderDialog(
+      {Key? key, required this.fornecedorFirebase, Fornecedor fornecedor})
       : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final Fornecedor provider = widget.fornecedor;
+    final FornecedorFirebase providerFirebase = widget.fornecedorFirebase;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -57,7 +59,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => MutateProviderDialog(
-                      fornecedor: provider,
+                      fornecedor: providerFirebase,
                     ),
                     fullscreenDialog: true,
                   ),
@@ -79,13 +81,14 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
 
                 Navigator.pop(context);
 
-                await fornecedorProvider.deletarFornecedor(provider);
+                await fornecedorProvider.deletarFornecedor(providerFirebase);
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   action: SnackBarAction(
                     label: 'Desfazer',
                     onPressed: () async {
-                      await fornecedorProvider.inserirFornecedor(provider);
+                      await fornecedorProvider
+                          .inserirFornecedor(providerFirebase);
                     },
                   ),
                   content: const Text('Fornecedor deletado com sucesso!'),
@@ -101,7 +104,8 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
             child: Consumer<FornecedoresProvider>(
               builder: (context, value, child) {
                 Fornecedor fornecedor = value.fornecedores.firstWhere(
-                  (fornecedores) => fornecedores.id == widget.fornecedor.id,
+                  (fornecedores) =>
+                      fornecedores.id == widget.providerFirebase.id,
                   orElse: () => Fornecedor(
                     id: null,
                     cnpj: "",
