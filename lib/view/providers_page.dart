@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:provider/provider.dart';
 import '../components/details_provider_dialog.dart';
 import '../components/mutate_provider_dialog.dart';
@@ -14,13 +16,14 @@ class TelaFornecedor extends StatefulWidget {
 
 class _TelaFornecedorState extends State<TelaFornecedor> {
   late FornecedoresProvider fornecedorProvider;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
     fornecedorProvider =
         Provider.of<FornecedoresProvider>(context, listen: false);
-    fornecedorProvider.listarFornecedores();
+    fornecedorProvider.listarFornecedorFirestore();
   }
 
   @override
@@ -43,15 +46,15 @@ class _TelaFornecedorState extends State<TelaFornecedor> {
       body: Column(children: [
         Expanded(child: Consumer<FornecedoresProvider>(
             builder: (BuildContext context, value, Widget? child) {
-          final fornecedores = value.fornecedores;
+          final fornecedores = value.fornecedorfirebase;
           return ListView.builder(
             itemCount: fornecedores.length,
             itemBuilder: (context, index) {
               if (fornecedores.isNotEmpty == true) {
-                final fornecedor = fornecedores[index];
+                final fornecedorfirebase = fornecedores[index];
                 return Card(
                     child: ListTile(
-                  leading: fornecedor.imagem == ""
+                  leading: fornecedorfirebase.imagem == ""
                       ? const Icon(
                           Icons.account_circle,
                           color: Colors.pink,
@@ -62,19 +65,19 @@ class _TelaFornecedorState extends State<TelaFornecedor> {
                           height: 50,
                           child: CircleAvatar(
                             backgroundImage: NetworkImage(
-                              fornecedor.imagem,
+                              fornecedorfirebase.imagem,
                             ),
                           ),
                         ),
-                  title: Text(fornecedor.razaoSocial!),
-                  subtitle: Text(fornecedor.email!),
+                  title: Text(fornecedorfirebase.razaoSocial!),
+                  subtitle: Text(fornecedorfirebase.email!),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) =>
                             DetailsProviderDialog(
-                          fornecedor: fornecedor,
+                          fornecedorFirebase: fornecedorfirebase,
                         ),
                         fullscreenDialog: true,
                       ),

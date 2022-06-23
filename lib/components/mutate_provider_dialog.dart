@@ -2,6 +2,7 @@ import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/fornecedor.dart';
+import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:provider/provider.dart';
 import '../provider/fornecedores_provider.dart';
 
@@ -17,7 +18,7 @@ String? validateMobile(String value) {
 }
 
 class MutateProviderDialog extends StatefulWidget {
-  final Fornecedor? fornecedor;
+  final FornecedorFirebase? fornecedor;
   const MutateProviderDialog({Key? key, this.fornecedor}) : super(key: key);
 
   @override
@@ -58,17 +59,17 @@ class _MutateProviderDialogState extends State<MutateProviderDialog> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            Fornecedor fornecedor =
-                isUpdate ? widget.fornecedor! : Fornecedor();
+            FornecedorFirebase fornecedor =
+                isUpdate ? widget.fornecedor! : FornecedorFirebase();
             fornecedor.razaoSocial = _razaoSocialController.text;
             fornecedor.cnpj = _cnpjController.text;
             fornecedor.email = _emailController.text;
             fornecedor.telefone = _telefoneController.text;
             fornecedor.imagem = _imagemController.text;
             if (isUpdate) {
-              await _fornecedoresProvider.editarFornecedor(fornecedor);
+              await _fornecedoresProvider.editarFornecedorFirestore(fornecedor);
             } else {
-              await _fornecedoresProvider.inserirFornecedor(fornecedor);
+              await _fornecedoresProvider.addFornecedorFirestore(fornecedor);
             }
             Navigator.of(context).pop();
           }

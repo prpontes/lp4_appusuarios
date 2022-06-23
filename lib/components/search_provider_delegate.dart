@@ -76,15 +76,15 @@ class SearchProviderDelegate extends SearchDelegate<String> {
           title: Text(fornecedor.razaoSocial!),
           subtitle: Text(fornecedor.email!),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => DetailsProviderDialog(
-                  fornecedor: fornecedor,
-                ),
-                fullscreenDialog: true,
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (BuildContext context) => DetailsProviderDialog(
+            //       fornecedor: fornecedor,
+            //     ),
+            //     fullscreenDialog: true,
+            //   ),
+            // );
           },
         );
       },

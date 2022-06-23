@@ -10,8 +10,7 @@ import 'mutate_provider_dialog.dart';
 
 class DetailsProviderDialog extends StatefulWidget {
   final FornecedorFirebase fornecedorFirebase;
-  const DetailsProviderDialog(
-      {Key? key, required this.fornecedorFirebase, Fornecedor fornecedor})
+  const DetailsProviderDialog({Key? key, required this.fornecedorFirebase})
       : super(key: key);
 
   @override
@@ -81,14 +80,15 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
 
                 Navigator.pop(context);
 
-                await fornecedorProvider.deletarFornecedor(providerFirebase);
+                await fornecedorProvider
+                    .deletarFornecedorFirestore(providerFirebase);
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   action: SnackBarAction(
                     label: 'Desfazer',
                     onPressed: () async {
                       await fornecedorProvider
-                          .inserirFornecedor(providerFirebase);
+                          .addFornecedorFirestore(providerFirebase);
                     },
                   ),
                   content: const Text('Fornecedor deletado com sucesso!'),
@@ -103,10 +103,11 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
             padding: const EdgeInsets.only(top: 10),
             child: Consumer<FornecedoresProvider>(
               builder: (context, value, child) {
-                Fornecedor fornecedor = value.fornecedores.firstWhere(
-                  (fornecedores) =>
-                      fornecedores.id == widget.providerFirebase.id,
-                  orElse: () => Fornecedor(
+                FornecedorFirebase fornecedorFirebase =
+                    value.fornecedorfirebase.firstWhere(
+                  (FornecedorFirebase) =>
+                      FornecedorFirebase.id == widget.fornecedorFirebase.id,
+                  orElse: () => FornecedorFirebase(
                     id: null,
                     cnpj: "",
                     razaoSocial: "",
@@ -116,7 +117,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                   ),
                 );
 
-                if (fornecedor.id == null) {
+                if (fornecedorFirebase.id == null) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
@@ -125,14 +126,15 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    fornecedor.imagem == ""
+                    fornecedorFirebase.imagem == ""
                         ? const Icon(
                             Icons.account_circle,
                             color: Colors.blue,
                             size: 150,
                           )
                         : CircleAvatar(
-                            backgroundImage: NetworkImage(fornecedor.imagem),
+                            backgroundImage:
+                                NetworkImage(fornecedorFirebase.imagem),
                             radius: 70),
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
@@ -145,7 +147,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            fornecedor.razaoSocial!,
+                            fornecedorFirebase.razaoSocial!,
                             style: const TextStyle(fontSize: 20),
                           )
                         ],
@@ -162,7 +164,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            CNPJValidator.format(fornecedor.cnpj!),
+                            CNPJValidator.format(fornecedorFirebase.cnpj!),
                             style: const TextStyle(fontSize: 20),
                           )
                         ],
@@ -179,7 +181,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            fornecedor.email!,
+                            fornecedorFirebase.email!,
                             style: const TextStyle(fontSize: 20),
                           )
                         ],
@@ -196,7 +198,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            fornecedor.telefone!,
+                            fornecedorFirebase.telefone!,
                             style: const TextStyle(fontSize: 20),
                           )
                         ],
