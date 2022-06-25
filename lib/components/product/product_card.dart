@@ -8,56 +8,66 @@ class ProductCard extends StatelessWidget {
   final void Function(BuildContext, Product)? onTap;
   final Widget Function(Product)? topRightBuilder;
 
-  const ProductCard({
+  ProductCard({
     Key? key,
     required this.product,
     this.topRightBuilder,
     this.showBottomLabel = true,
     this.onTap,
     this.padding = const EdgeInsets.only(left: 8, right: 8, top: 5),
-  }) : super(key: key);
+  }) : super(key: key) {
+    _productNotifier = ValueNotifier(product);
+  }
 
+  late final ValueNotifier<Product> _productNotifier;
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _productNotifier.value.getMainColorFromImage();
+      _productNotifier.notifyListeners();
+    });
     return Padding(
       padding: padding,
       child: GestureDetector(
         onTap: () => onTap != null ? onTap!(context, product) : {},
         child: Card(
           elevation: 5,
-          child: Container(
-            padding: EdgeInsets.only(top: 5),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: product.mainColor, width: 3),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListTile(
-                  leading: Hero(
-                    tag: "${product.id}",
-                    child: productIcon(),
-                  ),
-                  title: Text(
-                    product.name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  trailing: topRightBuilder != null ? topRightBuilder!(product) : null,
+          child: ValueListenableBuilder<Product>(
+            valueListenable: _productNotifier,
+            builder: (_, product, __) => Container(
+              padding: EdgeInsets.only(top: 5),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: product.mainColor, width: 3),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, top: 5, bottom: 10, right: 25),
-                  child: Text(
-                    "R\$ ${product.price.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 25,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListTile(
+                    leading: Hero(
+                      tag: "${product.id}",
+                      child: productIcon(),
+                    ),
+                    title: Text(
+                      product.name,
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    trailing: topRightBuilder != null ? topRightBuilder!(product) : null,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, top: 5, bottom: 10, right: 25),
+                    child: Text(
+                      "R\$ ${product.price.toStringAsFixed(2)}",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                bottomLabel(),
-              ],
+                  bottomLabel(),
+                ],
+              ),
             ),
           ),
         ),

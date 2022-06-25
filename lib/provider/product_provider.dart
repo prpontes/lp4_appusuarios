@@ -19,10 +19,9 @@ class ProductProvider extends ChangeNotifier {
     products = List.empty(growable: true);
     for (var doc in query.docs) {
       if (doc["quantity"] >= minQuantity) {
-        var documentFornecedor =
-            await db.collection("fornecedor").doc(doc["idFornecedor"]).get();
+        var documentFornecedor = await db.collection("fornecedores").doc(doc["idFornecedor"]).get();
         products.add(
-          await Product(
+          Product(
             id: doc.id,
             name: doc["name"],
             description: doc["description"],
@@ -33,7 +32,7 @@ class ProductProvider extends ChangeNotifier {
               razaoSocial: documentFornecedor["razaoSocial"],
               id: documentFornecedor.id,
             ),
-          ).getMainColorFromImage(),
+          ),
         );
       }
     }
@@ -44,11 +43,9 @@ class ProductProvider extends ChangeNotifier {
 
   Future<Product?> getProduct(Product product) async {
     try {
-      var documentProduct =
-          await db.collection(tableName).doc(product.id).get();
-      var documentFornecedor =
-          await db.collection("fornecedor").doc(product.fornecedor.id).get();
-      return await Product(
+      var documentProduct = await db.collection(tableName).doc(product.id).get();
+      var documentFornecedor = await db.collection("fornecedores").doc(product.fornecedor.id).get();
+      return Product(
         id: documentProduct.id,
         name: documentProduct["name"],
         description: documentProduct["description"],
@@ -59,7 +56,7 @@ class ProductProvider extends ChangeNotifier {
           id: documentFornecedor.id,
           razaoSocial: documentFornecedor["razaosocial"],
         ),
-      ).getMainColorFromImage();
+      );
     } catch (e) {
       return null;
     }
@@ -67,8 +64,7 @@ class ProductProvider extends ChangeNotifier {
 
   Future<bool> createProduct(Product product) async {
     try {
-      DocumentReference<Map<String, dynamic>> document =
-          await db.collection(tableName).add(product.toMap());
+      DocumentReference<Map<String, dynamic>> document = await db.collection(tableName).add(product.toMap());
       product.id = document.id;
       products.add(product);
       notifyListeners();
