@@ -2,16 +2,17 @@ import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_product_dialog.dart';
 import 'package:lp4_appusuarios/components/product/product_description.dart';
 import 'package:lp4_appusuarios/components/product/product_info.dart';
-import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class DetailsProductDialog extends StatefulWidget {
-  final Product product;
-  const DetailsProductDialog({Key? key, required this.product})
-      : super(key: key);
+  late final ValueNotifier<Product> _productNotifier;
+
+  DetailsProductDialog({Key? key, required Product product}) : super(key: key) {
+    _productNotifier = ValueNotifier(product);
+  }
 
   @override
   State<DetailsProductDialog> createState() => _DetailsProductDialogState();
@@ -19,6 +20,7 @@ class DetailsProductDialog extends StatefulWidget {
 
 class _DetailsProductDialogState extends State<DetailsProductDialog> {
   late ProductProvider productProvider;
+
   @override
   void initState() {
     super.initState();
@@ -27,82 +29,75 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductProvider>(
-      builder: (context, value, child) {
-        Product product = value.products.firstWhere(
-          (product) => product.id == widget.product.id,
-          orElse: () => Product(
-              name: "",
-              id: "",
-              fornecedor: FornecedorFirebase(id: "", razaoSocial: "")),
-        );
-
-        if (product.id == null) {
-          return const Center(
-            child: CircularProgressIndicator(),
+    return ValueListenableBuilder<Product>(
+        valueListenable: widget._productNotifier,
+        builder: (_, product, __) {
+          if (product.mainColor == Colors.deepPurple && product.image != "") {
+            () async {
+              await product.getMainColorFromImage();
+              widget._productNotifier.notifyListeners();
+            }.call();
+          }
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: product.mainColor,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
+              ),
+              title: Text(
+                product.name,
+                style: TextStyle(
+                  shadows: [
+                    Shadow(
+                      color: Colors.black,
+                      offset: Offset(-0.2, 0.5),
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+              ),
+              elevation: 0,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () => editProduct(widget._productNotifier),
+                ),
+                IconButton(
+                  onPressed: () => deleteProduct(product, context),
+                  icon: const Icon(Icons.delete),
+                ),
+              ],
+            ),
+            body: LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                child: Container(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  color: product.mainColor,
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ProductInfo(
+                          product: product,
+                          enableStockTap: true,
+                        ),
+                        Expanded(child: ProductDescription(product: product)),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           );
-        }
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: product.mainColor,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
-            ),
-            title: Text(
-              product.name,
-              style: TextStyle(
-                shadows: [
-                  Shadow(
-                    color: Colors.black,
-                    offset: Offset(-0.2, 0.5),
-                    blurRadius: 5,
-                  ),
-                ],
-              ),
-            ),
-            elevation: 0,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () => editProduct(product),
-              ),
-              IconButton(
-                onPressed: () => deleteProduct(product, context),
-                icon: const Icon(Icons.delete),
-              ),
-            ],
-          ),
-          body: LayoutBuilder(
-            builder: (context, constraints) => SingleChildScrollView(
-              child: Container(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
-                color: product.mainColor,
-                child: IntrinsicHeight(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ProductInfo(
-                        product: product,
-                        enableStockTap: true,
-                      ),
-                      Expanded(child: ProductDescription(product: product)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+        });
   }
 
-  Future<void> editProduct(Product product) async {
+  Future<void> editProduct(ValueNotifier<Product> product) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -124,7 +119,6 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
       ),
     );
     if (!confirm) return;
-    Navigator.pop(context);
     await productProvider.deleteProduct(product);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -137,5 +131,6 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
         content: const Text('Produto deletado com sucesso!'),
       ),
     );
+    Navigator.pop(context);
   }
 }

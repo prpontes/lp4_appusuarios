@@ -6,7 +6,7 @@ class Product {
   String? id;
   String name;
   String description;
-  String image;
+  late String _image;
   double price;
   int quantity;
   late FornecedorFirebase fornecedor;
@@ -16,13 +16,20 @@ class Product {
     this.id,
     required this.name,
     this.description = "",
-    this.image = "",
+    String image = "",
     this.price = 0.0,
     this.quantity = 0,
     FornecedorFirebase? fornecedor,
     this.mainColor = Colors.deepPurple,
   }) {
     this.fornecedor = fornecedor ?? FornecedorFirebase();
+    _image = image;
+  }
+
+  String get image => _image;
+  set image(String imagem) {
+    _image = imagem;
+    mainColor = Colors.deepPurple;
   }
 
   Map<String, dynamic> toMap() {

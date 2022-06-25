@@ -6,7 +6,7 @@ import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class MutateProductDialog extends StatefulWidget {
-  final Product? product;
+  final ValueNotifier<Product>? product;
   const MutateProductDialog({Key? key, this.product}) : super(key: key);
 
   @override
@@ -30,11 +30,11 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
     _productProvider = Provider.of<ProductProvider>(context, listen: false);
     _fornecedoresProvider = Provider.of<FornecedoresProvider>(context, listen: false);
     if (widget.product != null) {
-      _nameController.text = widget.product!.name;
-      _descriptionController.text = widget.product!.description;
-      _priceController.text = widget.product!.price.toString();
-      _imageController.text = widget.product!.image;
-      _selectedFornecedor = widget.product!.fornecedor;
+      _nameController.text = widget.product!.value.name;
+      _descriptionController.text = widget.product!.value.description;
+      _priceController.text = widget.product!.value.price.toString();
+      _imageController.text = widget.product!.value.image;
+      _selectedFornecedor = widget.product!.value.fornecedor;
     }
   }
 
@@ -73,7 +73,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                           _loading.value = true;
                           if (_formKey.currentState!.validate()) {
                             Product product = isUpdate
-                                ? widget.product!
+                                ? widget.product!.value
                                 : Product(
                                     name: _nameController.text,
                                     fornecedor: _selectedFornecedor,
@@ -87,6 +87,9 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                               await _productProvider.updateProduct(product);
                             } else {
                               await _productProvider.createProduct(product);
+                            }
+                            if (widget.product != null) {
+                              widget.product!.notifyListeners();
                             }
                             if (mounted) Navigator.of(context).pop();
                           }

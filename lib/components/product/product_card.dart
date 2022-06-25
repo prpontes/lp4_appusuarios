@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 
 class ProductCard extends StatelessWidget {
-  final Product product;
   final EdgeInsetsGeometry padding;
   final bool showBottomLabel;
   final void Function(BuildContext, Product)? onTap;
@@ -10,7 +9,7 @@ class ProductCard extends StatelessWidget {
 
   ProductCard({
     Key? key,
-    required this.product,
+    required Product product,
     this.topRightBuilder,
     this.showBottomLabel = true,
     this.onTap,
@@ -23,13 +22,15 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _productNotifier.value.getMainColorFromImage();
-      _productNotifier.notifyListeners();
+      if (_productNotifier.value.mainColor == Colors.deepPurple) {
+        await _productNotifier.value.getMainColorFromImage();
+        _productNotifier.notifyListeners();
+      }
     });
     return Padding(
       padding: padding,
       child: GestureDetector(
-        onTap: () => onTap != null ? onTap!(context, product) : {},
+        onTap: () => onTap != null ? onTap!(context, _productNotifier.value) : {},
         child: Card(
           elevation: 5,
           child: ValueListenableBuilder<Product>(
@@ -76,7 +77,7 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget productIcon() {
-    if (product.image.isEmpty) {
+    if (_productNotifier.value.image.isEmpty) {
       return const Icon(
         Icons.warning_rounded,
         color: Colors.amber,
@@ -89,7 +90,7 @@ class ProductCard extends StatelessWidget {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         foregroundImage: NetworkImage(
-          product.image,
+          _productNotifier.value.image,
         ),
       ),
     );
