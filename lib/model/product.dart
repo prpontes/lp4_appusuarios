@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/model/fornecedor.dart';
+import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class Product {
@@ -9,7 +9,7 @@ class Product {
   String image;
   double price;
   int quantity;
-  late Fornecedor fornecedor;
+  late FornecedorFirebase fornecedor;
   Color mainColor;
 
   Product({
@@ -22,7 +22,7 @@ class Product {
     fornecedor,
     this.mainColor = Colors.deepPurple,
   }) {
-    this.fornecedor = fornecedor ?? Fornecedor();
+    this.fornecedor = fornecedor ?? FornecedorFirebase();
   }
 
   Map<String, dynamic> toMap() {

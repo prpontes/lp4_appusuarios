@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/usuario_provider.dart';
@@ -19,76 +18,16 @@ class TelaLogin extends StatefulWidget {
 
 class _TelaLoginState extends State<TelaLogin> {
   TextEditingController controllerUsuario =
-      TextEditingController(text: "admin");
+      TextEditingController(text: "teste@gmail.com");
   TextEditingController controllerSenha = TextEditingController(text: "123456");
   TextEditingController controllerRecuperarSenha = TextEditingController();
   late UsuarioProvider usuarioProvider;
   bool loading = false;
   Permissoes permissoes = Permissoes();
 
-  /*carregarPermissoesUsuarioAutenticado(UsuarioFirebase user) async {
-    CollectionReference usuarios =
-        await FirebaseFirestore.instance.collection('usuarios');
-
-    await usuarios.doc(user.id).collection(user.cpf!).get().then((value) {
-      value.docs.forEach((usr) {
-        if (usr.id == 'modClientes') {
-          permissoes.modClientes = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-          };
-        }
-        if (usr.id == 'modUsuarios') {
-          permissoes.modUsuarios = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-            'detalhe': usr['detalhe'],
-            'permissoes': usr['permissoes'],
-          };
-        }
-        if (usr.id == 'modFornecedores') {
-          permissoes.modFornecedores = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-          };
-        }
-        if (usr.id == 'modProdutos') {
-          permissoes.modProdutos = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-          };
-        }
-        if (usr.id == 'modVendas') {
-          permissoes.modVendas = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-          };
-        }
-      });
-    });
-    Provider.of<PermissoesModel>(context, listen: false).permissoes =
-        permissoes;
-  }
-  */
-
   carregarPermissoesUsuarioAutenticado(UsuarioFirebase user) async {
     CollectionReference usuarios =
-        await FirebaseFirestore.instance.collection('usuarios');
+        FirebaseFirestore.instance.collection('usuarios');
 
     await usuarios.doc(user.id).collection(user.cpf!).get().then((value) {
       value.docs.forEach((usr) {
@@ -367,13 +306,17 @@ class _TelaLoginState extends State<TelaLogin> {
               onPressed: () {
                 _autenticacao();
               },
-              child: (loading == true) ? const CircularProgressIndicator(color: Colors.white,) : const Text(
-                "ENTRAR",
-                style: TextStyle(
-                  fontSize: 17,
-                  decoration: TextDecoration.none,
-                ),
-              ),
+              child: (loading == true)
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : const Text(
+                      "ENTRAR",
+                      style: TextStyle(
+                        fontSize: 17,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
             ),
             TextButton(
                 onPressed: () {

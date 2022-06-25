@@ -2,7 +2,7 @@ import 'package:lp4_appusuarios/components/delete_user_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_product_dialog.dart';
 import 'package:lp4_appusuarios/components/product/product_description.dart';
 import 'package:lp4_appusuarios/components/product/product_info.dart';
-import 'package:lp4_appusuarios/model/fornecedor.dart';
+import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 
 class DetailsProductDialog extends StatefulWidget {
   final Product product;
-  const DetailsProductDialog({Key? key, required this.product}) : super(key: key);
+  const DetailsProductDialog({Key? key, required this.product})
+      : super(key: key);
 
   @override
   State<DetailsProductDialog> createState() => _DetailsProductDialogState();
@@ -30,10 +31,13 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
       builder: (context, value, child) {
         Product product = value.products.firstWhere(
           (product) => product.id == widget.product.id,
-          orElse: () => Product(name: "", id: "", fornecedor: Fornecedor(id: "", razaoSocial: "")),
+          orElse: () => Product(
+              name: "",
+              id: "",
+              fornecedor: FornecedorFirebase(id: "", razaoSocial: "")),
         );
 
-        if (product.id == -1) {
+        if (product.id == null) {
           return const Center(
             child: CircularProgressIndicator(),
           );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/model/fornecedor.dart';
+import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
@@ -19,7 +19,7 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
   final _descriptionController = TextEditingController(text: "");
   final _priceController = TextEditingController(text: "0.0");
   final _imageController = TextEditingController(text: "");
-  Fornecedor? _selectedFornecedor;
+  FornecedorFirebase? _selectedFornecedor;
 
   late final FornecedoresProvider _fornecedoresProvider;
   late final ProductProvider _productProvider;
@@ -79,11 +79,11 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FutureBuilder(
-            future: _fornecedoresProvider.listarFornecedores(),
+            future: _fornecedoresProvider.listarFornecedorFirestore(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<Fornecedor> fornecedores =
-                    snapshot.data as List<Fornecedor>;
+                List<FornecedorFirebase> fornecedores =
+                    snapshot.data as List<FornecedorFirebase>;
                 return Form(
                   key: _formKey,
                   child: Column(
@@ -174,7 +174,9 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                         onChanged: (idSelecionado) {
                           setState(() {
                             _selectedFornecedor = fornecedores.firstWhere(
-                                (fornecedor) => fornecedor.id == idSelecionado);
+                                    (fornecedor) =>
+                                        fornecedor.id == idSelecionado)
+                                as FornecedorFirebase?;
                           });
                         },
                         items: fornecedores.map<DropdownMenuItem<String>>(
