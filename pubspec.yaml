@@ -30,7 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  sqflite:
   path:
   palette_generator:
   provider: ^6.0.2

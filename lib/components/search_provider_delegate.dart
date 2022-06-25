@@ -2,7 +2,6 @@ import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/fornecedores_provider.dart';
 import 'package:provider/provider.dart';
-import 'details_provider_dialog.dart';
 
 class SearchProviderDelegate extends SearchDelegate<String> {
   SearchProviderDelegate() : super(searchFieldLabel: "Buscar fornecedores");
@@ -40,7 +39,7 @@ class SearchProviderDelegate extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     final fornecedoresProvider = Provider.of<FornecedoresProvider>(context);
-    final fornecedores = fornecedoresProvider.fornecedores;
+    final fornecedores = fornecedoresProvider.fornecedorfirebase;
     final listaFornecedores = query.isEmpty
         ? fornecedores
         : fornecedores

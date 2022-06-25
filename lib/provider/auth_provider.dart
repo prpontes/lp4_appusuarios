@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 import '../model/usuario.dart';
@@ -14,7 +15,8 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() {
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
     _user = null;
     notifyListeners();
   }

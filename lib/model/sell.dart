@@ -2,10 +2,9 @@
 
 import 'package:lp4_appusuarios/model/item_venda.dart';
 
-
 class Sell {
   // model venda
-  int? id;
+  String? id;
   String? date;
   int? idUser;
   String? username;
@@ -29,11 +28,10 @@ class Sell {
 
   static Sell fromMap(Map<String, dynamic> map) {
     return Sell(
-      id: map['idVenda'],
-      date: map['date'],
-      idUser: map['idUser'],
-      username: map['nome']
-    );
+        id: map['idVenda'],
+        date: map['date'],
+        idUser: map['idUser'],
+        username: map['nome']);
   }
 
   @override

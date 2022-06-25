@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
-import '../model/fornecedor.dart';
 import '../provider/fornecedores_provider.dart';
 import 'delete_provider_dialog.dart';
 import 'mutate_provider_dialog.dart';
@@ -105,8 +104,7 @@ class _DetailsProviderDialogState extends State<DetailsProviderDialog> {
               builder: (context, value, child) {
                 FornecedorFirebase fornecedorFirebase =
                     value.fornecedorfirebase.firstWhere(
-                  (FornecedorFirebase) =>
-                      FornecedorFirebase.id == widget.fornecedorFirebase.id,
+                  (fornecedor) => fornecedor.id == widget.fornecedorFirebase.id,
                   orElse: () => FornecedorFirebase(
                     id: null,
                     cnpj: "",

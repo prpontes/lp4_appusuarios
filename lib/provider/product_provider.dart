@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/model/fornecedor.dart';
+import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:lp4_appusuarios/model/product.dart';
-import 'package:lp4_appusuarios/singletons/database_singleton.dart';
-import 'package:sqflite/sqflite.dart';
 
 enum ProductsState { loading, complete }
 
@@ -20,23 +17,24 @@ class ProductProvider extends ChangeNotifier {
 
     var query = await db.collection(tableName).get();
     products = List.empty(growable: true);
-    for (var doc in query.docs) { 
-      if (doc["quantity"] >= minQuantity){
-        var documentFornecedor = await db.collection("fornecedor").doc(doc["idFornecedor"]).get();
+    for (var doc in query.docs) {
+      if (doc["quantity"] >= minQuantity) {
+        var documentFornecedor =
+            await db.collection("fornecedor").doc(doc["idFornecedor"]).get();
         products.add(
-        await Product(
-          id: doc.id,
-          name: doc["name"],
-          description: doc["description"],
-          price: doc["price"],
-          image: doc["image"],
-          quantity: doc["quantity"],
-          fornecedor: Fornecedor(
-            razaoSocial: documentFornecedor["razaoSocial"],
-            id: documentFornecedor.id,
-          ),
-        ).getMainColorFromImage(),
-      );
+          await Product(
+            id: doc.id,
+            name: doc["name"],
+            description: doc["description"],
+            price: doc["price"],
+            image: doc["image"],
+            quantity: doc["quantity"],
+            fornecedor: FornecedorFirebase(
+              razaoSocial: documentFornecedor["razaoSocial"],
+              id: documentFornecedor.id,
+            ),
+          ).getMainColorFromImage(),
+        );
       }
     }
     notifyListeners();
@@ -46,8 +44,10 @@ class ProductProvider extends ChangeNotifier {
 
   Future<Product?> getProduct(Product product) async {
     try {
-      var documentProduct = await db.collection(tableName).doc(product.id).get();
-      var documentFornecedor = await db.collection("fornecedor").doc(product.fornecedor.id).get();
+      var documentProduct =
+          await db.collection(tableName).doc(product.id).get();
+      var documentFornecedor =
+          await db.collection("fornecedor").doc(product.fornecedor.id).get();
       return await Product(
         id: documentProduct.id,
         name: documentProduct["name"],
@@ -55,7 +55,7 @@ class ProductProvider extends ChangeNotifier {
         price: documentProduct["price"],
         image: documentProduct["image"],
         quantity: documentProduct["quantity"],
-        fornecedor: Fornecedor(
+        fornecedor: FornecedorFirebase(
           id: documentFornecedor.id,
           razaoSocial: documentFornecedor["razaosocial"],
         ),
@@ -66,13 +66,14 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<bool> createProduct(Product product) async {
-    try{
-      DocumentReference<Map<String, dynamic>> document = await db.collection(tableName).add(product.toMap());
+    try {
+      DocumentReference<Map<String, dynamic>> document =
+          await db.collection(tableName).add(product.toMap());
       product.id = document.id;
       products.add(product);
       notifyListeners();
       return true;
-    }catch (e){
+    } catch (e) {
       return false;
     }
   }

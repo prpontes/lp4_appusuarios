@@ -1,7 +1,6 @@
 import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:lp4_appusuarios/model/fornecedor.dart';
 import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:provider/provider.dart';
 import '../provider/fornecedores_provider.dart';
