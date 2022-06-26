@@ -8,7 +8,6 @@ class UsuarioFirebase {
   String? senha;
   String avatar;
 
-
   UsuarioFirebase({
     this.id,
     this.cpf,
@@ -17,7 +16,6 @@ class UsuarioFirebase {
     this.login,
     this.senha,
     this.avatar = "",
-
   });
 
   Map<String, dynamic> toMap() {
@@ -29,8 +27,19 @@ class UsuarioFirebase {
       "login": login,
       "senha": senha,
       "avatar": avatar,
-
     };
+  }
+
+  factory UsuarioFirebase.fromMap(String id, Map<String, dynamic> map) {
+    return UsuarioFirebase(
+      id: id,
+      cpf: map["cpf"],
+      nome: map["nome"],
+      email: map["email"],
+      login: map["login"],
+      senha: map["senha"],
+      avatar: map["avatar"],
+    );
   }
 
   @override

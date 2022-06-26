@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:lp4_appusuarios/components/shopping_cart_dialog.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
@@ -23,18 +26,26 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    name: 'lp4_appusuarios',
+    // name: 'lp4_appusuarios',
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final UsuarioProvider usuarioProvider = UsuarioProvider();
+  final AuthProvider authProvider = AuthProvider(usuarioProvider: usuarioProvider);
+  final PermissoesModel permissoesProvider = PermissoesModel();
+
+  if (FirebaseAuth.instance.currentUser != null) {
+    await authProvider.login(FirebaseAuth.instance.currentUser);
+    await permissoesProvider.carregarPermissoes(authProvider.user!);
+  }
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => UsuarioProvider(),
+          create: (_) => usuarioProvider,
         ),
         ChangeNotifierProvider(
-          create: (_) => AuthProvider(),
+          create: (_) => authProvider,
         ),
         ChangeNotifierProvider(
           create: (_) => ProductProvider(),
@@ -52,7 +63,7 @@ void main() async {
           create: (_) => ShoppingCartProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => PermissoesModel(),
+          create: (_) => permissoesProvider,
         ),
       ],
       child: MaterialApp(
@@ -63,14 +74,13 @@ void main() async {
         ),
         darkTheme: ThemeData.dark().copyWith(
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: Colors.deepPurple, secondary: Colors.deepPurpleAccent),
+          colorScheme: ColorScheme.fromSwatch().copyWith(primary: Colors.deepPurple, secondary: Colors.deepPurpleAccent),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: "/",
+        initialRoute: FirebaseAuth.instance.currentUser != null ? "/" : "/login",
         routes: {
-          "/": (context) => const TelaLogin(),
-          "/telainicio": (context) => const TelaInicio(),
+          "/login": (context) => const TelaLogin(),
+          "/": (context) => const TelaInicio(),
           "/telausuario": (context) => const TelaUsuario(),
           "/productspage": (context) => const ProductsPage(),
           "/telafornecedor": (context) => const TelaFornecedor(),

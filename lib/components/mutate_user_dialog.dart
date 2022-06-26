@@ -64,7 +64,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             UsuarioFirebase usuario = isUpdate ? widget.usuario! : UsuarioFirebase();
-            usuario.id = isUpdate? widget.usuario!.id : "";
+            usuario.id = isUpdate ? widget.usuario!.id : "";
             usuario.nome = _nomeController.text;
             usuario.email = _emailController.text;
             usuario.senha = _senhaController.text;
@@ -72,13 +72,12 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
             usuario.cpf = _cpfController.text;
             usuario.login = _loginController.text;
             //usuario.telefone = _telefoneController.text;
-           // usuario.isAdmin = 1;
+            // usuario.isAdmin = 1;
             if (isUpdate) {
               await _usuarioProvider.editarUsuarioFirestore(usuario);
-
             } else {
+              await _usuarioProvider.addAuthUsuario(usuario);
               await _usuarioProvider.addUsuarioFirestore(usuario);
-              await _usuarioProvider.addAuthUsuario(usuario.email, usuario.senha);
               //await _usuarioProvider.inserirUsuario(usuario);
             }
             Navigator.of(context).pop();

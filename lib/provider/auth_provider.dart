@@ -1,17 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
-import '../model/usuario.dart';
+import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 
 class AuthProvider extends ChangeNotifier {
   UsuarioFirebase? _user;
+  late final UsuarioProvider _usuarioProvider;
 
   UsuarioFirebase? get user => isLoggedIn ? _user! : null;
 
+  AuthProvider({required UsuarioProvider usuarioProvider}) {
+    _usuarioProvider = usuarioProvider;
+  }
+
   bool get isLoggedIn => _user != null;
 
-  login(UsuarioFirebase user) {
-    _user = user;
+  login(User? userCredential) async {
+    // _user = user;
+    var doc = await FirebaseFirestore.instance.collection('usuarios').doc(userCredential!.uid).get();
+    if (doc.exists) {
+      _user = UsuarioFirebase.fromMap(doc.id, doc.data()!);
+    } else {
+      var collection = await FirebaseFirestore.instance.collection('usuarios').where('email', isEqualTo: userCredential.email).get();
+      var doc = collection.docs.first;
+      _user = UsuarioFirebase.fromMap(doc.id, doc.data());
+      _user!.id = userCredential.uid;
+      await _usuarioProvider.addUsuarioFirestore(_user!);
+      await FirebaseFirestore.instance.collection('usuarios').doc(doc.id).delete();
+    }
     notifyListeners();
   }
 

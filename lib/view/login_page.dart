@@ -17,80 +17,22 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  TextEditingController controllerUsuario =
-      TextEditingController(text: "teste@gmail.com");
-  TextEditingController controllerSenha = TextEditingController(text: "123456");
+  TextEditingController controllerUsuario = TextEditingController(text: "admin@ifto.com");
+  TextEditingController controllerSenha = TextEditingController(text: "123456789");
   TextEditingController controllerRecuperarSenha = TextEditingController();
-  late UsuarioProvider usuarioProvider;
+
   bool loading = false;
-  Permissoes permissoes = Permissoes();
 
-  carregarPermissoesUsuarioAutenticado(UsuarioFirebase user) async {
-    CollectionReference usuarios =
-        FirebaseFirestore.instance.collection('usuarios');
-
-    await usuarios.doc(user.id).collection(user.cpf!).get().then((value) {
-      value.docs.forEach((usr) {
-        if (usr.id == 'modClientes') {
-          permissoes.modClientes = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-          };
-        }
-        if (usr.id == 'modUsuarios') {
-          permissoes.modUsuarios = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-            'detalhe': usr['detalhe'],
-            'permissoes': usr['permissoes'],
-          };
-        }
-        if (usr.id == 'modFornecedores') {
-          permissoes.modFornecedores = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-          };
-        }
-        if (usr.id == 'modProdutos') {
-          permissoes.modProdutos = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-          };
-        }
-        if (usr.id == 'modVendas') {
-          permissoes.modVendas = {
-            'adicionar': usr['adicionar'],
-            'deletar': usr['deletar'],
-            'editar': usr['editar'],
-            'listar': usr['listar'],
-            'pesquisar': usr['pesquisar'],
-          };
-        }
-      });
-    });
-    Provider.of<PermissoesModel>(context, listen: false).permissoes =
-        permissoes;
-  }
-
+  late UsuarioProvider usuarioProvider;
   late AuthProvider authProvider;
+  late PermissoesModel permissoesProvider;
 
   @override
   void initState() {
     super.initState();
     usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
     authProvider = Provider.of<AuthProvider>(context, listen: false);
+    permissoesProvider = Provider.of<PermissoesModel>(context, listen: false);
   }
 
   _recuperarSenha() {
@@ -103,8 +45,7 @@ class _TelaLoginState extends State<TelaLogin> {
             content: TextField(
               controller: controllerRecuperarSenha,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                  labelText: "E-mail", hintText: "Digite seu e-mail"),
+              decoration: const InputDecoration(labelText: "E-mail", hintText: "Digite seu e-mail"),
             ),
             actions: [
               TextButton(
@@ -115,8 +56,7 @@ class _TelaLoginState extends State<TelaLogin> {
               TextButton(
                   onPressed: () async {
                     try {
-                      await FirebaseAuth.instance.sendPasswordResetEmail(
-                          email: controllerRecuperarSenha.text);
+                      await FirebaseAuth.instance.sendPasswordResetEmail(email: controllerRecuperarSenha.text);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         backgroundColor: Colors.green,
                         content: SingleChildScrollView(
@@ -134,8 +74,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       if (e.code == "invalid-email") {
                         msg_erro == "Endereço de e-mail inválido!";
                       } else if (e.code == "user-not-found") {
-                        msg_erro =
-                            "Não existe um usuário correspondente para o endereço de e-mail fornecido!";
+                        msg_erro = "Não existe um usuário correspondente para o endereço de e-mail fornecido!";
                       } else {
                         msg_erro = "Digite um e-mail cadastrado!";
                       }
@@ -180,7 +119,6 @@ class _TelaLoginState extends State<TelaLogin> {
             );
           });
 
-      await Navigator.pushReplacementNamed(context, "/telainicio");
       // } if (usuario != null && usuario.isAdmin ==0) {
       //   authProvider.login(usuario);
       //   ScaffoldMessenger.of(context).showSnackBar(
@@ -215,28 +153,10 @@ class _TelaLoginState extends State<TelaLogin> {
       //   },
       // );
       try {
-        UsuarioFirebase usuario = UsuarioFirebase();
-        final credencial = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: controllerUsuario.text, password: controllerSenha.text);
-        await FirebaseFirestore.instance
-            .collection('usuarios')
-            .where('email', isEqualTo: controllerUsuario.text)
-            .get()
-            .then((value) {
-          value.docs.forEach((usr) {
-            usuario.id = usr.id;
-            usuario.cpf = usr['cpf'];
-            usuario.nome = usr['nome'];
-            usuario.email = usr['email'];
-            usuario.login = usr['login'];
-            usuario.senha = usr['senha'];
-            usuario.avatar = usr['avatar'];
-          });
-        });
-        Provider.of<AuthProvider>(context, listen: false).login(usuario);
-        await carregarPermissoesUsuarioAutenticado(usuario);
-        return Navigator.pushReplacementNamed(context, "/telainicio");
+        final credencial = await FirebaseAuth.instance.signInWithEmailAndPassword(email: controllerUsuario.text, password: controllerSenha.text);
+        await authProvider.login(credencial.user);
+        await permissoesProvider.carregarPermissoes(authProvider.user!);
+        return Navigator.pushReplacementNamed(context, "/");
       } on FirebaseAuthException catch (e) {
         setState(() => loading = false);
         var msg_erro = "";

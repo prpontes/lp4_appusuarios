@@ -22,9 +22,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
   void initState() {
     super.initState();
     authProvider = Provider.of<AuthProvider>(context, listen: false);
-    logoutFirebaseAuth() async {
-      await FirebaseAuth.instance.signOut();
-    }
   }
 
   @override
@@ -37,6 +34,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
         child: ListView(
           children: [
             DrawerHeader(
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
               child: Center(
                 child: Consumer<AuthProvider>(builder: (context, value, child) {
                   if (!value.isLoggedIn) {
@@ -54,8 +53,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             width: 30,
                             height: 30,
                             child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(usuarioAutenticado.avatar),
+                              backgroundImage: NetworkImage(usuarioAutenticado.avatar),
                               radius: 30,
                             ),
                           ),
@@ -68,15 +66,13 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       tooltip: "Sair",
                       onPressed: () {
                         authProvider.logout();
-                        Navigator.pushReplacementNamed(context, "/");
+                        Navigator.pushReplacementNamed(context, "/login");
                       },
                       icon: const Icon(Icons.logout),
                     ),
                   );
                 }),
               ),
-              margin: EdgeInsets.zero,
-              padding: EdgeInsets.zero,
             ),
             SingleChildScrollView(
               child: Column(
@@ -147,11 +143,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
                         Navigator.pushNamed(context, "/telausuario");
                       } else {
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           backgroundColor: Colors.red,
-                          content: Text(
-                              "Você não tem permissão para acessar esse módulo!"),
+                          content: Text("Você não tem permissão para acessar esse módulo!"),
                         ));
                       }
                     },
