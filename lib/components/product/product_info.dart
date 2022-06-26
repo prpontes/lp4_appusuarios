@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/components/product/product_field.dart';
-import 'package:lp4_appusuarios/components/stock_product_dialog.dart';
-import 'package:lp4_appusuarios/model/product.dart';
+import 'package:lp4_appusuarios/components/product/stock_product_dialog.dart';
+import 'package:lp4_appusuarios/provider/product_provider.dart';
 
 class ProductInfo extends StatelessWidget {
-  final Product product;
+  final ProductNotifier productNotifier;
 
   final bool enableStockTap;
   final List<Widget> rightDetails;
@@ -19,7 +19,7 @@ class ProductInfo extends StatelessWidget {
 
   const ProductInfo({
     Key? key,
-    required this.product,
+    required this.productNotifier,
     required this.enableStockTap,
     this.rightDetails = const [],
     this.providerLabel = "Fornecedor: ",
@@ -68,7 +68,7 @@ class ProductInfo extends StatelessWidget {
       widgets.add(
         ProductField(
           field: providerLabel,
-          value: product.fornecedor.razaoSocial!,
+          value: productNotifier.product.fornecedor.razaoSocial!,
         ),
       );
     }
@@ -83,14 +83,14 @@ class ProductInfo extends StatelessWidget {
       widgets.add(
         ProductField(
           field: stockLabel,
-          value: product.quantity.toString(),
+          value: productNotifier.product.quantity.toString(),
           valueShadowEnable: true,
           onValueTap: () {
             if (enableStockTap) {
               showDialog(
                 barrierDismissible: false,
                 context: context,
-                builder: (_) => StockDialog(product: product),
+                builder: (_) => StockDialog(productNotifier: productNotifier),
               );
             }
           },
@@ -108,7 +108,7 @@ class ProductInfo extends StatelessWidget {
       widgets.add(
         ProductField(
           field: priceLabel,
-          value: "R\$ ${product.price.toStringAsFixed(2)}",
+          value: "R\$ ${productNotifier.product.price.toStringAsFixed(2)}",
           valueShadowEnable: true,
         ),
       );
@@ -121,8 +121,8 @@ class ProductInfo extends StatelessWidget {
     widgets.addAll(rightDetails);
     widgets.add(
       Hero(
-        tag: "${product.id}",
-        child: product.image == ""
+        tag: "${productNotifier.product.id}",
+        child: productNotifier.product.image == ""
             ? const Icon(
                 Icons.warning_rounded,
                 color: Colors.amber,
@@ -153,14 +153,14 @@ class ProductInfo extends StatelessWidget {
                       builder: (context) {
                         return Dialog(
                           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                          child: Image.network(product.image),
+                          child: Image.network(productNotifier.product.image),
                         );
                       },
                     );
                   },
                   child: CircleAvatar(
-                    backgroundColor: product.mainColor,
-                    foregroundImage: NetworkImage(product.image),
+                    backgroundColor: productNotifier.product.mainColor,
+                    foregroundImage: NetworkImage(productNotifier.product.image),
                   ),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/model/product.dart';
+import 'package:lp4_appusuarios/provider/product_provider.dart';
 
 class ProductCard extends StatelessWidget {
   final EdgeInsetsGeometry padding;
@@ -15,61 +16,63 @@ class ProductCard extends StatelessWidget {
     this.onTap,
     this.padding = const EdgeInsets.only(left: 8, right: 8, top: 5),
   }) : super(key: key) {
-    _productNotifier = ValueNotifier(product);
+    _productNotifier = ProductNotifier(product: product);
   }
 
-  late final ValueNotifier<Product> _productNotifier;
+  late final ProductNotifier _productNotifier;
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (_productNotifier.value.mainColor == Colors.deepPurple) {
-        await _productNotifier.value.getMainColorFromImage();
-        _productNotifier.notifyListeners();
+      if (_productNotifier.product.mainColor == Colors.deepPurple) {
+        await _productNotifier.product.getMainColorFromImage();
+        _productNotifier.refresh();
       }
     });
     return Padding(
       padding: padding,
       child: GestureDetector(
-        onTap: () => onTap != null ? onTap!(context, _productNotifier.value) : {},
+        onTap: () => onTap != null ? onTap!(context, _productNotifier.product) : {},
         child: Card(
           elevation: 5,
           child: ValueListenableBuilder<Product>(
             valueListenable: _productNotifier,
-            builder: (_, product, __) => Container(
-              padding: EdgeInsets.only(top: 5),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: product.mainColor, width: 3),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTile(
-                    leading: Hero(
-                      tag: "${product.id}",
-                      child: productIcon(),
-                    ),
-                    title: Text(
-                      product.name,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    trailing: topRightBuilder != null ? topRightBuilder!(product) : null,
+            builder: (_, product, __) {
+              return Container(
+                padding: EdgeInsets.only(top: 5),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(color: product.mainColor, width: 3),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25, top: 5, bottom: 10, right: 25),
-                    child: Text(
-                      "R\$ ${product.price.toStringAsFixed(2)}",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 25,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      leading: Hero(
+                        tag: "${product.id}",
+                        child: productIcon(),
+                      ),
+                      title: Text(
+                        product.name,
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      trailing: topRightBuilder != null ? topRightBuilder!(product) : null,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25, top: 5, bottom: 10, right: 25),
+                      child: Text(
+                        "R\$ ${product.price.toStringAsFixed(2)}",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 25,
+                        ),
                       ),
                     ),
-                  ),
-                  bottomLabel(),
-                ],
-              ),
-            ),
+                    bottomLabel(),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -77,7 +80,7 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget productIcon() {
-    if (_productNotifier.value.image.isEmpty) {
+    if (_productNotifier.product.image.isEmpty) {
       return const Icon(
         Icons.warning_rounded,
         color: Colors.amber,
@@ -90,7 +93,7 @@ class ProductCard extends StatelessWidget {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         foregroundImage: NetworkImage(
-          _productNotifier.value.image,
+          _productNotifier.product.image,
         ),
       ),
     );

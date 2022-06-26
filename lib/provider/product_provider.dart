@@ -7,6 +7,7 @@ enum ProductsState { loading, complete }
 
 class ProductProvider extends ChangeNotifier {
   FirebaseFirestore db = FirebaseFirestore.instance;
+
   String tableName = "product";
 
   List<Product> products = [];
@@ -62,37 +63,37 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> createProduct(Product product) async {
-    try {
-      DocumentReference<Map<String, dynamic>> document = await db.collection(tableName).add(product.toMap());
-      product.id = document.id;
-      products.add(product);
-      notifyListeners();
-      return true;
-    } catch (e) {
-      return false;
-    }
+  Future<void> createProduct(Product product) async {
+    DocumentReference<Map<String, dynamic>> document = await db.collection(tableName).add(product.toMap());
+    product.id = document.id;
+    products.add(product);
+    notifyListeners();
   }
 
-  Future<bool> updateProduct(Product product) async {
-    try {
-      await db.collection(tableName).doc(product.id!).update(product.toMap());
-      await getProducts();
-      return true;
-    } catch (e) {
-      return false;
-    }
+  Future<void> updateProduct(Product product) async {
+    await db.collection(tableName).doc(product.id!).update(product.toMap());
+    await getProducts();
   }
 
-  Future<bool> deleteProduct(Product product) async {
-    try {
-      await db.collection(tableName).doc(product.id).delete();
-      await getProducts();
-      products.remove(product);
-      notifyListeners();
-      return true;
-    } catch (e) {
-      return false;
-    }
+  Future<void> deleteProduct(Product product) async {
+    await db.collection(tableName).doc(product.id).delete();
+    await getProducts();
+    products.remove(product);
+    notifyListeners();
+  }
+}
+
+class ProductNotifier extends ValueNotifier<Product> {
+  ProductNotifier({required Product product}) : super(product);
+
+  Product get product => value;
+
+  void refreshColor() async {
+    await value.getMainColorFromImage();
+    notifyListeners();
+  }
+
+  void refresh() {
+    notifyListeners();
   }
 }

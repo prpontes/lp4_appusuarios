@@ -19,8 +19,7 @@ class _ProductsPageState extends State<ProductsPage> {
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => productProvider.getProducts());
+    WidgetsBinding.instance.addPostFrameCallback((_) => productProvider.getProducts());
   }
 
   @override

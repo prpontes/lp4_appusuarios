@@ -5,11 +5,11 @@ import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class StockDialog extends StatelessWidget {
-  final Product product;
+  final ProductNotifier productNotifier;
   late final TextEditingController _qtdController;
   final _formKey = GlobalKey<FormState>();
-  StockDialog({Key? key, required this.product}) : super(key: key) {
-    _qtdController = TextEditingController(text: product.quantity.toString());
+  StockDialog({Key? key, required this.productNotifier}) : super(key: key) {
+    _qtdController = TextEditingController(text: productNotifier.product.quantity.toString());
   }
 
   @override
@@ -111,8 +111,9 @@ class StockDialog extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        product.quantity = double.parse(_qtdController.text).toInt();
-                        await productProvider.updateProduct(product);
+                        productNotifier.product.quantity = double.parse(_qtdController.text).toInt();
+                        await productProvider.updateProduct(productNotifier.product);
+                        productNotifier.refresh();
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

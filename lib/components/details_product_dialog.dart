@@ -4,14 +4,15 @@ import 'package:lp4_appusuarios/components/product/product_description.dart';
 import 'package:lp4_appusuarios/components/product/product_info.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:flutter/material.dart';
+import 'package:lp4_appusuarios/provider/auth_provider.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class DetailsProductDialog extends StatefulWidget {
-  late final ValueNotifier<Product> _productNotifier;
+  late final ProductNotifier _productNotifier;
 
   DetailsProductDialog({Key? key, required Product product}) : super(key: key) {
-    _productNotifier = ValueNotifier(product);
+    _productNotifier = ProductNotifier(product: product);
   }
 
   @override
@@ -20,6 +21,7 @@ class DetailsProductDialog extends StatefulWidget {
 
 class _DetailsProductDialogState extends State<DetailsProductDialog> {
   late ProductProvider productProvider;
+  late AuthProvider authProvider;
 
   @override
   void initState() {
@@ -33,10 +35,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
         valueListenable: widget._productNotifier,
         builder: (_, product, __) {
           if (product.mainColor == Colors.deepPurple && product.image != "") {
-            () async {
-              await product.getMainColorFromImage();
-              widget._productNotifier.notifyListeners();
-            }.call();
+            widget._productNotifier.refreshColor();
           }
           return Scaffold(
             appBar: AppBar(
@@ -83,7 +82,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ProductInfo(
-                          product: product,
+                          productNotifier: widget._productNotifier,
                           enableStockTap: true,
                         ),
                         Expanded(child: ProductDescription(product: product)),
@@ -97,12 +96,12 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
         });
   }
 
-  Future<void> editProduct(ValueNotifier<Product> product) async {
+  Future<void> editProduct(ProductNotifier productC) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => MutateProductDialog(
-          product: product,
+          productNotifier: productC,
         ),
         fullscreenDialog: true,
       ),

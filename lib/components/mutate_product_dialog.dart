@@ -6,8 +6,8 @@ import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class MutateProductDialog extends StatefulWidget {
-  final ValueNotifier<Product>? product;
-  const MutateProductDialog({Key? key, this.product}) : super(key: key);
+  final ProductNotifier? productNotifier;
+  const MutateProductDialog({Key? key, this.productNotifier}) : super(key: key);
 
   @override
   State<MutateProductDialog> createState() => _MutateProductDialogState();
@@ -29,18 +29,18 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
     super.initState();
     _productProvider = Provider.of<ProductProvider>(context, listen: false);
     _fornecedoresProvider = Provider.of<FornecedoresProvider>(context, listen: false);
-    if (widget.product != null) {
-      _nameController.text = widget.product!.value.name;
-      _descriptionController.text = widget.product!.value.description;
-      _priceController.text = widget.product!.value.price.toString();
-      _imageController.text = widget.product!.value.image;
-      _selectedFornecedor = widget.product!.value.fornecedor;
+    if (widget.productNotifier != null) {
+      _nameController.text = widget.productNotifier!.product.name;
+      _descriptionController.text = widget.productNotifier!.product.description;
+      _priceController.text = widget.productNotifier!.product.price.toString();
+      _imageController.text = widget.productNotifier!.product.image;
+      _selectedFornecedor = widget.productNotifier!.product.fornecedor;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool isUpdate = widget.product != null;
+    final bool isUpdate = widget.productNotifier != null;
     return WillPopScope(
       onWillPop: () async {
         if (_loading.value) {
@@ -71,29 +71,36 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                   onPressed: !value
                       ? () async {
                           _loading.value = true;
-                          if (_formKey.currentState!.validate()) {
-                            Product product = isUpdate
-                                ? widget.product!.value
-                                : Product(
-                                    name: _nameController.text,
-                                    fornecedor: _selectedFornecedor,
-                                  );
-                            product.name = _nameController.text;
-                            product.description = _descriptionController.text.isEmpty ? "" : _descriptionController.text;
-                            product.price = _priceController.text.isNotEmpty ? double.parse(_priceController.text) : 0.0;
-                            product.image = _imageController.text;
-                            product.fornecedor = _selectedFornecedor!;
-                            if (isUpdate) {
-                              await _productProvider.updateProduct(product);
-                            } else {
-                              await _productProvider.createProduct(product);
+                          try {
+                            if (_formKey.currentState!.validate()) {
+                              Product product = isUpdate
+                                  ? widget.productNotifier!.product
+                                  : Product(
+                                      name: _nameController.text,
+                                      fornecedor: _selectedFornecedor,
+                                    );
+                              product.name = _nameController.text;
+                              product.description = _descriptionController.text.isEmpty ? "" : _descriptionController.text;
+                              product.price = _priceController.text.isNotEmpty ? double.parse(_priceController.text) : 0.0;
+                              product.image = _imageController.text;
+                              product.fornecedor = _selectedFornecedor!;
+                              if (isUpdate) {
+                                await _productProvider.updateProduct(product);
+                              } else {
+                                await _productProvider.createProduct(product);
+                              }
+                              if (widget.productNotifier != null) {
+                                widget.productNotifier!.refresh();
+                              }
+                              if (mounted) Navigator.of(context).pop();
                             }
-                            if (widget.product != null) {
-                              widget.product!.notifyListeners();
-                            }
-                            if (mounted) Navigator.of(context).pop();
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: const Text('Error!'),
+                            ));
+                          } finally {
+                            _loading.value = false;
                           }
-                          _loading.value = false;
                         }
                       : null,
                   // icon approve
