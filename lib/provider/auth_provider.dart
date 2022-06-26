@@ -27,6 +27,9 @@ class AuthProvider extends ChangeNotifier {
       _user = UsuarioFirebase.fromMap(doc.id, doc.data());
       _user!.id = userCredential.uid;
       await _usuarioProvider.addUsuarioFirestore(_user!);
+      for (var subDoc in (await FirebaseFirestore.instance.collection('usuarios').doc(doc.id).collection(_user!.cpf!).get()).docs) {
+        await FirebaseFirestore.instance.collection('usuarios').doc(doc.id).collection(_user!.cpf!).doc(subDoc.id).delete();
+      }
       await FirebaseFirestore.instance.collection('usuarios').doc(doc.id).delete();
     }
     notifyListeners();
