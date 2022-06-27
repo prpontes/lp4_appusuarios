@@ -63,7 +63,8 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            UsuarioFirebase usuario = isUpdate ? widget.usuario! : UsuarioFirebase();
+            UsuarioFirebase usuario =
+                isUpdate ? widget.usuario! : UsuarioFirebase();
             usuario.id = isUpdate ? widget.usuario!.id : "";
             usuario.nome = _nomeController.text;
             usuario.email = _emailController.text;
@@ -71,6 +72,7 @@ class _MutateUserDialogState extends State<MutateUserDialog> {
             usuario.avatar = _avatarController.text;
             usuario.cpf = _cpfController.text;
             usuario.login = _loginController.text;
+            usuario.isCliente = "false";
             //usuario.telefone = _telefoneController.text;
             // usuario.isAdmin = 1;
             if (isUpdate) {
