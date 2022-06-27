@@ -22,20 +22,13 @@ String? validateMobile(String value) {
 }
 // função para validar cep
 
-
 class MutateCustomerDialog extends StatefulWidget {
   final UsuarioFirebase? usuario;
 
-
-
   const MutateCustomerDialog({Key? key, this.usuario}) : super(key: key);
-
 
   @override
   State<MutateCustomerDialog> createState() => _MutateCustomerDialogState();
-
-
-
 }
 
 class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
@@ -48,10 +41,6 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
   final _loginController = TextEditingController(text: "");
   final _telefoneController = TextEditingController(text: "");
 
-
-
-
-
   late final UsuarioProvider _usuarioProvider;
 
   @override
@@ -59,35 +48,31 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
     super.initState();
     _usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
 
-    if (widget.usuario != null  ) {
+    if (widget.usuario != null) {
       _nomeController.text = widget.usuario!.nome!;
       _emailController.text = widget.usuario!.email!;
       _senhaController.text = widget.usuario!.senha!;
       _avatarController.text = widget.usuario!.avatar;
       _cpfController.text = widget.usuario!.cpf!;
       _loginController.text = widget.usuario!.login!;
-      _telefoneController.text = widget.usuario!.telefone!;
-
-
-
+      _telefoneController.text = widget.usuario!.telefone;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool isUpdate = widget.usuario != null  ;
-
+    final bool isUpdate = widget.usuario != null;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isUpdate ? 'Editar cliente' : 'Criar cliente' ),
-
+        title: Text(isUpdate ? 'Editar cliente' : 'Criar cliente'),
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            UsuarioFirebase usuario = isUpdate ? widget.usuario! : UsuarioFirebase();
+            UsuarioFirebase usuario =
+                isUpdate ? widget.usuario! : UsuarioFirebase();
             usuario.id = isUpdate ? widget.usuario!.id : "";
             usuario.nome = _nomeController.text;
             usuario.email = _emailController.text;
@@ -96,13 +81,10 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
             usuario.cpf = _cpfController.text;
             usuario.login = _loginController.text;
             usuario.telefone = _telefoneController.text;
-
-
-
+            usuario.isCliente = "true";
 
             if (isUpdate) {
               await _usuarioProvider.editarUsuarioFirestore(usuario);
-
             } else {
               await _usuarioProvider.addAuthUsuario(usuario);
               await _usuarioProvider.addUsuarioFirestore(usuario);
@@ -240,8 +222,6 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
                   }
                 },
               ),
-
-
             ],
           ),
         ),
