@@ -1,6 +1,6 @@
 class Endereco {
   // model endereco
-  int? id;
+  String? id;
   String? rua;
   String? bairro;
   String? numero;
@@ -8,7 +8,7 @@ class Endereco {
   String? referencia;
   String? cep;
   String? cidade;
-  String? idcliente;
+  String? cpfcliente;
 
   Endereco({
     this.id,
@@ -19,7 +19,7 @@ class Endereco {
     this.referencia,
     this.cep,
     this.cidade,
-    this.idcliente,
+    this.cpfcliente,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,16 +31,30 @@ class Endereco {
       "complemento": complemento,
       "numero": numero,
       "referencia": referencia,
-      "idcliente": idcliente,
+      "cpfcliente": cpfcliente,
       "cidade": cidade,
 
 
 
     };
   }
+  factory Endereco.fromMap(String id, Map<String, dynamic> map) {
+    return Endereco(
+      id: id,
+      rua: map["rua"],
+      bairro: map["bairro"],
+      cep: map["cep"],
+      complemento: map["complemento"],
+      numero: map["numero"],
+      referencia: map["referencia"],
+      cpfcliente: map["cpfcliente"],
+      cidade: map["cidade"],
+    );
+  }
 
   @override
   String toString() {
-    return 'Endereco{id: $id, rua: $rua, bairro: $bairro, cep: $cep, cidade : $cidade, complemento: $complemento, numero: $numero,referencia: $referencia, idcliente: $idcliente}';
+    return 'Endereco{id: $id, rua: $rua, bairro: $bairro, cep: $cep, cidade : $cidade, complemento: $complemento, numero: $numero,referencia: $referencia, cpfcliente: $cpfcliente}';
   }
 }
+

@@ -1,80 +1,77 @@
-// import 'package:flutter/widgets.dart';
-// import 'package:lp4_appusuarios/model/endereco.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
+import 'package:lp4_appusuarios/model/endereco.dart';
 
 
-// class EnderecoProvider extends ChangeNotifier {
-//   // Database db = DatabaseSingleton.instance.db;
-//   String nomeTabela = "endereco";
+class EnderecoProvider extends ChangeNotifier {
+
+  String nomeTabela = "endereco";
 
 
-//   List<Endereco> endereco = [];
+  List<Endereco> enderecoFirebase = [];
 
 
-//   Future<List<Endereco>> listarEndereco( {String? cpf}) async {
-//     List lista = await db.query(nomeTabela,
-//         where:cpf== null ? null : "idcliente=?",
-//         whereArgs: cpf == null ? null : [cpf]);
+  addEndereco(Endereco e) async {
+    DocumentReference endereco = FirebaseFirestore.instance.collection(
+        'endereco').doc(e.id);
+    await endereco.set({
+      'rua': e.rua,
+      'bairro': e.bairro,
+      'numero': e.numero,
+      'complemento': e.complemento,
+      'cep': e.cep,
+      'referencia': e.referencia,
+      'cidade': e.cidade,
+      'cpfcliente': e.cpfcliente,
+    });}
+
+    listarEndereco() async {
+      CollectionReference enderecos = FirebaseFirestore.instance.collection(
+          'endereco');
+      if (enderecoFirebase.isNotEmpty) enderecoFirebase.clear();
+
+      await enderecos.orderBy('cep').get().then((value) {
+        for (var usr in value.docs) {
+          enderecoFirebase.add(
+            Endereco(
+              id: usr.id,
+              rua: usr["rua"],
+              bairro: usr["bairro"],
+              numero: usr["numero"],
+              complemento: usr["complemento"],
+              cep: usr["cep"],
+              cidade: usr["cidade"],
+              cpfcliente: usr["cpfcliente"],
+
+            ),
+          );
+        }
+      });
+      notifyListeners();
+    }
+
+    editarEndereco(Endereco e) async {
+      CollectionReference endereco = FirebaseFirestore.instance.collection(
+          'endereco');
+      await endereco.doc(e.id).update({
+        'rua': e.rua,
+        'bairro': e.bairro,
+        'numero': e.numero,
+        'complemento': e.complemento,
+        'cep': e.cep,
+        'referencia': e.referencia,
+        'cidade': e.cidade,
+        'cpfcliente': e.cpfcliente,
+      });
+      await listarEndereco();
+    }
+
+    deletarEndereco(Endereco e) async {
+      CollectionReference endereco = FirebaseFirestore.instance.collection(
+          'endereco');
+      await endereco.doc(e.id).delete();
+      await listarEndereco();
+    }
 
 
-//     endereco = List.generate(lista.length, (index) {
-//       return Endereco(
-//         id: lista[index]["id"],
-//         rua: lista[index]["rua"],
-//         bairro: lista[index]["bairro"],
-//         numero: lista[index]["numero"],
-//         complemento: lista[index]["complemento"],
-//         cep: lista[index]["cep"],
-//         referencia: lista[index]["referencia"],
-//         cidade: lista[index]["cidade"],
-
-//       );
-//     });
-//     notifyListeners();
-//     return endereco;
-//   }
-//   Future<List<Endereco>> listarTodosEndereco( ) async {
-//     List lista = await db.query(nomeTabela);
-
-
-//     endereco = List.generate(lista.length, (index) {
-//       return Endereco(
-//         id: lista[index]["id"],
-//         rua: lista[index]["rua"],
-//         bairro: lista[index]["bairro"],
-//         numero: lista[index]["numero"],
-//         complemento: lista[index]["complemento"],
-//         cep: lista[index]["cep"],
-//         referencia: lista[index]["referencia"],
-//         cidade: lista[index]["cidade"],
-
-//       );
-//     });
-//     notifyListeners();
-//     return endereco;
-//   }
-
-
-//   Future<int> inserirEndereco(Endereco enderecos) async {
-//     int id = await db.insert(nomeTabela, enderecos.toMap());
-//     enderecos.id = id;
-//     endereco.add(enderecos);
-//     notifyListeners();
-//     return id;
-//   }
-
-//   Future<int> editarEndereco(Endereco enderecos) async {
-//     int id = await db.update(nomeTabela, enderecos.toMap(),
-//         where: "id = ?", whereArgs: [enderecos.id]);
-//     debugPrint(id.toString());
-//     notifyListeners();
-//     return id;
-//   }
-
-//   Future<int> deletarEndereco(Endereco enderecos) async {
-//     int id =
-//     await db.delete(nomeTabela, where: "id = ?", whereArgs: [enderecos.id]);
-//     endereco.remove(enderecos);
-//     notifyListeners();
-//     return id;
-//   }
-// }
+}
