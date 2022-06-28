@@ -20,8 +20,7 @@ class ProductProvider extends ChangeNotifier {
     products = List.empty(growable: true);
     for (var doc in query.docs) {
       if (doc["quantity"] >= minQuantity) {
-        var documentFornecedor =
-            await db.collection("fornecedores").doc(doc["idFornecedor"]).get();
+        var documentFornecedor = await db.collection("fornecedores").doc(doc["idFornecedor"]).get();
         products.add(
           Product(
             id: doc.id,
@@ -46,10 +45,7 @@ class ProductProvider extends ChangeNotifier {
   Future<Product?> getProduct(String id) async {
     try {
       var documentProduct = await db.collection(tableName).doc(id).get();
-      var documentFornecedor = await db
-          .collection("fornecedores")
-          .doc(documentProduct["idFornecedor"])
-          .get();
+      var documentFornecedor = await db.collection("fornecedores").doc(documentProduct["idFornecedor"]).get();
       return Product(
         id: documentProduct.id,
         name: documentProduct["name"],
@@ -59,7 +55,7 @@ class ProductProvider extends ChangeNotifier {
         quantity: documentProduct["quantity"],
         fornecedor: FornecedorFirebase(
           id: documentFornecedor.id,
-          razaoSocial: documentFornecedor["razaosocial"],
+          razaoSocial: documentFornecedor["razaoSocial"],
         ),
       );
     } catch (e) {
@@ -68,8 +64,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<void> createProduct(Product product) async {
-    DocumentReference<Map<String, dynamic>> document =
-        await db.collection(tableName).add(product.toMap());
+    DocumentReference<Map<String, dynamic>> document = await db.collection(tableName).add(product.toMap());
     product.id = document.id;
     products.add(product);
     notifyListeners();

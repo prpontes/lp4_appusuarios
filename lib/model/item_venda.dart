@@ -22,9 +22,9 @@ class ItemVenda {
     };
   }
 
-  static ItemVenda fromMap(Map<String, dynamic> map, Product product) {
+  static ItemVenda fromMap(String id, Map<String, dynamic> map, Product product) {
     return ItemVenda(
-      id: map["id"],
+      id: id,
       quantity: map["quantity"],
       price: map["price"],
       produto: product,
