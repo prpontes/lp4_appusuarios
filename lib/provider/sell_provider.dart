@@ -1,79 +1,117 @@
-// import 'package:flutter/widgets.dart';
-// import 'package:lp4_appusuarios/model/sell.dart';
-// import 'package:lp4_appusuarios/model/item_venda.dart';
-// import 'package:lp4_appusuarios/singletons/database_singleton.dart';
-// import 'package:sqflite/sqflite.dart';
+import 'package:flutter/widgets.dart';
+import 'package:lp4_appusuarios/model/sell.dart';
+import 'package:lp4_appusuarios/model/item_venda.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
+import 'package:lp4_appusuarios/provider/product_provider.dart';
+import 'package:lp4_appusuarios/provider/usuario_provider.dart';
 
-// class SellProvider extends ChangeNotifier {
-//   Database db = DatabaseSingleton.instance.db;
-//   String tabelaVenda = "sell";
-//   String tabelaItemVenda = "itemVenda";
+class SellProvider extends ChangeNotifier {
+  String tabelaVenda = "sell";
+  String tabelaItemVenda = "itemVenda";
+  late final ProductProvider _productProvider;
+  late final UsuarioProvider _userProvider;
 
-//   List<Sell> sales = [];
-//   List<ItemVenda> itensVenda = [];
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
-//   Future<List<Sell>> listSales(int idUsuario) async {
-//     List salesList = await db
-//         .query("sell_view", where: "idUser = ?", whereArgs: [idUsuario]);
+  SellProvider(
+      {required ProductProvider productProvider,
+      required UsuarioProvider usuarioProvider}) {
+    _productProvider = productProvider;
+    _userProvider = usuarioProvider;
+  }
 
-//     sales = await Future.wait(List.generate(salesList.length, (index) async {
-//       return Sell.fromMap(salesList[index])
-//         ..items = await listItems(salesList[index]["idVenda"]);
-//     }));
+  List<Sell> sales = [];
+  // List<ItemVenda> itensVenda = [];
 
-//     notifyListeners();
-//     return sales;
-//   }
+  Future<List<Sell>> listSales(int idUsuario) async {
+    var query = await db.collection(tabelaVenda).get();
 
-//   Future<List<ItemVenda>> listItems(int idVenda) async {
-//     List itensList = await db
-//         .query("itemVenda_view", where: "idVenda = ?", whereArgs: [idVenda]);
-//     var itensVenda = List.generate(itensList.length, (index) {
-//       return ItemVenda.fromMap(itensList[index]);
-//     });
-//     return itensVenda;
-//   }
+    for (var doc in query.docs) {
+      final List<ItemVenda> items = List.empty(growable: true);
+      var query = await db
+          .collection(tabelaVenda)
+          .doc(doc.id)
+          .collection("items")
+          .get();
+      for (var doc in query.docs) {
+        items.add(
+          ItemVenda.fromMap(
+            doc.data(),
+            (await _productProvider.getProduct(
+              doc["idProduto"],
+            ))!,
+          ),
+        );
+      }
+      sales.add(Sell.fromMap(
+        doc.data(),
+        id: doc.id,
+        user: (await _userProvider.getUsuario(doc["idUser"]))!,
+        items: items,
+      ));
+    }
+    notifyListeners();
+    return sales;
+  }
 
-//   Future<Sell> saveSell(Sell sell) async {
-//     int id = await db.insert(tabelaVenda, sell.toMap());
-//     if (id == 0) {
-//       throw Exception("Failed to insert itemVenda");
-//     }
-//     sell.id = id;
-//     sales.add(sell);
-//     notifyListeners();
-//     return sell;
-//   }
+  // Future<List<ItemVenda>> listItems(int idVenda) async {
+  //   List itensList = await db
+  //       .query("itemVenda_view", where: "idVenda = ?", whereArgs: [idVenda]);
+  //   var itensVenda = List.generate(itensList.length, (index) {
+  //     return ItemVenda.fromMap(itensList[index]);
+  //   });
+  //   return itensVenda;
+  // }
 
-//   Future<ItemVenda> saveItem(ItemVenda item) async {
-//     var itemVendaId = await db.insert(tabelaItemVenda, item.toMap());
-//     if (itemVendaId == 0) {
-//       throw Exception("Failed to insert itemVenda");
-//     }
-//     notifyListeners();
-//     return item;
-//   }
+  Future<Sell> saveSell(Sell sell) async {
+    DocumentReference<Map<String, dynamic>> document =
+        await db.collection(tabelaVenda).add(sell.toMap());
+    sell.id = document.id;
+    sales.add(sell);
+    notifyListeners();
+    return sell;
+  }
 
-//   Future<void> buy(List<ItemVenda> itens, int userId) async {
-//     // create Venda and get id
-//     Sell venda = Sell(
-//       date: DateTime.now().toString(),
-//       idUser: userId,
-//     );
-//     int idVenda = (await saveSell(venda)).id!;
-//     try {
-//       for (ItemVenda item in itens) {
-//         item.idVenda = idVenda;
-//         await saveItem(item);
-//       }
-//     } catch (e) {
-//       await db.delete(tabelaVenda, where: "sell.id = ?", whereArgs: [idVenda]);
-//     }
-//     // update quantity from product
-//     for (ItemVenda item in itens) {
-//       await db.update(
-//           "product", {"quantity": item.produto!.quantity - item.quantity},
-//           where: "id = ?", whereArgs: [item.idProduto]);
-//     }
-//   }
-// }
+  Future<ItemVenda> saveItem(Sell sell, ItemVenda item) async {
+    DocumentReference<Map<String, dynamic>> document = await db
+        .collection(tabelaVenda)
+        .doc(sell.id)
+        .collection("items")
+        .add(item.toMap());
+    item.id = document.id;
+    sell.items.add(item);
+    notifyListeners();
+    return item;
+  }
+
+  Future<void> buy(List<ItemVenda> itens, UsuarioFirebase user) async {
+    // create Venda and get id
+    Sell venda = Sell(
+      id: "",
+      date: DateTime.now().toString(),
+      user: user,
+    );
+    await saveSell(venda);
+    try {
+      for (ItemVenda item in itens) {
+        await saveItem(venda, item);
+      }
+    } catch (e) {
+      for (var item in venda.items) {
+        await db
+            .collection(tabelaVenda)
+            .doc(venda.id)
+            .collection("items")
+            .doc(item.id)
+            .delete();
+      }
+      await db.collection(tabelaVenda).doc(venda.id).delete();
+    }
+    // update quantity from product
+    for (ItemVenda item in itens) {
+      item.produto.quantity = item.produto.quantity - item.quantity;
+      await _productProvider.updateProduct(item.produto);
+    }
+  }
+}

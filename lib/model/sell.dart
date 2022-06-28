@@ -1,20 +1,20 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:lp4_appusuarios/model/item_venda.dart';
+import 'package:lp4_appusuarios/model/usuario.dart';
+import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 
 class Sell {
   // model venda
-  String? id;
-  String? date;
-  int? idUser;
-  String? username;
+  String id;
+  String date;
+  UsuarioFirebase user;
   List<ItemVenda> items;
 
   Sell({
-    this.id,
-    this.date,
-    this.idUser,
-    this.username,
+    required this.id,
+    required this.date,
+    required this.user,
     this.items = const [],
   });
 
@@ -22,20 +22,19 @@ class Sell {
     return {
       "id": id,
       "date": date,
-      "idUser": idUser,
+      "idUser": user.id,
     };
   }
 
-  static Sell fromMap(Map<String, dynamic> map) {
+  static Sell fromMap(Map<String, dynamic> map,
+      {required String id,
+      required UsuarioFirebase user,
+      List<ItemVenda>? items}) {
     return Sell(
-        id: map['idVenda'],
-        date: map['date'],
-        idUser: map['idUser'],
-        username: map['nome']);
-  }
-
-  @override
-  String toString() {
-    return 'Usuario{id: $id, date: $date, idUser: $idUser}';
+      id: id,
+      date: map['date'],
+      user: user,
+      items: items ?? List.empty(growable: true),
+    );
   }
 }

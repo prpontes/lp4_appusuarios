@@ -32,7 +32,8 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var permissoes = Provider.of<PermissoesModel>(context, listen: false).permissoes;
+    var permissoes =
+        Provider.of<PermissoesModel>(context, listen: false).permissoes;
     return ValueListenableBuilder<Product>(
         valueListenable: widget._productNotifier,
         builder: (_, product, __) {

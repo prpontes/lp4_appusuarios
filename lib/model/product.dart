@@ -3,7 +3,7 @@ import 'package:lp4_appusuarios/model/fornecedorFirebase.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class Product {
-  String? id;
+  String id;
   String name;
   String description;
   late String _image;
@@ -13,7 +13,7 @@ class Product {
   Color mainColor;
 
   Product({
-    this.id,
+    required this.id,
     required this.name,
     this.description = "",
     String image = "",
@@ -46,16 +46,26 @@ class Product {
   Future<void> getMainColorFromImage() async {
     try {
       if (image != "") {
-        PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(NetworkImage(image));
+        PaletteGenerator paletteGenerator =
+            await PaletteGenerator.fromImageProvider(NetworkImage(image));
         if (paletteGenerator.dominantColor!.color.computeLuminance() > 0.6) {
-          mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color).withLightness(0.6).toColor();
-        } else if (paletteGenerator.dominantColor!.color.computeLuminance() <= 0.1) {
+          mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color)
+              .withLightness(0.6)
+              .toColor();
+        } else if (paletteGenerator.dominantColor!.color.computeLuminance() <=
+            0.1) {
           if (paletteGenerator.vibrantColor != null) {
-            mainColor = paletteGenerator.vibrantColor!.color.computeLuminance() <= 0.45
-                ? paletteGenerator.vibrantColor!.color
-                : HSLColor.fromColor(paletteGenerator.vibrantColor!.color).withLightness(0.45).toColor();
+            mainColor =
+                paletteGenerator.vibrantColor!.color.computeLuminance() <= 0.45
+                    ? paletteGenerator.vibrantColor!.color
+                    : HSLColor.fromColor(paletteGenerator.vibrantColor!.color)
+                        .withLightness(0.45)
+                        .toColor();
           } else {
-            mainColor = HSLColor.fromColor(paletteGenerator.dominantColor!.color).withLightness(0.2).toColor();
+            mainColor =
+                HSLColor.fromColor(paletteGenerator.dominantColor!.color)
+                    .withLightness(0.2)
+                    .toColor();
           }
         } else {
           mainColor = paletteGenerator.dominantColor!.color;

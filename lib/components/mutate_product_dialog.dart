@@ -28,7 +28,8 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
   void initState() {
     super.initState();
     _productProvider = Provider.of<ProductProvider>(context, listen: false);
-    _fornecedoresProvider = Provider.of<FornecedoresProvider>(context, listen: false);
+    _fornecedoresProvider =
+        Provider.of<FornecedoresProvider>(context, listen: false);
     if (widget.productNotifier != null) {
       _nameController.text = widget.productNotifier!.product.name;
       _descriptionController.text = widget.productNotifier!.product.description;
@@ -76,12 +77,18 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                               Product product = isUpdate
                                   ? widget.productNotifier!.product
                                   : Product(
+                                      id: "",
                                       name: _nameController.text,
                                       fornecedor: _selectedFornecedor,
                                     );
                               product.name = _nameController.text;
-                              product.description = _descriptionController.text.isEmpty ? "" : _descriptionController.text;
-                              product.price = _priceController.text.isNotEmpty ? double.parse(_priceController.text) : 0.0;
+                              product.description =
+                                  _descriptionController.text.isEmpty
+                                      ? ""
+                                      : _descriptionController.text;
+                              product.price = _priceController.text.isNotEmpty
+                                  ? double.parse(_priceController.text)
+                                  : 0.0;
                               product.image = _imageController.text;
                               product.fornecedor = _selectedFornecedor!;
                               if (isUpdate) {
@@ -115,7 +122,8 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                   future: _fornecedoresProvider.listarFornecedorFirestore(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      List<FornecedorFirebase> fornecedores = snapshot.data as List<FornecedorFirebase>;
+                      List<FornecedorFirebase> fornecedores =
+                          snapshot.data as List<FornecedorFirebase>;
                       return Form(
                         key: _formKey,
                         child: Column(
@@ -150,7 +158,8 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                                 if (value!.isEmpty) {
                                   return 'Preço é obrigatório';
                                 }
-                                if (double.tryParse(value) == null || double.parse(value) <= 0) {
+                                if (double.tryParse(value) == null ||
+                                    double.parse(value) <= 0) {
                                   return 'Preço inválido';
                                 }
 
@@ -172,14 +181,19 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                               height: 10,
                             ),
                             DropdownButtonFormField<String>(
-                              value: (_selectedFornecedor == null) ? null : _selectedFornecedor!.id,
+                              value: (_selectedFornecedor == null)
+                                  ? null
+                                  : _selectedFornecedor!.id,
                               hint: Text(
-                                fornecedores.isNotEmpty ? "Selecione o Fornecedor" : "Nenhum Fornecedor Cadastrado",
+                                fornecedores.isNotEmpty
+                                    ? "Selecione o Fornecedor"
+                                    : "Nenhum Fornecedor Cadastrado",
                                 style: TextStyle(color: Colors.deepPurple),
                               ),
                               icon: RotatedBox(
                                 quarterTurns: 1,
-                                child: Icon(Icons.chevron_right, color: Colors.deepPurple),
+                                child: Icon(Icons.chevron_right,
+                                    color: Colors.deepPurple),
                               ),
                               iconSize: 24,
                               elevation: 16,
@@ -198,7 +212,9 @@ class _MutateProductDialogState extends State<MutateProductDialog> {
                                 return null;
                               },
                               onChanged: (idSelecionado) {
-                                _selectedFornecedor = fornecedores.firstWhere((fornecedor) => fornecedor.id == idSelecionado);
+                                _selectedFornecedor = fornecedores.firstWhere(
+                                    (fornecedor) =>
+                                        fornecedor.id == idSelecionado);
                               },
                               items: fornecedores.map<DropdownMenuItem<String>>(
                                 (fornecedor) {
