@@ -45,8 +45,8 @@ class UsuarioFirebase {
       login: map["login"],
       senha: map["senha"],
       avatar: map["avatar"],
-      telefone: map["telefone"],
-      isCliente: map["isCliente"],
+      telefone: map["telefone"] ?? "",
+      isCliente: map["isCliente"] ?? false,
     );
   }
 

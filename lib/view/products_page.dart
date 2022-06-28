@@ -3,6 +3,7 @@ import 'package:lp4_appusuarios/components/details_product_dialog.dart';
 import 'package:lp4_appusuarios/components/mutate_product_dialog.dart';
 import 'package:lp4_appusuarios/components/product/product_card.dart';
 import 'package:lp4_appusuarios/components/search_product_delegate.dart';
+import 'package:lp4_appusuarios/provider/permissoes.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,10 +16,12 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   late ProductProvider productProvider;
+  late final PermissoesModel permissoes;
   @override
   void initState() {
     super.initState();
     productProvider = Provider.of<ProductProvider>(context, listen: false);
+    permissoes = Provider.of<PermissoesModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) => productProvider.getProducts());
   }
 
@@ -27,28 +30,32 @@ class _ProductsPageState extends State<ProductsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Produtos"),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: SearchProductDelegate(),
-              );
-            },
-          ),
-        ],
+        actions: permissoes.permissoes.modProdutos['pesquisar']!
+            ? <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: SearchProductDelegate(),
+                    );
+                  },
+                ),
+              ]
+            : null,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => const MutateProductDialog(),
-            fullscreenDialog: true,
-          ),
-        ),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: permissoes.permissoes.modProdutos['adicionar']!
+          ? FloatingActionButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const MutateProductDialog(),
+                  fullscreenDialog: true,
+                ),
+              ),
+              child: const Icon(Icons.add),
+            )
+          : null,
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,

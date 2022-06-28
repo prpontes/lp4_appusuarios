@@ -5,6 +5,7 @@ import 'package:lp4_appusuarios/components/product/product_info.dart';
 import 'package:lp4_appusuarios/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/provider/auth_provider.dart';
+import 'package:lp4_appusuarios/provider/permissoes.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -31,12 +32,31 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
 
   @override
   Widget build(BuildContext context) {
+    var permissoes = Provider.of<PermissoesModel>(context, listen: false).permissoes;
     return ValueListenableBuilder<Product>(
         valueListenable: widget._productNotifier,
         builder: (_, product, __) {
           if (product.mainColor == Colors.deepPurple && product.image != "") {
             widget._productNotifier.refreshColor();
           }
+          List<Widget> widgets = List.empty(growable: true);
+          permissoes.modProdutos["editar"]!
+              ? widgets.add(
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => editProduct(widget._productNotifier),
+                  ),
+                )
+              : null;
+
+          permissoes.modProdutos["deletar"]!
+              ? widgets.add(
+                  IconButton(
+                    onPressed: () => deleteProduct(product, context),
+                    icon: const Icon(Icons.delete),
+                  ),
+                )
+              : null;
           return Scaffold(
             appBar: AppBar(
               backgroundColor: product.mainColor,
@@ -57,16 +77,7 @@ class _DetailsProductDialogState extends State<DetailsProductDialog> {
                 ),
               ),
               elevation: 0,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => editProduct(widget._productNotifier),
-                ),
-                IconButton(
-                  onPressed: () => deleteProduct(product, context),
-                  icon: const Icon(Icons.delete),
-                ),
-              ],
+              actions: widgets,
             ),
             body: LayoutBuilder(
               builder: (context, constraints) => SingleChildScrollView(

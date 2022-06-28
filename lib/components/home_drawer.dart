@@ -87,16 +87,18 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     ),
                     title: const Text("Compras"),
                   ),
-                  ListTile(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/productspage");
-                    },
-                    leading: const Icon(
-                      Icons.label_outlined,
-                      color: Colors.blue,
-                    ),
-                    title: const Text("Produtos"),
-                  ),
+                  permissoes.modProdutos['listar']!
+                      ? ListTile(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/productspage");
+                          },
+                          leading: const Icon(
+                            Icons.label_outlined,
+                            color: Colors.blue,
+                          ),
+                          title: const Text("Produtos"),
+                        )
+                      : const SizedBox(),
                   ListTile(
                     onTap: () {
                       Navigator.pushNamed(context, "/telafornecedor");

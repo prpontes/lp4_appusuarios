@@ -54,6 +54,7 @@ class UsuarioProvider extends ChangeNotifier {
         "deletar": true,
         "editar": true,
         "listar": true,
+        'stock': true,
         "pesquisar": true,
       });
       usuario.collection(u.cpf!).doc("modVendas").set({

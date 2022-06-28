@@ -53,6 +53,7 @@ class PermissoesModel extends ChangeNotifier {
             'deletar': usr['deletar'],
             'editar': usr['editar'],
             'listar': usr['listar'],
+            'stock': usr.data()['stock'] ?? false,
             'pesquisar': usr['pesquisar'],
           };
         }

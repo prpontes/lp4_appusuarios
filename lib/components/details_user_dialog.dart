@@ -15,8 +15,7 @@ import '../provider/permissoes.dart';
 
 class DetailsUserDialog extends StatefulWidget {
   final UsuarioFirebase usuarioFirebase;
-  const DetailsUserDialog({Key? key, required this.usuarioFirebase})
-      : super(key: key);
+  const DetailsUserDialog({Key? key, required this.usuarioFirebase}) : super(key: key);
 
   @override
   State<DetailsUserDialog> createState() => _DetailsUserDialogState();
@@ -50,6 +49,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
   bool adicionarProdutos = true;
   bool deletarProdutos = true;
   bool editarProdutos = true;
+  bool stockProdutos = true;
   bool listarVendas = true;
   bool pesquisarVendas = true;
   bool adicionarVendas = true;
@@ -88,6 +88,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
       'pesquisar': pesquisarProdutos,
       'adicionar': adicionarProdutos,
       'deletar': deletarProdutos,
+      'stock': stockProdutos,
       'editar': editarProdutos,
     };
 
@@ -99,52 +100,24 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
       'editar': editarVendas,
     };
 
-    CollectionReference usuarios =
-        FirebaseFirestore.instance.collection('usuarios');
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
 
-    await usuarios
-        .doc(usuarioFirebase!.id)
-        .collection(usuarioFirebase!.cpf!)
-        .doc('modClientes')
-        .set(permissoes.modClientes);
-    await usuarios
-        .doc(usuarioFirebase!.id)
-        .collection(usuarioFirebase!.cpf!)
-        .doc('modUsuarios')
-        .set(permissoes.modUsuarios);
-    await usuarios
-        .doc(usuarioFirebase!.id)
-        .collection(usuarioFirebase!.cpf!)
-        .doc('modFornecedores')
-        .set(permissoes.modFornecedores);
-    await usuarios
-        .doc(usuarioFirebase!.id)
-        .collection(usuarioFirebase!.cpf!)
-        .doc('modProdutos')
-        .set(permissoes.modProdutos);
-    await usuarios
-        .doc(usuarioFirebase!.id)
-        .collection(usuarioFirebase!.cpf!)
-        .doc('modVendas')
-        .set(permissoes.modVendas);
+    await usuarios.doc(usuarioFirebase!.id).collection(usuarioFirebase!.cpf!).doc('modClientes').set(permissoes.modClientes);
+    await usuarios.doc(usuarioFirebase!.id).collection(usuarioFirebase!.cpf!).doc('modUsuarios').set(permissoes.modUsuarios);
+    await usuarios.doc(usuarioFirebase!.id).collection(usuarioFirebase!.cpf!).doc('modFornecedores').set(permissoes.modFornecedores);
+    await usuarios.doc(usuarioFirebase!.id).collection(usuarioFirebase!.cpf!).doc('modProdutos').set(permissoes.modProdutos);
+    await usuarios.doc(usuarioFirebase!.id).collection(usuarioFirebase!.cpf!).doc('modVendas').set(permissoes.modVendas);
 
     // Verifica se as mudanças das permissões é do usuário autenticado, se for, atualiza o provider.
-    if (Provider.of<AuthProvider>(context, listen: false).user!.cpf ==
-        usuarioFirebase!.cpf) {
-      Provider.of<PermissoesModel>(context, listen: false).permissoes =
-          permissoes;
+    if (Provider.of<AuthProvider>(context, listen: false).user!.cpf == usuarioFirebase!.cpf) {
+      Provider.of<PermissoesModel>(context, listen: false).permissoes = permissoes;
     }
   }
 
   Future<void> _carregarPermissoesUsuarioFirebase() async {
-    CollectionReference usuarios =
-        FirebaseFirestore.instance.collection('usuarios');
+    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
 
-    await usuarios
-        .doc(usuarioFirebase!.id)
-        .collection(usuarioFirebase!.cpf!)
-        .get()
-        .then((value) {
+    await usuarios.doc(usuarioFirebase!.id).collection(usuarioFirebase!.cpf!).get().then((value) {
       value.docs.forEach((usr) {
         if (usr.id == 'modClientes') {
           permissoes.modClientes = {
@@ -204,12 +177,14 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
             'deletar': usr['deletar'],
             'editar': usr['editar'],
             'listar': usr['listar'],
+            'stock': usr.data()['stock'] ?? false,
             'pesquisar': usr['pesquisar'],
           };
           setState(() {
             adicionarProdutos = usr['adicionar'];
             deletarProdutos = usr['deletar'];
             editarProdutos = usr['editar'];
+            stockProdutos = usr.data()['stock'] ?? false;
             listarProdutos = usr['listar'];
             pesquisarProdutos = usr['pesquisar'];
           });
@@ -241,8 +216,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
     //ModalRoute.of(context)!.settings.arguments as UsuarioFirebase;
     usuarioFirebase = widget.usuarioFirebase;
     _carregarPermissoesUsuarioFirebase();
-    permissoesUsuarioAutenticado =
-        Provider.of<PermissoesModel>(context, listen: true).permissoes;
+    permissoesUsuarioAutenticado = Provider.of<PermissoesModel>(context, listen: true).permissoes;
   }
 
   @override
@@ -254,8 +228,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
 
   @override
   Widget build(BuildContext context) {
-    permissoes =
-        Provider.of<PermissoesModel>(context, listen: false).permissoes;
+    permissoes = Provider.of<PermissoesModel>(context, listen: false).permissoes;
     final UsuarioFirebase user = widget.usuarioFirebase;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -303,16 +276,14 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                           context: context,
                           builder: (BuildContext context) => const DeleteDialog(
                             title: "Excluir usuário",
-                            description:
-                                "Tem certeza que deseja excluir o usuário?",
+                            description: "Tem certeza que deseja excluir o usuário?",
                           ),
                         );
                         if (!confirm) return;
                         if (user.login == authProvider.user?.login) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text(
-                                  "Você não pode excluir seu próprio usuário"),
+                              content: Text("Você não pode excluir seu próprio usuário"),
                             ),
                           );
                           return;
@@ -339,10 +310,8 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
               padding: const EdgeInsets.only(top: 10),
               child: Consumer<UsuarioProvider>(
                 builder: (context, value, child) {
-                  UsuarioFirebase usuarioFirebase =
-                      value.usuariosfirebase.firstWhere(
-                    (usuarioFirebase) =>
-                        usuarioFirebase.id == widget.usuarioFirebase.id,
+                  UsuarioFirebase usuarioFirebase = value.usuariosfirebase.firstWhere(
+                    (usuarioFirebase) => usuarioFirebase.id == widget.usuarioFirebase.id,
                     orElse: () => UsuarioFirebase(
                       id: null,
                       login: "",
@@ -369,10 +338,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                               color: Colors.blue,
                               size: 150,
                             )
-                          : CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(usuarioFirebase.avatar),
-                              radius: 70),
+                          : CircleAvatar(backgroundImage: NetworkImage(usuarioFirebase.avatar), radius: 70),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Row(
@@ -380,8 +346,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                           children: [
                             const Text(
                               "Nome: ",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               usuarioFirebase.nome!,
@@ -397,8 +362,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                           children: [
                             const Text(
                               "Cpf: ",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               usuarioFirebase.cpf!,
@@ -414,8 +378,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                           children: [
                             const Text(
                               "E-mail: ",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               usuarioFirebase.email!,
@@ -431,8 +394,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                           children: [
                             const Text(
                               "Login: ",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               usuarioFirebase.login!,
@@ -448,8 +410,7 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                           children: const [
                             Text(
                               "Senha: ",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               "******",
@@ -1011,8 +972,34 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                                             listarProdutos = v;
                                             pesquisarProdutos = v;
                                             adicionarProdutos = v;
+                                            stockProdutos = v;
                                             deletarProdutos = v;
                                             editarProdutos = v;
+                                          });
+                                          _definirPermissoesUsuario();
+                                        }),
+                                  ],
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                    "Stock",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Switch(
+                                        value: stockProdutos,
+                                        onChanged: (v) {
+                                          setState(() {
+                                            stockProdutos = v;
                                           });
                                           _definirPermissoesUsuario();
                                         }),
@@ -1231,24 +1218,22 @@ class _DetailsUserDialogState extends State<DetailsUserDialog> {
                                   })
                             ],
                           ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                    width: 100,
-                                    child: Text(
-                                      "Editar",
-                                      style: TextStyle(fontSize: 20),
-                                    )),
-                                Switch(
-                                    value: editarVendas,
-                                    onChanged: (v) {
-                                      setState(() {
-                                        editarVendas = v;
-                                      });
-                                      _definirPermissoesUsuario();
-                                    })
-                              ])
+                          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                            const SizedBox(
+                                width: 100,
+                                child: Text(
+                                  "Editar",
+                                  style: TextStyle(fontSize: 20),
+                                )),
+                            Switch(
+                                value: editarVendas,
+                                onChanged: (v) {
+                                  setState(() {
+                                    editarVendas = v;
+                                  });
+                                  _definirPermissoesUsuario();
+                                })
+                          ])
                         ],
                       )
                     ]),

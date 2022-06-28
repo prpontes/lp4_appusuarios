@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lp4_appusuarios/components/product/product_field.dart';
 import 'package:lp4_appusuarios/components/product/stock_product_dialog.dart';
+import 'package:lp4_appusuarios/model/permissoes.dart';
+import 'package:lp4_appusuarios/provider/permissoes.dart';
 import 'package:lp4_appusuarios/provider/product_provider.dart';
+import 'package:provider/provider.dart';
 
-class ProductInfo extends StatelessWidget {
+class ProductInfo extends StatefulWidget {
   final ProductNotifier productNotifier;
 
   final bool enableStockTap;
@@ -29,6 +32,18 @@ class ProductInfo extends StatelessWidget {
     this.showProvider = true,
     this.showStock = true,
   }) : super(key: key);
+
+  @override
+  State<ProductInfo> createState() => _ProductInfoState();
+}
+
+class _ProductInfoState extends State<ProductInfo> {
+  late final PermissoesModel permissoes;
+  @override
+  void initState() {
+    super.initState();
+    permissoes = Provider.of<PermissoesModel>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +79,15 @@ class ProductInfo extends StatelessWidget {
   List<Widget> leftDetailsWidgets(BuildContext context) {
     List<Widget> widgets = [];
     double spaceBetween = 15;
-    if (showProvider) {
+    if (widget.showProvider) {
       widgets.add(
         ProductField(
-          field: providerLabel,
-          value: productNotifier.product.fornecedor.razaoSocial!,
+          field: widget.providerLabel,
+          value: widget.productNotifier.product.fornecedor.razaoSocial!,
         ),
       );
     }
-    if (showStock) {
+    if (widget.showStock) {
       if (widgets.isNotEmpty) {
         widgets.add(
           SizedBox(
@@ -82,22 +97,24 @@ class ProductInfo extends StatelessWidget {
       }
       widgets.add(
         ProductField(
-          field: stockLabel,
-          value: productNotifier.product.quantity.toString(),
+          field: widget.stockLabel,
+          value: widget.productNotifier.product.quantity.toString(),
           valueShadowEnable: true,
-          onValueTap: () {
-            if (enableStockTap) {
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (_) => StockDialog(productNotifier: productNotifier),
-              );
-            }
-          },
+          onValueTap: permissoes.permissoes.modProdutos['stock']!
+              ? () {
+                  if (widget.enableStockTap) {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) => StockDialog(productNotifier: widget.productNotifier),
+                    );
+                  }
+                }
+              : null,
         ),
       );
     }
-    if (showPrice) {
+    if (widget.showPrice) {
       if (widgets.isNotEmpty) {
         widgets.add(
           SizedBox(
@@ -107,8 +124,8 @@ class ProductInfo extends StatelessWidget {
       }
       widgets.add(
         ProductField(
-          field: priceLabel,
-          value: "R\$ ${productNotifier.product.price.toStringAsFixed(2)}",
+          field: widget.priceLabel,
+          value: "R\$ ${widget.productNotifier.product.price.toStringAsFixed(2)}",
           valueShadowEnable: true,
         ),
       );
@@ -118,11 +135,11 @@ class ProductInfo extends StatelessWidget {
 
   List<Widget> rightDetailsWidgets(BuildContext context) {
     final List<Widget> widgets = [];
-    widgets.addAll(rightDetails);
+    widgets.addAll(widget.rightDetails);
     widgets.add(
       Hero(
-        tag: "${productNotifier.product.id}",
-        child: productNotifier.product.image == ""
+        tag: "${widget.productNotifier.product.id}",
+        child: widget.productNotifier.product.image == ""
             ? const Icon(
                 Icons.warning_rounded,
                 color: Colors.amber,
@@ -153,14 +170,14 @@ class ProductInfo extends StatelessWidget {
                       builder: (context) {
                         return Dialog(
                           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                          child: Image.network(productNotifier.product.image),
+                          child: Image.network(widget.productNotifier.product.image),
                         );
                       },
                     );
                   },
                   child: CircleAvatar(
-                    backgroundColor: productNotifier.product.mainColor,
-                    foregroundImage: NetworkImage(productNotifier.product.image),
+                    backgroundColor: widget.productNotifier.product.mainColor,
+                    foregroundImage: NetworkImage(widget.productNotifier.product.image),
                   ),
                 ),
               ),
