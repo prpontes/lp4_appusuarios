@@ -19,7 +19,7 @@ class _DetalheVendasState extends State<DetalheVendas> {
     List<ItemVenda> itensVendas = sell.items;
     return Scaffold(
         appBar: AppBar(
-          title: Text(sell.username!),
+          title: Text(sell.user.nome!),
           actions: [moneyValues(sell)],
         ),
         body: Column(
@@ -31,7 +31,7 @@ class _DetalheVendasState extends State<DetalheVendas> {
                     if (itensVendas.isNotEmpty == true) {
                       final item = itensVendas[index];
                       return ProductCard(
-                        product: item.produto!,
+                        product: item.produto,
                         showBottomLabel: false,
                         topRightBuilder: (_) => Text(
                           "Quantidade: ${item.quantity.toString()}",

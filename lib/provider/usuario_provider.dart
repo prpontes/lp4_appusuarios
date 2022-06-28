@@ -14,7 +14,8 @@ class UsuarioProvider extends ChangeNotifier {
   //usuarioEndereco_view
 
   addUsuarioFirestore(UsuarioFirebase u) async {
-    DocumentReference usuario = FirebaseFirestore.instance.collection('usuarios').doc(u.id);
+    DocumentReference usuario =
+        FirebaseFirestore.instance.collection('usuarios').doc(u.id);
     await usuario.set({
       'avatar': u.avatar,
       'cpf': u.cpf,
@@ -68,11 +69,13 @@ class UsuarioProvider extends ChangeNotifier {
   }
 
   listarUsuarioFirestore() async {
-    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+    CollectionReference usuarios =
+        FirebaseFirestore.instance.collection('usuarios');
     if (usuariosfirebase.isNotEmpty) usuariosfirebase.clear();
 
     await usuarios.orderBy('nome').get().then((value) {
-      for (var usr in value.docs as List<QueryDocumentSnapshot<Map<String, dynamic>>>) {
+      for (var usr
+          in value.docs as List<QueryDocumentSnapshot<Map<String, dynamic>>>) {
         usuariosfirebase.add(
           UsuarioFirebase(
             id: usr.id,
@@ -92,6 +95,26 @@ class UsuarioProvider extends ChangeNotifier {
     //return usuariosfirebase;
   }
 
+  Future<UsuarioFirebase?> getUsuario(String id) async {
+    try {
+      var usuario =
+          await FirebaseFirestore.instance.collection('usuarios').doc(id).get();
+
+      return UsuarioFirebase(
+        id: usuario.id,
+        cpf: usuario["cpf"],
+        nome: usuario["nome"],
+        email: usuario["email"],
+        login: usuario["login"],
+        senha: usuario["senha"],
+        avatar: usuario["avatar"],
+        telefone: usuario.data()?["telefone"] ?? "",
+        isCliente: usuario.data()?["isCliente"] ?? false,
+      );
+    } catch (e) {}
+    return null;
+  }
+
   editarUsuarioFirestore(UsuarioFirebase u) async {
     // var editUsuario = UsuarioFirebase(
     //   id:id,
@@ -103,7 +126,8 @@ class UsuarioProvider extends ChangeNotifier {
     //   avatar: avatar,
     // );
 
-    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+    CollectionReference usuarios =
+        FirebaseFirestore.instance.collection('usuarios');
     await usuarios.doc(u.id).update({
       "cpf": u.cpf,
       "nome": u.nome,
@@ -117,14 +141,16 @@ class UsuarioProvider extends ChangeNotifier {
   }
 
   deletarUsuarioFirebase(UsuarioFirebase u) async {
-    CollectionReference usuarios = FirebaseFirestore.instance.collection('usuarios');
+    CollectionReference usuarios =
+        FirebaseFirestore.instance.collection('usuarios');
     await usuarios.doc(u.id).delete();
     await listarUsuarioFirestore();
   }
 
   addAuthUsuario(UsuarioFirebase user) async {
     try {
-      var credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      var credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email!,
         password: user.senha!,
       );

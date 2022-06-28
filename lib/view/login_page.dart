@@ -17,8 +17,10 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  TextEditingController controllerUsuario = TextEditingController(text: "admin@ifto.com");
-  TextEditingController controllerSenha = TextEditingController(text: "123456789");
+  TextEditingController controllerUsuario =
+      TextEditingController(text: "admin@ifto.com");
+  TextEditingController controllerSenha =
+      TextEditingController(text: "123456789");
   TextEditingController controllerRecuperarSenha = TextEditingController();
 
   bool loading = false;
@@ -45,7 +47,8 @@ class _TelaLoginState extends State<TelaLogin> {
             content: TextField(
               controller: controllerRecuperarSenha,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: "E-mail", hintText: "Digite seu e-mail"),
+              decoration: const InputDecoration(
+                  labelText: "E-mail", hintText: "Digite seu e-mail"),
             ),
             actions: [
               TextButton(
@@ -56,7 +59,8 @@ class _TelaLoginState extends State<TelaLogin> {
               TextButton(
                   onPressed: () async {
                     try {
-                      await FirebaseAuth.instance.sendPasswordResetEmail(email: controllerRecuperarSenha.text);
+                      await FirebaseAuth.instance.sendPasswordResetEmail(
+                          email: controllerRecuperarSenha.text);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         backgroundColor: Colors.green,
                         content: SingleChildScrollView(
@@ -74,7 +78,8 @@ class _TelaLoginState extends State<TelaLogin> {
                       if (e.code == "invalid-email") {
                         msg_erro == "Endereço de e-mail inválido!";
                       } else if (e.code == "user-not-found") {
-                        msg_erro = "Não existe um usuário correspondente para o endereço de e-mail fornecido!";
+                        msg_erro =
+                            "Não existe um usuário correspondente para o endereço de e-mail fornecido!";
                       } else {
                         msg_erro = "Digite um e-mail cadastrado!";
                       }
@@ -153,10 +158,12 @@ class _TelaLoginState extends State<TelaLogin> {
       //   },
       // );
       try {
-        final credencial = await FirebaseAuth.instance.signInWithEmailAndPassword(email: controllerUsuario.text, password: controllerSenha.text);
+        final credencial = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: controllerUsuario.text, password: controllerSenha.text);
         await authProvider.login(credencial.user);
         await permissoesProvider.carregarPermissoes(authProvider.user!);
-        return Navigator.pushReplacementNamed(context, "/");
+        return Navigator.pushReplacementNamed(context, "/home");
       } on FirebaseAuthException catch (e) {
         setState(() => loading = false);
         var msg_erro = "";

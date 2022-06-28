@@ -5,8 +5,8 @@ class ShoppingCartProvider extends ChangeNotifier {
   List<ItemVenda> items = [];
 
   void add(ItemVenda item) {
-    if (hasProduct(item.produto!.id!)) {
-      increment(items.firstWhere((i) => i.produto!.id == item.produto!.id));
+    if (hasProduct(item.produto.id)) {
+      increment(items.firstWhere((i) => i.produto.id == item.produto.id));
     } else {
       items.add(item);
     }
@@ -20,13 +20,13 @@ class ShoppingCartProvider extends ChangeNotifier {
 
   int getQuantity(String id) {
     if (hasProduct(id)) {
-      return items.firstWhere((element) => element.produto?.id == id).quantity;
+      return items.firstWhere((element) => element.produto.id == id).quantity;
     }
     return 0;
   }
 
   bool hasProduct(String productId) {
-    return items.indexWhere((item) => item.produto?.id == productId) != -1;
+    return items.indexWhere((item) => item.produto.id == productId) != -1;
   }
 
   double get totalPrice {
@@ -52,7 +52,7 @@ class ShoppingCartProvider extends ChangeNotifier {
   }
 
   void increment(ItemVenda item) {
-    if (item.quantity < item.produto!.quantity) {
+    if (item.quantity < item.produto.quantity) {
       item.quantity++;
       notifyListeners();
     }

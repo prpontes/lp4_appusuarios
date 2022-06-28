@@ -106,7 +106,8 @@ class _ProductInfoState extends State<ProductInfo> {
                     showDialog(
                       barrierDismissible: false,
                       context: context,
-                      builder: (_) => StockDialog(productNotifier: widget.productNotifier),
+                      builder: (_) =>
+                          StockDialog(productNotifier: widget.productNotifier),
                     );
                   }
                 }
@@ -125,7 +126,8 @@ class _ProductInfoState extends State<ProductInfo> {
       widgets.add(
         ProductField(
           field: widget.priceLabel,
-          value: "R\$ ${widget.productNotifier.product.price.toStringAsFixed(2)}",
+          value:
+              "R\$ ${widget.productNotifier.product.price.toStringAsFixed(2)}",
           valueShadowEnable: true,
         ),
       );
@@ -146,10 +148,12 @@ class _ProductInfoState extends State<ProductInfo> {
                 size: 150,
               )
             : Container(
-                width: MediaQuery.of(context).size.height >= MediaQuery.of(context).size.width
+                width: MediaQuery.of(context).size.height >=
+                        MediaQuery.of(context).size.width
                     ? (MediaQuery.of(context).size.width / 2) * 0.8
                     : (MediaQuery.of(context).size.height / 2) * 0.8,
-                height: MediaQuery.of(context).size.height >= MediaQuery.of(context).size.width
+                height: MediaQuery.of(context).size.height >=
+                        MediaQuery.of(context).size.width
                     ? (MediaQuery.of(context).size.width / 2) * 0.8
                     : (MediaQuery.of(context).size.height / 2) * 0.8,
                 decoration: BoxDecoration(
@@ -169,15 +173,18 @@ class _ProductInfoState extends State<ProductInfo> {
                       context: context,
                       builder: (context) {
                         return Dialog(
-                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                          child: Image.network(widget.productNotifier.product.image),
+                          backgroundColor:
+                              Theme.of(context).scaffoldBackgroundColor,
+                          child: Image.network(
+                              widget.productNotifier.product.image),
                         );
                       },
                     );
                   },
                   child: CircleAvatar(
                     backgroundColor: widget.productNotifier.product.mainColor,
-                    foregroundImage: NetworkImage(widget.productNotifier.product.image),
+                    foregroundImage:
+                        NetworkImage(widget.productNotifier.product.image),
                   ),
                 ),
               ),
