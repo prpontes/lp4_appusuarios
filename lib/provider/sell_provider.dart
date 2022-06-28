@@ -14,9 +14,7 @@ class SellProvider extends ChangeNotifier {
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  SellProvider(
-      {required ProductProvider productProvider,
-      required UsuarioProvider usuarioProvider}) {
+  SellProvider({required ProductProvider productProvider, required UsuarioProvider usuarioProvider}) {
     _productProvider = productProvider;
     _userProvider = usuarioProvider;
   }
@@ -24,19 +22,16 @@ class SellProvider extends ChangeNotifier {
   List<Sell> sales = [];
   // List<ItemVenda> itensVenda = [];
 
-  Future<List<Sell>> listSales(int idUsuario) async {
+  Future<List<Sell>> listSales() async {
     var query = await db.collection(tabelaVenda).get();
 
     for (var doc in query.docs) {
       final List<ItemVenda> items = List.empty(growable: true);
-      var query = await db
-          .collection(tabelaVenda)
-          .doc(doc.id)
-          .collection("items")
-          .get();
+      var query = await db.collection(tabelaVenda).doc(doc.id).collection("items").get();
       for (var doc in query.docs) {
         items.add(
           ItemVenda.fromMap(
+            doc.id,
             doc.data(),
             (await _productProvider.getProduct(
               doc["idProduto"],
@@ -65,8 +60,7 @@ class SellProvider extends ChangeNotifier {
   // }
 
   Future<Sell> saveSell(Sell sell) async {
-    DocumentReference<Map<String, dynamic>> document =
-        await db.collection(tabelaVenda).add(sell.toMap());
+    DocumentReference<Map<String, dynamic>> document = await db.collection(tabelaVenda).add(sell.toMap());
     sell.id = document.id;
     sales.add(sell);
     notifyListeners();
@@ -74,11 +68,7 @@ class SellProvider extends ChangeNotifier {
   }
 
   Future<ItemVenda> saveItem(Sell sell, ItemVenda item) async {
-    DocumentReference<Map<String, dynamic>> document = await db
-        .collection(tabelaVenda)
-        .doc(sell.id)
-        .collection("items")
-        .add(item.toMap());
+    DocumentReference<Map<String, dynamic>> document = await db.collection(tabelaVenda).doc(sell.id).collection("items").add(item.toMap());
     item.id = document.id;
     sell.items.add(item);
     notifyListeners();
@@ -99,12 +89,7 @@ class SellProvider extends ChangeNotifier {
       }
     } catch (e) {
       for (var item in venda.items) {
-        await db
-            .collection(tabelaVenda)
-            .doc(venda.id)
-            .collection("items")
-            .doc(item.id)
-            .delete();
+        await db.collection(tabelaVenda).doc(venda.id).collection("items").doc(item.id).delete();
       }
       await db.collection(tabelaVenda).doc(venda.id).delete();
     }

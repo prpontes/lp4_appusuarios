@@ -23,7 +23,7 @@ class _TelaVendasState extends State<TelaVendas> {
     super.initState();
     sellProvider = Provider.of<SellProvider>(context, listen: false);
     authProvider = Provider.of<AuthProvider>(context, listen: false);
-    // sellProvider.listSales(authProvider.user!.id!);
+    sellProvider.listSales();
   }
 
   @override
@@ -34,8 +34,7 @@ class _TelaVendasState extends State<TelaVendas> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Expanded(child: Consumer<SellProvider>(
-                builder: (BuildContext context, value, Widget? child) {
+            Expanded(child: Consumer<SellProvider>(builder: (BuildContext context, value, Widget? child) {
               final sales = value.sales;
               return ListView.builder(
                   itemCount: sales.length,
@@ -53,20 +52,16 @@ class _TelaVendasState extends State<TelaVendas> {
                               child: Stack(
                                 children: <Widget>[
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.only(left: 10, top: 5),
+                                    padding: const EdgeInsets.only(left: 10, top: 5),
                                     child: Column(children: <Widget>[
                                       Row(children: <Widget>[
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 15.0),
+                                          padding: const EdgeInsets.only(left: 15.0),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: Icon(
                                               Icons.attach_money,
-                                              color: Colors.primaries[Random()
-                                                  .nextInt(
-                                                      Colors.primaries.length)],
+                                              color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
                                               size: 40,
                                             ),
                                           ),
@@ -78,20 +73,15 @@ class _TelaVendasState extends State<TelaVendas> {
                                           alignment: Alignment.centerLeft,
                                           child: RichText(
                                             text: TextSpan(
-                                              text:
-                                                  'Venda #${sell.id.toString()}',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                  fontSize: 20),
+                                              text: 'Venda #${sell.id.toString()}',
+                                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
                                               children: <TextSpan>[
                                                 TextSpan(
                                                     text: '\n ${sell.date}',
                                                     style: TextStyle(
                                                       color: Colors.grey,
                                                       fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ))
                                               ],
                                             ),
@@ -105,8 +95,7 @@ class _TelaVendasState extends State<TelaVendas> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              DetalheVendas(sell: sell),
+                                          builder: (BuildContext context) => DetalheVendas(sell: sell),
                                           fullscreenDialog: true,
                                         ),
                                       );
@@ -117,8 +106,7 @@ class _TelaVendasState extends State<TelaVendas> {
                             )),
                       );
                     } else {
-                      return const Text(
-                          "Nenhuma Venda realizada até o momento! ");
+                      return const Text("Nenhuma Venda realizada até o momento! ");
                     }
                   });
             }))
