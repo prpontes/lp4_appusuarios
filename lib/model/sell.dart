@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:lp4_appusuarios/model/item_venda.dart';
-import 'package:lp4_appusuarios/model/usuario.dart';
 import 'package:lp4_appusuarios/model/usuarioFirebase.dart';
 
 class Sell {
@@ -9,18 +8,19 @@ class Sell {
   String id;
   String date;
   UsuarioFirebase user;
-  List<ItemVenda> items;
+  late List<ItemVenda> items;
 
   Sell({
     required this.id,
     required this.date,
     required this.user,
-    this.items = const [],
-  });
+    List<ItemVenda>? items,
+  }) {
+    this.items = items ?? List.empty(growable: true);
+  }
 
   Map<String, dynamic> toMap() {
     return {
-      "id": id,
       "date": date,
       "idUser": user.id,
     };
