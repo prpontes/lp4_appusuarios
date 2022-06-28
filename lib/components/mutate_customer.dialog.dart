@@ -71,8 +71,7 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            UsuarioFirebase usuario =
-                isUpdate ? widget.usuario! : UsuarioFirebase();
+            UsuarioFirebase usuario = isUpdate ? widget.usuario! : UsuarioFirebase();
             usuario.id = isUpdate ? widget.usuario!.id : "";
             usuario.nome = _nomeController.text;
             usuario.email = _emailController.text;
@@ -81,7 +80,7 @@ class _MutateCustomerDialogState extends State<MutateCustomerDialog> {
             usuario.cpf = _cpfController.text;
             usuario.login = _loginController.text;
             usuario.telefone = _telefoneController.text;
-            usuario.isCliente = "true";
+            usuario.isCliente = true;
 
             if (isUpdate) {
               await _usuarioProvider.editarUsuarioFirestore(usuario);

@@ -8,7 +8,7 @@ class UsuarioFirebase {
   String? senha;
   String telefone;
   String avatar;
-  String isCliente;
+  bool isCliente;
 
   UsuarioFirebase({
     this.id,
@@ -19,7 +19,7 @@ class UsuarioFirebase {
     this.senha,
     this.avatar = "",
     this.telefone = "",
-    this.isCliente = "",
+    this.isCliente = false,
   });
 
   Map<String, dynamic> toMap() {
