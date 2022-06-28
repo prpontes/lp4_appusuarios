@@ -24,6 +24,7 @@ class SellProvider extends ChangeNotifier {
 
   Future<List<Sell>> listSales() async {
     var query = await db.collection(tabelaVenda).get();
+    sales.clear();
 
     for (var doc in query.docs) {
       final List<ItemVenda> items = List.empty(growable: true);
